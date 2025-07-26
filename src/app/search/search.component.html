@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+    <div class="row height mt-4 mb-3">
+        <div class="col-md-12 pr-0">
+            <div class="form">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control form-input" [(ngModel)]="value" placeholder="{{'SearchAnything' | translate}}..."
+                    (keyup.enter)="sendValue(value)">
+                <button (click)="sendValue(value)" class="search_btn">{{"Search" | translate}}</button>
+            </div>
+        </div>
+    </div>
+
+    <ng-container>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h3 class="mt-4">{{"RecentSearches" | translate}}</h3>
+            <div class="row" *ngIf="recentSearches != null">
+                <div class="col-md-3" *ngFor="let item of recentSearches">
+                    <button class="orders-main-btn" (click)="sendValue(item)"
+                        [ngClass]="{'active': clickSearch == item}">{{item}}</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="row" *ngIf="productLength != 0">
+            <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps" *ngFor="let product of getProducts">
+                <div class="fresh" routerLink="/description/{{product.id}}">
+                    <div class="card box-shadow product">
+                        <div class="data_image">
+                            <img src="{{product.image}}" class="card-img-top mx-auto" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-text">{{product.name}}</h5>
+                            <div class="common_height">
+                                <p class="card-title" [innerHTML]="product.description"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="productLength == 0">
+            <div class="col-lg-12 col-sm-12 col-md-12 fresh gaps">
+                <p class="text-center">{{"ThereNoProductcategory" | translate}}</p>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h3 class="mt-3">{{"TrendingProducts" | translate}}</h3>
+            <div class="row pb-2">
+                <div class="col-md-3" *ngFor="let item of trendingProducts">
+                    <button class="orders-main-btn">{{item.name}}</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,115 @@
+
+.wallet-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--text-color);
+    box-shadow: var(--box-shadow);
+    
+}
+.scroll_sec{
+    max-height: 470px;
+    overflow-y: scroll;
+}
+.padd_left{
+    padding-left: 20px;
+}
+.padd_left:lang(ar){
+    padding-right: 20px;
+    padding-left: 0;
+}
+.wallet-box img{
+    width: 100px;
+}
+.wallet-box img:lang(ar){
+    transform: rotate(180deg);
+}
+.wallet-box p{
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-dark-color);
+}
+.wallet-box p:lang(ar){
+    text-align: right;
+}
+.wallet-box span{
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color-five);
+}
+
+.wallet h6{
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-dark-color);
+}
+.wallet h6:lang(ar){
+    text-align: right;
+}
+.wallet-box-one{
+    display: flex;
+    justify-content: space-between;
+    align-items: center !important;
+    background: var(--text-color);
+}
+
+.wallet-box-one img{
+    width: 37px;
+    align-items: center !important;
+    justify-content: center !important;
+    background: var(--text-color);
+    box-shadow: 5px 5px 10px #d4cbcb;
+    margin-top: -50px;
+    margin-right: 50px;
+    padding: 10px;
+}
+.wallet-box-one img:lang(ar){
+    margin-left: 50px;
+}
+.wallet-box-one h5{
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-dark-color);
+}
+.wallet-box-one h5:lang(ar){
+    text-align: right;
+}
+.poul_flow .wallet-box-one h6{
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color);
+}
+.feed_flow .wallet-box-one h6{
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color-f);
+}
+.wallet-box-one h6:lang(ar){
+    text-align: right;
+}
+.wallet-box-one p{
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-dark-color);
+}
+.wallet-box-one p:lang(ar){
+    text-align: right;
+}
+@media only screen and (max-width: 500px){
+    .wallet-box{
+        flex-direction: column;
+        align-items: center;
+    }
+    .wallet-btn{
+        margin-top: 45px;
+        margin-right: 50px;
+    }
+
+}

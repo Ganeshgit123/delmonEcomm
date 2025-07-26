@@ -1,0 +1,90 @@
+<app-navbar-f></app-navbar-f>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-lg-6 col-md-6">
+            <div class="desc mt-5 text-center">
+                <img src="{{productImg}}" class="img-fluid desc-img">
+
+                <img src="assets/images/feeding/Icon-feather-heart-f.svg" class="desc-svg" (click)="addFav()"
+                    *ngIf="favLength == 0">
+                <img src="assets/images/feeding/Icon-feather-heart-two.svg" class="desc-svg" (click)="removeFav()"
+                    *ngIf="favLength == 1">
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+            <div class="desc-head pt-5" *ngIf="isStock > 0">
+                <p class="desc-text">
+                    <span *ngIf="dir == 'ltr'">{{productName}}</span>
+                    <span *ngIf="dir == 'rtl'">{{productNameAr}}</span>
+                </p>
+                <button class="badge badge-pill desc-btn">{{"InStock" | translate}}</button>
+            </div>
+            <div class="desc-head pt-5" *ngIf="isStock <= 0">
+                <p class="desc-text">
+                    <span *ngIf="dir == 'ltr'">{{productName}}</span>
+                    <span *ngIf="dir == 'rtl'">{{productNameAr}}</span>
+                </p>
+                <button class="badge badge-pill desc-out-btn">{{"OutofStock" | translate}}</button>
+            </div>
+            <!-- 
+            <div class="col desc-box mt-3">
+                <div class="desc-cont">
+                    <img src="../../assets/images/scale.svg" alt="desc-img" class="img-fluid">
+                    <p>{{productweight}}</p>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="desc-cont">
+
+                    <img src="../../assets/images/roast-chicken.svg" alt="desc-img" class="img-fluid">
+                    <p>No.of.Pieces : {{productnoOfPieces}}</p>
+                </div>
+
+                <div class="separator"></div>
+                <div class="desc-cont">
+                    <img src="../../assets/images/restaurant.svg" alt="desc-img" class="img-fluid">
+                    <p>Serves : {{productNserves}}</p>
+                </div>
+
+            </div> -->
+
+            <div class="mt-3">
+                <h5 class="desc-con">{{"Description" | translate}}</h5>
+                <p class="desc-cons pt-3">
+                    <span *ngIf="dir == 'ltr'">{{productdescription}}</span>
+                    <span *ngIf="dir == 'rtl'">{{productdescriptionAr}}</span>
+                </p>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="desc-con">{{"PackSizes" | translate}}</h5>
+                <span *ngFor="let weight of relatedProductFilter">
+                    <button class="desc-button" [ngClass]="activePack == weight.id ? 'active': '' "
+                        (click)="getWeightId(weight.id,weight.price,weight.stock,weight.normalPrice,weight.offerPrice)">
+                        {{weight.weight}}g
+                    </button>
+                </span>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 desc-btn-box mt-4">
+                <div class="text-center">
+                    <p class="mt-2">
+                        <span class="offer_price">{{normalPrice}} BD</span>
+                        <span>{{productprice}} BD</span> <br> {{"TotalAmount" | translate}}
+                    </p>
+                </div>
+                <div *ngIf="isStock > 0">
+                    <button class="btn" (click)="sendCartValue()" routerLink="/cart">{{"ADDTOCART" |
+                        translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-footer-f></app-footer-f>
+<!------------------------------------------------------------------>

@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row mt-5 pt-5">
+        <div class="box text-center">
+            <div>
+                <div class="img-address pb-4 mx-auto">
+                    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)">
+                    </ng-lottie>
+                </div>
+            </div>
+            <p class="text-center pb-2">Thank you for the payment,<br> Your order is placed successfully.</p>
+            <button class="btn btn-lg btn-complete" routerLink="/my_profile">My Order</button>
+        </div>
+    </div>
+</div>

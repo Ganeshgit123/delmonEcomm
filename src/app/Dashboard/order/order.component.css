@@ -1,0 +1,303 @@
+.edit{
+    max-height: 790px;
+    overflow-y: scroll;
+}
+.date_time_class{
+    color: #ACA7A7;
+}
+.dashed_hr{
+    border: 1px dashed #ACA7A7;
+    margin: 10px 0;
+}
+.status_btn{
+    margin-bottom: 0;
+    text-align: left;
+}
+.status_btn:lang(ar){
+    text-align: right;
+}
+.netAmt{
+    font-weight: 700;
+}
+.cancel_btn{
+    background: var(--main-color);
+    color: var(--text-color);
+    text-align: center;
+    padding: 10px 30px;
+    border-radius: 10px; 
+    border: none;
+}
+.cutomernot{
+    color: var(--main-color);
+}
+.invoice{
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-bold);
+}
+.invoi_bnt a{
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-bold);
+    color: var(--main-color);
+}
+.delivery_sec{
+    background: var(--dash-btn-color);
+    padding: 12px 10px 5px 10px;
+    margin:10px 0;
+    border-radius: 6px;
+}
+.delivery_sec p{
+    color: var(--text-color);
+}
+.bs4-order-tracking {
+    overflow: hidden;
+    color: #878788;
+    margin-bottom: 0;
+}
+
+.bs4-order-tracking li {
+    list-style-type: none;
+    font-size: 13px;
+    width: 33%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: #878788;
+    text-align: center;
+}
+.bs4-order-tracking li:lang(ar){
+    float: right;
+}
+.bs4-order-tracking li.step p {
+    padding-top: 10px;
+    color: #ACA7A7;
+    text-align: center;
+}
+.bs4-order-tracking li.step.active p {
+    padding-top: 10px;
+    color: var(--main-color);
+    text-align: center;
+}
+.bs4-order-tracking li:first-child:before {
+    margin-left: 15px !important;
+    padding-left: 11px !important;
+    text-align: left !important
+}
+
+.bs4-order-tracking li:last-child:before {
+    margin-right: 5px !important;
+    padding-right: 11px !important;
+    text-align: right !important
+}
+
+.bs4-order-tracking li>div {
+    color: #fff;
+    width: 29px;
+    text-align: center;
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: #878788;
+    border-radius: 50%;
+    margin: auto
+}
+
+.bs4-order-tracking li:after {
+    content: '';
+    width: 150%;
+    height: 2px;
+    background: #878788;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 15px;
+    z-index: -1
+}
+
+.bs4-order-tracking li:first-child:after {
+    left: 50%
+}
+.bs4-order-tracking li:lang(ar):first-child:after{
+    right: 50%;
+    left: 0;
+}
+.bs4-order-tracking li:last-child:after {
+    left: 0% !important;
+    width: 0% !important
+}
+
+.bs4-order-tracking li.active {
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.bs4-order-tracking li.active>div {
+    background: var(--main-color);
+}
+
+.bs4-order-tracking li.active:after {
+    background: var(--main-color);
+}
+
+.card-timeline {
+    background-color: #fff;
+    border: none;
+    z-index: 0;
+}
+
+.card-timeline h5 {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-dark-color);
+}
+
+
+.orders-main p {
+    cursor: pointer;
+}
+
+.orders-main .btn1 {
+    background: none;
+    border: 1px solid var(--main-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--main-color);
+    padding: 6px 12px;
+    margin-right: 20px;
+}
+
+.orders-main .btn1:hover {
+    background: var(--main-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    padding: 6px 12px;
+    margin-right: 20px;
+}
+
+.orders-main .btn2 {
+    background: none;
+    border: 1px solid var(--main-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--main-color);
+    padding: 6px 12px;
+    margin-right: 20px;
+}
+
+.orders-main .btn2:hover {
+    background: var(--main-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color);
+    padding: 6px 12px;
+    margin-right: 20px;
+}
+
+/*-----------------------------------------------------------------------------*/
+.orders-confirm-top {
+    display: flex;
+}
+
+.orders-confirm-top p {
+    padding-left: 15px;
+}
+.orders-confirm-top p:lang(ar) {
+    padding-right: 15px;
+    padding-left: 0;
+}
+/*-----------------------------------------------------------------------------*/
+
+
+@media only screen and (max-width:576px) {
+    .order-btn-container {
+        text-align: center;
+        flex-direction: column;
+        flex-flow: wrap;
+        gap: 15px;
+    }
+
+    .orders-confirm-top {
+        flex-flow: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+@media only screen and (max-width:767px) {
+    .orders-top {
+        padding: 10px;
+        flex-flow: wrap;
+    }
+
+    .orders-confirm-top {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
+
+@media only screen and (max-width:992px) {
+    .orders-main-top-c {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .orders-confirm-top {
+        flex-direction: row !important;
+    }
+
+    .orders-confirm-top p {
+        padding-left: 15px !important;
+    }
+}
+
+
+@media only screen and (max-width:1200px) {
+    .orders-top {
+        padding: 10px;
+        flex-flow: wrap;
+    }
+
+    /*--------------------------------------------------------*/
+    .orders-main-top-c {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .orders-confirm-top {
+        flex-direction: column;
+    }
+
+    .orders-confirm-top p {
+        padding-left: 0px;
+    }
+}
+
+@media only screen and (max-width:500px) {
+    .orders-main-top {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .orders-main p {
+        font-family: var(--font-family);
+        font-size: var(--small-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--text-dark-color);
+    }
+
+    .order-muted {
+        color: var(--text-color-one);
+        font-family: var(--font-family);
+        font-size: var(--small-size);
+        font-weight: var(--font-weight-regular) !important;
+        text-align: center;
+    }
+}

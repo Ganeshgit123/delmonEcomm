@@ -1,0 +1,41 @@
+<app-login-bar></app-login-bar>
+
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-lg-8 col-md-7 col-sm-12 Login">
+      <h5>{{"loginPageContent" | translate}}</h5>
+      <p class="pt-3">{{"loginPageSmallContent" | translate}}</p>
+      <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-12">
+      <div class="col-md-10 phone-box">
+        <div class="rounded-icon">
+          <img src="./././assets/images/Group-48827.png" alt="">
+        </div>
+        <form class="phone-form_group" [formGroup]="sendOtpvalue">
+          <p class="phone-label text-center">{{'Phone Number' | translate}}</p>
+          <div class="row">
+            <div class="col-md-3 pr">
+              <input type="text" formControlName="countryCode" [className]="websiteFlow == 'POULTRY' ? 'phone-form_field' : 'phone-form_field_f'"
+              readonly/>
+            </div>
+            <div class="col-md-9 pl">
+              <input type="number" formControlName="mobileNumber" onKeyPress="if(this.value.length==8) return false;" [className]="websiteFlow == 'POULTRY' ? 'phone-form_field typeing' : 'phone-form_field_f typeing'"  
+              [ngClass]="{ 'is-invalid': submitted && f['mobileNumber'].errors }"/>
+              <div *ngIf="submitted && f['mobileNumber'].errors" class="invalid-feedback">
+                <div *ngIf="f['mobileNumber'].errors['required']">{{"Mobile is required" | translate}}</div>
+                <div *ngIf="f['mobileNumber'].errors['pattern']">{{"Eight digits only allowed" | translate}}</div>
+            </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-phone btn-block" [className]="websiteFlow == 'POULTRY' ? 'btn btn-phone btn-block' : 'btn btn-phone-f btn-block'"
+          (click)="sendOtpdata()">{{"Continue" | translate}}</button>
+          <p class="pt-2">{{"By Joining, you agree to" | translate}} <span>{{"Terms of service and privacy policy" | translate}}</span> </p>
+          <!-- <p class="text-center or">OR</p>
+          <p class="phone-link text-center" style="font-size: 13px;" routerLink="/employee">Skip</p> -->
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

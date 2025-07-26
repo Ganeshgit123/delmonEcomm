@@ -1,0 +1,24 @@
+<app-login-bar></app-login-bar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-sm-12 col-md-6 mt-5 Login">
+      <h5>{{"OTPConent" | translate}}</h5>
+      <p class="pt-3">{{"OTPSecondContent" | translate}}</p>
+      <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-6">
+      <form class="col-md-10 employee-box p-4" [formGroup]="sendEmpvalue" (ngSubmit)="sendEmpdata()">
+        <input type="text" class="form-control" formControlName="employeeNumber"
+          placeholder='{{"Enter Employee Number" | translate}}'
+          [ngClass]="{ 'is-invalid': submitted && f['employeeNumber'].errors }">
+        <div *ngIf="submitted && f['employeeNumber'].errors" class="invalid-feedback">
+          <div *ngIf="f['employeeNumber'].errors['required']">{{"Employee Number is required" | translate}}</div>
+        </div>
+        <button type="submit"
+          [className]="websiteFlow == 'POULTRY' ? 'btn btn-lg btn-block btn-sub mt-3' : 'btn btn-lg btn-block btn-sub-f mt-3' ">{{"Proceed"
+          | translate}}</button>
+      </form>
+    </div>
+  </div>
+</div>

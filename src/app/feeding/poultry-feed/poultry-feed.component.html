@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps" *ngFor="let product of this.ProductList">
+    <div class="card box-shadow" routerLink="/feeding/feed-description/{{product.id}}">
+      <img src="{{product.image}}" class="card-img-top mx-auto" alt="...">
+      <div class="card-body">
+        <h5 class="card-text">
+          <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+          <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+        </h5>
+        <p class="card-title">
+          <span *ngIf="dir == 'ltr'">{{product.description}}</span>
+          <span *ngIf="dir == 'rtl'">{{product.arDescription}}</span>
+        </p>
+      </div>
+    </div>
+  </div>

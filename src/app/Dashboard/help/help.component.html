@@ -1,0 +1,42 @@
+<div class="edit help" [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+  <h3 class="pb-1">{{"HelpSupport" | translate}}</h3>
+  <div class="vertical-line"></div>
+  <div class="pb-3"></div>
+  <h2>{{"ContactDelmon" | translate}}</h2>
+  <p class="p-2">{{"helpContent" | translate}}</p>
+  <div class="p-1 help-btn-box">
+    <button class="mx-2" (click)="sendHelpType('Call')" [ngClass]="selectedValue == 'Call' ? 'active' : ''"
+      popoverTitle=" Call " [autoClose]="'outside'" ngbPopover="{{ countryCode }}{{ call }}">
+      <img src="assets/images/phone-call-hover.svg" *ngIf="selectedValue == 'Call'" />
+      <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/phone-call.svg"
+          *ngIf="selectedValue !== 'Call'" /></span>
+      <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/feed_phone_icon.svg"
+          *ngIf="selectedValue !== 'Call'" /></span>
+      {{"Call" | translate}}
+    </button>
+
+    <a href="mailto: {{email}}" target="_blank">
+
+      <button class="mx-2" (click)="sendHelpType('Mail')" [ngClass]="selectedValue == 'Mail' ? 'active' : ''">
+        <img src="assets/images/md-mail-hover.svg" class="padd_right" *ngIf="selectedValue == 'Mail'" />
+        <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/md-mail.svg" class="padd_right"
+            *ngIf="selectedValue !== 'Mail'" />
+        </span>
+        <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/feed_mail_icon.svg" class="padd_right"
+          *ngIf="selectedValue !== 'Mail'" />
+      </span>
+        {{"Mail" | translate}}
+      </button>
+
+    </a>
+
+    <a href="https://wa.me/{{whatsAppNumber}}?text=Hello%20World" target="_blank">
+      <button class="mx-2" (click)="sendHelpType('Chat')" [ngClass]="selectedValue == 'Chat' ? 'active' : ''">
+        <img src="assets/images/whatsapp-hover.svg" *ngIf="selectedValue == 'Chat'" />
+        <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/whatsapp.svg" *ngIf="selectedValue !== 'Chat'" /></span>
+        <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/feed_whatapp_icon.svg" *ngIf="selectedValue !== 'Chat'" /></span>
+        {{"Chat" | translate}}
+      </button>
+    </a>
+  </div>
+</div>

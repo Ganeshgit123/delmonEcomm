@@ -1,0 +1,48 @@
+.feeding_categ{
+    padding: 40px 0 0px 0;
+    border-bottom: 1px solid var(--main-box-color-four);
+}
+.feeding_categ h3{
+    font-size: var(--heading-h4);
+    font-weight: var( --font-weight-medium);
+}
+.categ_show{
+    padding-top: 3rem;
+}
+.categ_show .box{
+    border: 1px solid var(--main-box-color-four);
+    padding: 10px;
+}
+.categ_btn{
+  /* width: 100%; */
+  background: none;
+  border: none;
+  text-align: left;
+}
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+  
+  /*
+   * This padding sets alignment of the nested nodes.
+   */
+  .example-tree .mat-nested-tree-node div[role=group] {
+    padding-left: 10px;
+  }
+  
+  /*
+   * Padding for leaf nodes.
+   * Leaf nodes need to have padding so as to align with other non-leaf nodes
+   * under the same parent.
+   */
+  .example-tree div[role=group] > .mat-tree-node {
+    padding-left: 10px;
+  }
+  

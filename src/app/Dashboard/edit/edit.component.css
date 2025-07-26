@@ -1,0 +1,52 @@
+.form-group label{
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-dark-color);
+    display: block;
+}
+.form-group label:lang(ar){
+    text-align: right;
+}
+.form-group input{
+    width: 80%;
+    background: var(--text-color);
+    border: none;
+}
+
+.form-group ::placeholder{
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-dark-color);
+}
+
+.btn-edit{
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+.btn-edit-f{
+
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color-f);
+    border: 1px solid var(--main-color-f);
+}
+
+.btn-edit:hover{
+
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    background: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+
+    

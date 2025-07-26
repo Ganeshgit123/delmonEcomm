@@ -1,0 +1,41 @@
+<app-login-bar></app-login-bar>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mt-5 Login">
+            <h5 class="mb-0">{{"landingPageHead" | translate}}</h5>
+            <p class="pt-3">{{"landingPagePara" | translate}}</p>
+            <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+        </div>
+        <div class="col-md-6 pt-5 mt-3 text-center">
+            <div class="look text-center">
+                <h5>{{"WhatAreLookingFor" | translate}}</h5>
+                <p class="pt-3 text-center">{{"ShopOnlineContent" | translate}}</p>
+
+            </div>
+            <a class="poul_btn" (click)="categSelect('poultry')">
+                <div class="look-content d-flex text-center">
+                    <img src="././assets/images/Group-49005.png" alt="desc-img" class="img-fluid">
+                    <p class="">{{"Poultry" | translate}}</p>
+                    <div class="look-img pl-4">
+                        <img src="assets/images/Icon-feather-arrow-left.svg" alt="">
+                    </div>
+                </div>
+            </a>
+            <br>
+           <a (click)="categSelect('feeding')" class="poul_btn">
+            <div class="look-content d-flex mt-2 text-center">
+                <img src="././assets/images/Group-49004.png" alt="desc-img" class="img-fluid">
+                <p class="">{{"Feeding" | translate}}</p>
+                <div class="look-img pl-3">
+                    <img src="assets/images/Icon-feather-arrow-left.svg" alt="">
+                </div>
+
+            </div>
+
+           </a>
+            <!-- <div class="col-md-12">
+                <button class="btn btn-lg mt-5 look-btn">GET IN</button>
+            </div> -->
+        </div>
+    </div>
+</div>

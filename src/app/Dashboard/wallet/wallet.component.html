@@ -1,0 +1,62 @@
+<div class="edit wallet" [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <h3 class="pb-1">{{"WalletBalance" | translate}}</h3>
+    <div class="vertical-line"></div>
+    <div class="pb-3"></div>
+    <div class="wallet-box p-4">
+        <div class="d-flex">
+            <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/wallet_red.svg" alt=""></span>
+            <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/feeding_wallet.svg" alt=""></span>
+            <p class="pt-4">{{"WalletAmount" | translate}}<br> <span>{{walletAmount}} BD</span></p>
+        </div>
+        <div class="text-center" *ngIf="!adminLogin">
+            <button type="submit" class="btn btn-lg px-5 wallet-btn" (click)="openVerticallyCentered(content)">
+                {{"ADDMONEY" | translate}}</button>
+
+        </div>
+    </div>
+    <br>
+    <h6 class="pt-2 pb-1">{{"TransactionHistory" | translate}}</h6>
+    <div class="vertical-line"></div>
+    <div class="scroll_sec">
+        <div class="wallet-box-one mt-3 pt-3" *ngFor="let data of getWalletDetails">
+            <div class="col-md-10">
+                <h5 class="pb-1">{{"OrderID" | translate}} : {{data.orderId}} | <span>{{data.paymentType}}</span></h5>
+                <div class="vertical-line"></div>
+                <h6 class="pt-3" *ngIf="data.type == 'SUB'">{{data.amount}} BD</h6>
+                <h6 class="pt-3" *ngIf="data.type == 'ADD'" style="color: var(--dash-btn-color);">{{data.amount}} BD
+                </h6>
+                <p class="">{{data.updatedAt | date:'EEEE, MMM d, y'}}</p>
+            </div>
+            <div class="img-arrow">
+                <img src="assets/images/feather-arrow-down.svg" *ngIf="data.type == 'ADD'" alt="" />
+                <img src="assets/images/feather-arrow-up.svg" *ngIf="data.type == 'SUB'" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #content let-modal>
+    <div class="col-md-12 ml-auto mt-3 mb-2">
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <img src="assets/images/Icon-ionic-ios-close.svg" alt="">
+        </button>
+    </div>
+    <div class="modal-header">
+        <input type="text" placeholder="Enter Your Amount" class="col-lg-12" [(ngModel)]="amount" required>
+    </div>
+    <div class="modal-body d-flex justify-content-around">
+        <button class="btn btn-md px-4" [className]="websiteFlow === 'FEEDING' ? 'btn-amount-f' : 'btn-amount'"
+            (click)="btnAmount(100)" [ngClass]="amount == 100 ? 'active' :'' ">+100</button>
+        <button class="btn btn-md px-4" [className]="websiteFlow === 'FEEDING' ? 'btn-amount-f' : 'btn-amount'"
+            (click)="btnAmount(500)" [ngClass]="amount == 500 ? 'active' :'' ">+500</button>
+        <button class="btn btn-md px-4" [className]="websiteFlow === 'FEEDING' ? 'btn-amount-f' : 'btn-amount'"
+            (click)="btnAmount(1000)" [ngClass]="amount == 1000 ? 'active' :'' ">+1000</button>
+        <button class="btn btn-md px-4" [className]="websiteFlow === 'FEEDING' ? 'btn-amount-f' : 'btn-amount'"
+            (click)="btnAmount(2000)" [ngClass]="amount == 2000 ? 'active' :'' ">+2000</button>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn-lg btn-block btn-modal" (click)="add_Wallet()"
+            [ngClass]="websiteFlow == 'FEEDING' ? 'feed' : 'poul'">{{"ADD" | translate}}</button>
+    </div>
+</ng-template>

@@ -1,0 +1,50 @@
+<div class="edit" [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <div class="col-md-12" *ngIf="favoriteLength == 0">
+        <form>
+            <div class="form-group address text-center">
+                <div class="img-address">
+                    <ng-lottie [options]="options">
+                    </ng-lottie>
+                </div>
+                <p class="text-center">{{"EmptyFavourityLine" | translate}}</p>
+                <div class="text-center pt-2 pb-2" *ngIf="!adminLogin">
+                    <button type="submit" class="btn btn-lg px-5 address-btn" routerLink="/categories">{{"ADDFAVOURITES" |
+                        translate}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container" *ngIf="favoriteLength !== 0">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps mb-2" *ngFor="let product of favoriteData">
+                <div class="fresh">
+                    <div class="card box-shadow product">
+                        <div class="top-button">
+                            <div class="row">
+                                <!-- <div class="col-md-9">
+                                    <button class="badge badge-pill desc-btn" *ngIf="product.isStock !== 0">{{"InStock" | translate}}</button>
+                                    <button class="badge badge-pill out-btn" *ngIf="product.isStock == 0">{{"OutofStock" | translate}}</button>
+                                </div> -->
+                                <div class="col-md-12">
+                                    <p class="text-right mb-0" *ngIf="!adminLogin"><img src="assets/images/Icon-feather-heart-two.svg" (click)="removeFav(product.id)"
+                                        alt="heart"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data_image">
+                            <p class="text-center mb-0"><img src="{{product.image}}" class="card-img-top mx-auto"
+                                    alt="..."></p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-text">{{product.name}}</h5>
+                            <div class="common_height">
+                                <p class="card-title" [innerHTML]="product.description"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

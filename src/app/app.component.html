@@ -1,0 +1,37 @@
+<div *ngIf="dir == 'ltr' && mobile == false">
+   <router-outlet></router-outlet>
+</div>
+<div *ngIf="dir == 'rtl' && mobile == false" class="rtl">
+   <router-outlet></router-outlet>
+</div>
+<div *ngIf="mobile == true">
+   <section class="mob-back-img">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mob">
+               <img src="../assets/images/mobile-app.png">
+               <h2 class="pb-3">{{"DownloadMobileApp" | translate}}</h2>
+               <!-- <h5 class="pb-3">Lorem Ipsum has been the industry's <br>standard dummy text</h5> -->
+
+               <div class="d-flex">
+                  <div class="mob-img">
+                     <a href="https://apps.apple.com/us/app/delmon-poultry-co/id6475718453" target="_blank"
+                        rel="noopener noreferrer">
+                        <ng-lottie [options]="optionsone">
+                        </ng-lottie>
+                     </a>
+                  </div>
+
+                  <div class="mob-img mx-3">
+                     <a href="https://play.google.com/store/apps/details?id=com.app.delmon&pli=1" target="_blank"
+                        rel="noopener noreferrer">
+                        <ng-lottie [options]="optionstwo">
+                        </ng-lottie>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>

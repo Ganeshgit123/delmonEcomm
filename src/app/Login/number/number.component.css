@@ -1,0 +1,64 @@
+
+.employee-box {
+  padding: 20px;
+  background: var(--text-color);
+  box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
+  margin-top: 150px;
+  border-radius: 2px;
+}
+
+.employee-box input{
+  background: var(--main-box-color-two);
+  border: none;
+}
+
+.employee-box .form-control::placeholder{
+  font-family: var(--font-family);
+  font-size: var(--small-size);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-dark-color);
+  padding-left: 5px;
+  border: none;
+ 
+}
+
+.btn-sub {
+  background-color: var(--main-color);
+  font-family: var(--font-family);
+  font-size: var(--small-size);
+  font-weight: var(--font-weight-medium);
+  padding: 13px;
+  color: var(--text-color);
+}
+
+.btn-sub:hover {
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--small-size);
+  border: 1px solid var(--main-color);
+  font-weight: var(--font-weight-medium);
+  padding: 13px;
+  color: var(--main-color);
+}
+
+
+
+.btn-sub-f {
+  background-color: var(--main-color-f);
+  font-family: var(--font-family);
+  font-size: var(--small-size);
+  font-weight: var(--font-weight-medium);
+  padding: 13px;
+  color: var(--text-color);
+}
+
+
+.btn-sub-f:hover {
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--small-size);
+  border: 1px solid var(--main-color-f);
+  font-weight: var(--font-weight-medium);
+  padding: 13px;
+  color: var(--main-color-f);
+}

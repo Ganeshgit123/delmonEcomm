@@ -1,0 +1,279 @@
+<div class="edit">
+  <h3 class="pb-1">{{"MyOrders" | translate}}</h3>
+  <div class="vertical-line"></div>
+  <div class="pb-3"></div>
+
+  <mat-tab-group fitInkBarToContent [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <mat-tab label="My Orders">
+      <div class="orders-main mt-3" *ngFor="let data of orderData">
+        <div class="orders-main-top d-flex justify-content-between">
+          <p>{{"OrderID" | translate}} : {{data.orderId}}</p>
+          <p>{{"OrderPlaced" | translate}} : <span class="date_time_class">
+            {{data.orderPlaceTime | date: 'EEEE, MMM d, y'}}</span></p>
+        </div>
+        <div class="vertical-line"></div>
+        <p class="status_btn"><button class="orders-main-btn-f px-4 py-1 mt-3 mb-2"> {{"WaitingAdminApproval" |
+            translate}}
+          </button></p>
+        <hr class="dashed_hr">
+        <div class="d-flex justify-content-between pt-2">
+          <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{data.netAmount}} BD</span></p>
+          <div class="d-flex">
+            <p class="pr-2" (click)="orderDetail(content,data.id)">{{"Your Order Detail" | translate}}
+              <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="orderData?.length == 0">
+        <p class="text-center mt-2">{{"NoOrdersFound" | translate}}</p>
+      </div>
+    </mat-tab>
+    <!---------------------------------------------------------------------------------------------->
+    <mat-tab label="Confirmed Orders">
+
+      <div class="orders-main mt-3" *ngFor="let confirm of confirmData">
+
+        <div class="orders-main-top-c d-flex justify-content-between">
+          <p>{{"OrderID" | translate}} : {{confirm.orderId}}</p>
+          <div class="orders-confirm-top">
+            <p class="text-center mx-3" style="color: var(--dash-btn-color);">
+              <span *ngIf="confirm.newDeliveryDate == null">{{"Deliveryon" | translate}} {{confirm.deliveredTime |
+                date:'EEEE, MMM d, y'}}</span>
+              <span *ngIf="confirm.newDeliveryDate != null">{{"Deliveryon" | translate}}
+                {{date(confirm.newDeliveryDate)}}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="vertical-line"></div>
+
+        <div class="my-3">
+          <div class="card card-timeline">
+            <ul class="bs4-order-tracking" *ngIf="confirm.orderStatus == 'USERACCEPTED'">
+              <li class="step active">
+                <div><i class="fas fa-store"></i></div>
+                <p>{{"OrderConfirmed" | translate}}</p>
+              </li>
+              <li class="step">
+                <div><i class="fas fa-shipping-fast"></i></div>
+                <p>{{"OutforDelivery" | translate}}</p>
+              </li>
+              <li class="step">
+                <div><i class="fas fa-dolly"></i></div>
+                <p>{{"Delivered" | translate}}</p>
+              </li>
+            </ul>
+            <ul class="bs4-order-tracking" *ngIf="confirm.orderStatus == 'DRIVERASSIGNED'">
+              <li class="step active">
+                <div><i class="fas fa-store"></i></div>
+                <p>{{"OrderConfirmed" | translate}}</p>
+              </li>
+              <li class="step active">
+                <div><i class="fas fa-shipping-fast"></i></div>
+                <p>{{"driverAssigned" | translate}}</p>
+              </li>
+              <li class="step">
+                <div><i class="fas fa-dolly"></i></div>
+                <p>{{"Delivered" | translate}}</p>
+              </li>
+            </ul>
+            <ul class="bs4-order-tracking" *ngIf="confirm.orderStatus == 'OUTFORDELIVERY'">
+              <li class="step active">
+                <div><i class="fas fa-store"></i></div>
+                <p>{{"OrderConfirmed" | translate}}</p>
+              </li>
+              <li class="step active">
+                <div><i class="fas fa-shipping-fast"></i></div>
+                <p *ngIf="confirm.deliveryType == 'DELIVERY'">{{"OutforDelivery" | translate}}</p>
+                <p *ngIf="confirm.deliveryType == 'PICKUP'">{{"ReadForPickup" | translate}}</p>
+              </li>
+              <li class="step">
+                <div><i class="fas fa-dolly"></i></div>
+                <p>{{"Delivered" | translate}}</p>
+              </li>
+            </ul>
+            <ul class="bs4-order-tracking" *ngIf="confirm.orderStatus == 'UNAVAILABLE'">
+              <li class="step active">
+                <div><i class="fas fa-store"></i></div>
+                <p>{{"OrderConfirmed" | translate}}</p>
+              </li>
+              <li class="step active">
+                <div><i class="fas fa-shipping-fast"></i></div>
+                <p>{{"Unavailable" | translate}}</p>
+              </li>
+              <li class="step">
+                <div><i class="fas fa-dolly"></i></div>
+                <p>{{"Delivered" | translate}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="dashed_hr">
+        <p *ngIf="confirm.orderStatus == 'UNAVAILABLE'" class="text-center cutomernot">{{"CustomerNotAvailable" |
+          translate}}</p>
+        <div class="d-flex justify-content-between pt-2">
+          <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{confirm.netAmount}} BD</span></p>
+          <div class="d-flex">
+            <p class="pr-2" (click)="orderDetail(content,confirm.id)">{{"Your Order Detail" | translate}}
+              <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="confirmData?.length == 0">
+        <p class="text-center mt-2">{{"NoOrdersFound" | translate}}</p>
+      </div>
+    </mat-tab>
+    <!---------------------------------------------------------------------------------------------->
+    <mat-tab label="Completed Orders">
+      <div class="orders-main mt-3" *ngFor="let complete of completeData">
+        <div class="orders-main-top d-flex justify-content-between">
+          <p>{{"OrderID" | translate}} : {{complete.orderId}}</p>
+          <div class="orders-confirm-top">
+            <p class="text-center mx-3" style="color: var(--dash-btn-color);">
+              <span *ngIf="complete?.deliveryOrderDate != null">{{"Deliveryon" | translate}} {{date(complete?.deliveryOrderDate)}}</span>
+            </p>
+          </div>
+        </div>
+        <hr class="dashed_hr">
+        <div class="d-flex justify-content-between pt-2">
+          <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{complete.netAmount}} BD</span></p>
+          <div class="d-flex">
+            <p class="pr-2" (click)="orderDetail(content,complete.id)">{{"Your Order Detail" | translate}}
+              <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="completeData?.length == 0">
+        <p class="text-center mt-2">{{"NoOrdersFound" | translate}}</p>
+      </div>
+    </mat-tab>
+    <!---------------------------------------------------------------------------------------------->
+    <mat-tab label="Cancelled Orders">
+
+      <div class="orders-main mt-3" *ngFor="let cancel of cancelData">
+
+        <div class="orders-main-top d-flex justify-content-between">
+          <p>{{"OrderID" | translate}} : {{cancel.orderId}}</p>
+          <div class="orders-confirm-top">
+            <p class="text-center mx-3" style="color: var(--main-color);">{{"cancelledOn" | translate}}
+              {{cancel.updatedAt | date: 'EEEE, MMM d, y'}}</p>
+          </div>
+        </div>
+        <hr class="dashed_hr">
+        <div class="d-flex justify-content-between pt-2">
+          <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{cancel.netAmount}} BD</span></p>
+          <div class="d-flex">
+            <p class="pr-2" (click)="orderDetail(content,cancel.id)">{{"Your Order Detail" | translate}}
+              <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="cancelData?.length == 0">
+        <p class="text-center mt-2">{{"NoOrdersFound" | translate}}</p>
+      </div>
+    </mat-tab>
+    <!---------------------------------------------------------------------------------------------->
+  </mat-tab-group>
+
+</div>
+
+
+<ng-template #content let-modal="close">
+  <div class="edit">
+    <div class="modal-header">
+      <h5 class="modal-title">{{"MyOrder" | translate}}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="vertical-line"></div>
+    <div class="pb-3"></div>
+    <div *ngFor="let orderedData of orderDetailsData">
+      <div *ngIf="orderedData.orderStatus =='COMPLETED'">
+        <div class="d-flex justify-content-between pt-1">
+          <p class="invoice">{{"Invoice" | translate}}</p>
+          <p class="invoi_bnt"><a href="{{endpoint}}/getInvoice/{{orderedData.id}}" target="_blank">{{"View" | translate}}</a></p>
+        </div>
+        <hr class="dashed_hr">
+        <div class="d-flex justify-content-between pt-1 delivery_sec">
+          <p class="mb-0">{{"orderwasDelivered" | translate}}</p>
+          <p class="mb-0">{{orderedData.deliveredTime | date:'dd-MM-yyyy, h:mm a'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="order-three">
+      <div class="order-three-top p-4" *ngFor="let cartData of orderCartData">
+        <div class="d-flex justify-content-between pt-1">
+          <p>{{cartData.enProductName}} <br>{{cartData.weight}}</p>
+          <p>{{cartData.price}} BD</p>
+        </div>
+        <div class="vertical-dotted-line"></div>
+      </div>
+
+      <div *ngFor="let orderedData of orderDetailsData">
+        <h2 class="pt-3" *ngIf="orderedData.deliveryType == 'DELIVERY'">{{"deliveryAddress" | translate}}</h2>
+        <h2 class="pt-3" *ngIf="orderedData.deliveryType == 'PICKUP'">{{"PickupAddress" | translate}}</h2>
+        <div class="order-three-top p-4">
+          <h5 *ngIf="orderedData.deliveryType == 'DELIVERY'">{{"Delivery" | translate}}
+            <span *ngIf="orderedData.deliveryAddressType != null">{{"to" | translate}}
+              {{orderedData.deliveryAddressType}}</span>
+          </h5>
+          <h5 *ngIf="orderedData.deliveryType == 'PICKUP'">{{"Pickup" | translate}}</h5>
+          <div class="order-muted" *ngIf="orderedData.deliveryType == 'PICKUP'">
+            <p class="order-mute"> 
+              <span>{{orderedData.pickupAddress}}</span>
+          </div>
+          <div class="order-muted" *ngIf="orderedData.deliveryType == 'DELIVERY'">
+            <p class="order-mute"> {{orderedData?.deliveryAddress?.area}}, {{orderedData?.deliveryAddress?.roadNo}}
+              , {{orderedData?.deliveryAddress?.flat}}, {{orderedData?.deliveryAddress?.blockNo}}
+              , {{orderedData?.deliveryAddress?.houseNo}}, {{orderedData?.deliveryAddress?.notes}}
+              , {{orderedData?.deliveryAddress?.pin}}.
+            </p>
+            <p class="order-mute" *ngIf="orderedData.deliveryAddress.landmark != null">
+              {{orderedData?.deliveryAddress?.landmark}}</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="pt-3">{{"paymentMethod" | translate}}</h2>
+      <div class="order-three-top p-4" *ngFor="let orderedData of orderDetailsData">
+        <div class="order-muted">
+          <p class="order-mute mb-0">{{orderedData.paymentTypeId}}</p>
+        </div>
+      </div>
+
+      <h2 class="pt-3">{{"BillDetail" | translate}}</h2>
+      <div class="order-three-footer px-4" *ngFor="let orderDetail of orderBillDetails">
+        <div class="d-flex justify-content-between"
+          *ngIf="!(orderDetail.title == 'Total Amount'  || orderDetail.title == 'Total')">
+          <p>{{orderDetail.title}}</p>
+          <span>{{orderDetail.price}}</span>
+        </div>
+
+        <div *ngIf="orderDetail.title == 'Total Amount' || orderDetail.title == 'Total'">
+          <hr class="dashed_hr">
+          <div class="d-flex justify-content-between mt-4">
+            <p class="netAmt">{{orderDetail.title}}</p>
+            <span class="netAmt">{{orderDetail.price}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let orderedData of orderDetailsData">
+        <div *ngIf="orderedData.orderStatus == 'PLACED'">
+          <p class="text-center mb-0"><button class="cancel_btn" (click)="cancelOrder(orderedData.id)">{{"CancelOrder" |
+              translate}}</button></p>
+        </div>
+        <div *ngIf="orderedData.orderStatus == 'UNAVAILABLE'">
+          <p class="text-center mb-0"><button class="cancel_btn" (click)="reOrder(orderedData.id)">{{"Reorder" |
+              translate}}</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

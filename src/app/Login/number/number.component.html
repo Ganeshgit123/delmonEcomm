@@ -1,0 +1,24 @@
+<app-login-bar></app-login-bar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-sm-12 col-md-6 mt-5 Login">
+      <h5>{{"OTPConent" | translate}}</h5>
+      <p class="pt-3">{{"OTPSecondContent" | translate}}</p>
+      <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-6">
+      <form class="col-md-10 employee-box p-4 " [formGroup]="sendCrvalue">
+        <input type="text" class="form-control" formControlName="crNumber"
+          placeholder='{{"Enter CR Number" | translate}}'
+          [ngClass]="{ 'is-invalid': submitted && f['crNumber'].errors }">
+        <div *ngIf="submitted && f['crNumber'].errors" class="invalid-feedback">
+          <div *ngIf="f['crNumber'].errors['required']">{{"CR Number is required" | translate}}</div>
+        </div>
+        <button class=""
+          [className]="websiteFlow == 'POULTRY' ? 'btn btn-lg btn-block btn-sub mt-3' : 'btn btn-lg btn-block btn-sub-f mt-3' "
+          (click)="sendCrdata()">{{"Proceed" | translate}}</button>
+      </form>
+    </div>
+  </div>
+</div>

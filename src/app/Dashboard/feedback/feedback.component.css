@@ -1,0 +1,112 @@
+.img-address {
+    width: 200px;
+}
+
+.feedback-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.feedback h2 {
+    color: var(--text-dark-color);
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+}
+
+.feedback h2:lang(ar) {
+    text-align: right;
+}
+
+.feedback p {
+    color: var(--text-color-one);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+}
+
+.feedback p:lang(ar) {
+    text-align: right;
+}
+
+.btn-feedback.poul {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+.btn-feedback.feed {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color-f);
+    border: 1px solid var(--main-color-f);
+}
+
+.btn-feedback.poul:hover {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    border: 1px solid var(--main-color);
+    background: var(--main-color);
+}
+
+.btn-feedback.feed:hover {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color);
+    border: 1px solid var(--main-color-f);
+    background: var(--main-color-f);
+}
+
+.cart-left-textarea,
+.cart-right-input {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.cart-left-textarea .form-group input {
+    padding: 10px;
+    background: var(--text-color-two);
+    border: none;
+}
+
+.cart-left-textarea .form-control::placeholder {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-color);
+    text-align: center;
+
+}
+
+.cart-right-input textarea {
+    background: var(--text-color-two);
+    border: none;
+}
+
+.cart-right-input .form-control::placeholder {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular) !important;
+    color: var(--main-dark-color);
+}
+textarea.form-control{
+    background: #fafafa;
+}
+.comp_para{
+    text-align: center;
+    font-size: var(--para-size);
+}
+.comp_para a{
+    color: var(--main-color);
+}
+.comp_para a:hover{
+    color: var(--main-dark-color);
+}

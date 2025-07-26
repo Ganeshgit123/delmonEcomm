@@ -1,0 +1,27 @@
+<app-login-bar></app-login-bar>
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-lg-8 col-md-7 col-sm-12 Login">
+      <h5>{{"OTPConent" | translate}}</h5>
+      <p class="pt-3">{{"OTPSecondContent" | translate}}</p>
+      <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-12">
+      <div class="otp-box">
+        <div class="rounded-icon">
+          <img src="./././assets/images/Group-48827.png" alt="">
+        </div>
+        <div class="phone-form_group">
+          <p class="phone-label text-center">{{"Enter OTP" | translate}}</p>
+          <ng-otp-input (onInputChange)="onOtpChange($event)" class="ltr" [config]="config" (keyup.enter)="otpValue()"
+            [ngClass]="{'otp_border': websiteFlow === 'POULTRY', 'otp_border_feed': websiteFlow !== 'POULTRY'}"></ng-otp-input>
+          <button [className]="websiteFlow == 'POULTRY' ? 'btn btn-otp btn-block' : 'btn btn-otp-f btn-block'"
+            (click)="otpValue()">{{"Proceed" | translate}}</button>
+          <div class="text-center otp-footer mt-2 pb-5">
+            <p class="policy"> {{"Didn't receive otp?" | translate}} <span>{{"Resend" | translate}}</span> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

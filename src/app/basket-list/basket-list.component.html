@@ -1,0 +1,66 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="mt-5 mb-1 basket-header">
+    <h5 class="pb-3">{{"Basket" | translate}}</h5>
+  </div>
+
+  <div class="button-container active pt-3 pb-2 mb-4">
+    <button class="btn-receipie" (click)="checkBasket(1)" [ngClass]="activeStyle == 1 ? 'active' : ''">
+      {{"OurBasket" | translate}}
+    </button>
+    <button class="btn-receipie ml-5" (click)="adminBasket(3)" [ngClass]="activeStyle == 3 ? 'active' : ''">
+      {{"AdminBasket" | translate}}
+    </button>
+  </div>
+
+  <div class="img-address" *ngIf="basketLength == 0 && activeStyle !== 3">
+    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)">
+    </ng-lottie>
+    <div class="text-center">
+      <button class="btn btn-item py-3 px-5" routerLink="/categories">
+        {{"ADDITEMS" | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="basketLength !== 0 && activeStyle == 1">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="modal-data pt-3 pb-2 px-4 mt-3" *ngFor="let bask of getBasket"
+        (click)="sendBasketId(bask.id, bask.name)">
+        <h5>{{ bask.name }} {{"Basket" | translate}}</h5>
+        <img src="assets/images/ionic-ios-arrow-back.svg" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="activeStyle == 3">
+  <div class="img-address" *ngIf="adminBasketLength == 0">
+    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)">
+    </ng-lottie>
+    <div class="text-center">
+      <button class="btn btn-item py-3 px-5" routerLink="/categories">
+        {{"ADDITEMS" | translate}}
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="adminBasketLength !== 0">
+    <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps mb-2" *ngFor="let product of productList">
+      <div class="fresh" (click)="sendAdminId(product.id)">
+        <div class="card box-shadow product">
+          <div class="data_image">
+            <p class="text-center mb-0">
+              <img src="{{ product.image }}" class="card-img-top mx-auto" alt="..." />
+            </p>
+          </div>
+          <div class="card-body">
+            <h5 class="card-text">{{ product.name }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

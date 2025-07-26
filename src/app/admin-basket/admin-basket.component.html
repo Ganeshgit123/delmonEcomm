@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row mt-5 mb-5 basket-header">
+    <h5 class="pb-3">{{productName}} - {{productAmount}} BD</h5>
+    <!-- <i class="fas fa-ellipsis-v"></i> -->
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 border-right">
+      <div class="basket-left py-2 px-4" *ngFor="let item of basketProducts">
+        <div class="basket-box pt-2 pb-2">
+          <h5 class="mb-0">{{item.enProductName}} ({{item.weight}}) </h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="basket-right px-4 py-3">
+        <button class="btn btn-block btn-basket-cart" (click)="sendBasketToCart()">{{"ADDTOCART" | translate}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="mt-5 pt-5"></div>
+<app-footer></app-footer>
+
+

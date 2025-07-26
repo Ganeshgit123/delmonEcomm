@@ -1,0 +1,12 @@
+
+.bg-login-bar{
+    background: var(--main-color-f);
+    padding: 15px;
+    box-shadow: -1px -1px 32px #00000029;
+}
+
+.bg-login-bar img{
+    width: 180px;
+    margin-left: 20px;
+}
+

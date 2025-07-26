@@ -1,0 +1,64 @@
+.account-box {
+    padding: 25px;
+    margin: auto;
+    background: var(--text-color);
+    box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.account-box h5 {
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-bold);
+    color: var(--main-dark-color);
+}
+
+.account-box p {
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-small);
+    color: var(--text-color-one);
+
+}
+
+.account-box .btn-select {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    background: var(--main-box-color-two);
+    padding: 20px 0px 20px 0px;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 11px;
+    font-weight: 500;
+    color: #231F40;
+    justify-content: center;
+}
+
+.account-box .btn-select p {
+    width: 100%;
+    margin-bottom: 0;
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--main-dark-color);
+}
+
+.account-box .btn-select img {
+    width: 15px;
+    transform: translateX(20px);
+}
+
+.account-box .btn-get {
+    margin-top: 20px;
+    background-color: var(--main-color);
+    color: var(--text-color);
+    padding: 15px 0px;
+    border-radius: 6px;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-regular);
+
+}

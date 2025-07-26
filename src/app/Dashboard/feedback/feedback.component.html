@@ -1,0 +1,29 @@
+<div class="edit feedback">
+    <h3 class="pb-1">{{"Feedback" | translate}}</h3>
+    <div class="vertical-line"></div>
+    <div class="pb-3"></div>
+    <div class="feedback-content">
+        <div class="img-address">
+            <ng-lottie [options]="options"></ng-lottie>
+        </div>
+        <div class="">
+            <h2>{{"SendFeedback" | translate}}</h2>
+            <p>{{"feedbackContent" | translate}}</p>
+        </div>
+    </div>
+
+    <div class="col-md-10 cart-left-textarea mx-auto mt-3">
+        <form [formGroup]="form" (ngSubmit)="sendForm()">
+            <div class="form-group">
+                <textarea class="form-control" formControlName="comment" required></textarea>
+            </div>
+
+            <div class="text-center pt-3 pb-3" *ngIf="!adminLogin">
+                <button type="submit" class="btn btn-lg px-5 btn-feedback"
+                    [ngClass]="websiteFlow == 'FEEDING' ? 'feed' : 'poul'">{{"SUBMITFEEDBACK" | translate}}</button>
+            </div>
+        </form>
+    </div>
+    <p class="comp_para">{{"feedback" | translate}} <a href="https://dawajen.bh/contact#complain" target="_blank">
+        {{"PleaseClickHere" | translate}}</a></p>
+</div>

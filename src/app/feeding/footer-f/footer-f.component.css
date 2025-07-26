@@ -1,0 +1,87 @@
+.footer img {
+    width: 200px;
+}
+
+.footer h3 {
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color-two);
+}
+
+.footer p {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-small);
+    color: var(--text-color-two);
+}
+
+
+.footer-left-content{
+    display: flex;
+    flex-flow: wrap;
+    position: relative;
+    top: 5px;
+}
+
+.footer-right img {
+    width: 15px;
+    padding-right: 5px;
+}
+
+.footer .social-icons>div>* {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 0;
+}
+
+.footer .social-icons hr {
+    width: 40%;
+    border: 1px solid gray;
+}
+
+.footer .social-icons>div {
+    width: 20%;
+}
+
+
+.social-icons p {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color-two);
+}
+
+.social-icons img {
+    width: 15px;
+}
+
+@media only screen and (max-width:1023px) {
+    .footer .social-icons hr {
+        width: 40%;
+    }
+
+    .footer .social-icons>div {
+        width: 40%;
+    }
+}
+
+@media only screen and (min-width: 487px) and (max-width:767px) {
+    .footer .social-icons hr {
+        width: 50%;
+    }
+
+    .footer .social-icons>div {
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width:486px) {
+    .footer .social-icons hr {
+        width: 20%;
+    }
+
+    .footer .social-icons>div {
+        width: 60%;
+    }
+}

@@ -1,0 +1,38 @@
+<app-navbar></app-navbar>
+
+
+<div class="container">
+    <h3 class="mt-5 mb-2">{{"Recipes" | translate}}</h3>
+    <hr>
+    <div class="row">
+        <div class="button-container px-4" *ngFor="let item of categoryList">
+            <button class="btn-receipie"[ngClass]="activeStyle == item.id ? 'active': ''" (click)="sendCatId(item.id)">{{item.name}}</button>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row" *ngIf="catLength == 0">
+        <div class="img-address">
+            <ng-lottie [options]="options">
+            </ng-lottie>
+            <div class="text-center">
+                <h1 class="btn-item py-0 px-3">{{"ThereNoRecipiesCategory" | translate}}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-2 mb-5">
+        <div class="col-12 col-sm-6 col-md-3 gaps" *ngFor="let data of recipiesData">
+            <a (click)="sendRecipiesId(data.id,data)">
+                <div class="card">
+                    <img class="card-img-top new" src="{{data.thumbnailImage}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0">{{data.name}}</h5>
+                        <img src="assets/images/ionic-ios-arrow-back.svg">
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

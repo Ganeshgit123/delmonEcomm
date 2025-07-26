@@ -1,0 +1,79 @@
+<div class="edit" [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+  <h3 class="pb-1">{{"Settings" | translate}}</h3>
+  <div class="vertical-line"></div>
+  <div class="pb-3"></div>
+
+  <mat-accordion>
+    <mat-expansion-panel class="px-1">
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{"Notification" | translate}} </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="vertical-line"></div>
+      <div class="d-flex justify-content-between mt-3 px-1 help">
+        <p>{{"MobileNotification" | translate}}</p>
+        <label class="switch">
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="vertical-dotted-line"></div>
+      <div class="d-flex justify-content-between mt-3 px-1 help">
+        <p>{{"EmailNotification" | translate}}</p>
+        <label class="switch">
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="px-1 mt-4">
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{"Language" | translate}} </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="vertical-line"></div>
+      <div class="d-flex justify-content-between mt-3 px-1 mb-2 help" *ngIf="lang == 'ar'" (click)="switchLang('en')">
+        <p>{{"English" | translate}}</p>
+        <img src="./././assets/images/English.png" alt="" class="Eng-img" />
+      </div>
+      <div class="vertical-dotted-line"></div>
+      <div class="d-flex justify-content-between mt-4 px-1 help Arabic" *ngIf="lang == 'en'" (click)="switchLang('ar')">
+        <p>{{"Arabic" | translate}}</p>
+        <img src="./././assets/images/Arabic.png" alt="" />
+      </div>
+    </mat-expansion-panel>
+
+    <a href="{{ about }}" target="_blank">
+      <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+        <p class="mt-2 px-4">{{"Aboutus" | translate}}</p>
+      </div>
+    </a>
+
+    <a href="{{ support }}" target="_blank">
+      <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+        <p class="mt-2 px-4">{{"Support" | translate}}</p>
+      </div>
+    </a>
+
+    <a href="{{ termsAndCondition }}" target="_blank">
+      <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+        <p class="mt-2 px-4">{{"TermsandConditions" | translate}}</p>
+      </div>
+    </a>
+
+    <a href="{{ privacyPolicy }}" target="_blank">
+      <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+        <p class="mt-2 px-4">{{"PrivacyPolicy" | translate}}</p>
+      </div>
+    </a>
+
+    <a href="{{ faq }}" target="_blank">
+      <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+        <p class="mt-2 px-4">{{"FAQ" | translate}}</p>
+      </div>
+    </a>
+
+    <!-- <div class="col-md-12 py-1 px-1 mt-3 settings-box">
+      <p class="mt-2 px-4">{{"DeleteAccount" | translate}}</p>
+    </div> -->
+  </mat-accordion>
+</div>

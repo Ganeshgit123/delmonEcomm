@@ -1,0 +1,93 @@
+
+.otp-box {
+    padding: 0px 30px 30px 30px;
+    align-items: center;
+    justify-content: center;
+    background: var(--text-color);
+    box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
+    border-radius: 2px;
+}
+
+.phone-label {
+    font-family: var(--font-family);
+    font-size: var(--para-size) !important;
+    font-weight: var(--font-weight-regular) !important;
+    color: var(--text-color-one);
+    padding-top: 20px;
+}
+
+.phone-form_group {
+    position: relative;
+    margin-top: -30px;
+}
+
+
+.btn-otp {
+    margin: 30px 0 20px 0;
+    background-color: var(--main-color);
+    padding: 13px;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--medium-size);
+    font-weight: var(--font-weight-medium);
+}
+
+.btn-otp:hover{
+    background: var(--text-color);
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+.btn-otp-f {
+    margin: 30px 0 20px 0;
+    background-color: var(--main-color-f);
+    padding: 13px;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--medium-size);
+    font-weight: var(--font-weight-medium);
+}
+
+.btn-otp-f:hover{
+    background: var(--text-color);
+    color: var(--main-color-f);
+    border: 1px solid var(--main-color-f);
+}
+
+.otp-footer p{
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-dark-color-two);
+}
+
+.otp-footer p span{
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-dark-color-two);
+}
+
+.rounded-icon{
+    text-align: center;
+}
+
+.rounded-icon img {
+    width: 150px;
+    margin: auto;
+    
+}
+
+.otp-code{
+    display: flex;
+    justify-content: center;
+    margin-top: -25px;
+}
+
+

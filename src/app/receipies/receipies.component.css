@@ -1,0 +1,109 @@
+.img-address{
+    width: 250px;
+    margin: auto !important;
+}
+
+.btn-item{
+    color: var(--main-color);
+    background: var(--text-color);
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+}
+
+h3{
+    color: var(--text-dark-color);
+    font-family: var(--font-family);
+    font-size: 22px;
+    font-weight: 500;
+}
+
+hr{
+    color: #707070;
+}
+
+.button-container{
+    display: flex;
+}
+
+
+.btn-receipie{
+    padding: 10px 35px;
+    margin-right: 12px;
+    background: var(--main-box-color-two);
+    color: var(--main-dark-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-receipie.active{
+    padding: 10px 35px;
+    margin-right: 12px;
+    background: transparent;
+    color: var(--main-color);
+    border:1px solid var(--main-color);
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-regular);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-receipie:hover{
+    transform: scale(1.05);
+}
+.gaps{
+    padding: 0 5px;
+}
+.card{
+    margin: 0 8px;
+    transition: transform .2s;
+}
+.card:hover{
+    transform: scale(1.02);
+}
+.card-body{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: var(--main-box-color-two);
+    padding: 25px;
+}
+
+.card-body h5{
+    font-family: var(--font-family);
+    font-size: var(--medium-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-dark-color);
+    
+}
+
+.card .new{
+    height: 150px;
+    width: 257px;
+    object-fit: cover;
+}
+
+.card-body img{
+    width: 8px;
+    margin-right: 10px;
+}
+.card-body img:lang(ar){
+    transform: rotate(180deg);
+}
+
+
+@media only screen and (max-width: 576px) {
+	.gaps {
+		padding: 0 3rem;
+	}
+    .row{
+        margin-bottom: 40px;
+    }
+}

@@ -1,0 +1,103 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+}
+
+body:lang(ar) {
+    text-align: right;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+    box-shadow: none !important;
+}
+
+.btn.focus,
+.btn:focus,
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.custom-class .modal-dialog {
+    margin: 0px auto 30px 0 !important
+}
+
+.custom-class .modal-dialog:lang(ar) {
+    margin: 0px 0 30px auto !important
+}
+
+.close:lang(ar) {
+    float: left !important;
+}
+
+.modal-header .close:lang(ar) {
+    margin: -1rem auto -1rem -1rem !important;
+}
+
+.modal-title {
+    font-size: var(--heading-h6) !important;
+    font-weight: var(--font-weight-medium) !important;
+    margin-bottom: 0 !important;
+}
+
+.modal-header {
+    padding: 10px 1rem !important;
+}
+
+.form-control {
+    font-size: var(--medium-size) !important;
+}
+
+::placeholder {
+    font-size: var(--medium-size) !important;
+}
+
+button.close {
+    border: none !important;
+    outline: none !important;
+}
+
+.poul_flow .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline,
+.poul_flow .mat-mdc-tab-link:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+    border-color: var(--main-color) !important;
+}
+
+.feed_flow .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline,
+.feed_flow .mat-mdc-tab-link:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+    border-color: var(--main-color-f) !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+.ltr {
+    direction: ltr !important;
+}
+
+.mat-tree {
+    font-family: var(--font-family) !important;
+}
+
+.mat-mdc-form-field,
+.mat-mdc-floating-label {
+    font-family: var(--font-family) !important;
+}
+
+/* Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

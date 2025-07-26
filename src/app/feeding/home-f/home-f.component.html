@@ -1,0 +1,90 @@
+<app-navbar-f></app-navbar-f>
+
+<section class="home_back_img">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-5 pt-5 pb-5 mb-5 home">
+                <h2 class="pb-3">{{"FeedHomeContenet" | translate}}</h2>
+                <h5 class="pb-3">{{"FeedDescription" | translate}}</h5>
+                <button class="btn btn-md" routerLink="/feed">{{"OrderNow" | translate}}</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!----------------------------------------------Our Category------------------------------------------------->
+
+<section class="container">
+    <div class="col-lg-12 text-center pb-5 pt-2 mt-5">
+        <h5 class="categories-header">{{"OurCategory" | translate}}</h5>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col" *ngFor="let item of categoryListF">
+            <div class="category-main-f" (click)="GetItem(item)">
+                <div class="card category-f" [style.background-color]="item.colorCode">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.name}}</h5>
+                        <p class="text-center"><img src="{{item.image}}" alt=""></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container pt-2 mt-5 mb-5 product" *ngFor="let prod of productData">
+
+    <div class="product-title-menu pl-3">
+        <h3>{{prod.title}}</h3>
+    </div>
+
+    <owl-carousel-o [options]="productOptions">
+        <ng-template carouselSlide *ngFor="let data of prod.data">
+            <div class="fresh" routerLink="/feeding/feed-description/{{data.id}}">
+                <div class="card box-shadow product">
+                    <div class="data_image">
+                        <img src="{{data.image}}" class="card-img-top mx-auto" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-text">{{data.name}}</h5>
+                        <div class="common_height">
+                            <p class="card-title" [innerHTML]="data.description"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>
+
+<section class="app_back_img">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-5 pt-5 pb-5 mb-5 app">
+                <h2 class="pb-3">{{"DownloadMobileApp" | translate}}</h2>
+                <h5 class="pb-3">Lorem Ipsum has been the industry's <br>standard dummy text</h5>
+
+                <div class="d-flex">
+                    <div class="app-img">
+                        <a href="https://apps.apple.com/us/app/delmon-poultry-co/id6475718453" target="_blank"
+                            rel="noopener noreferrer">
+                            <ng-lottie [options]="optionsone" (animationCreated)="onAnimate($event)">
+                            </ng-lottie>
+                        </a>
+                    </div>
+
+                    <div class="app-img mx-3">
+                        <a href="https://play.google.com/store/apps/details?id=com.app.delmon&pli=1" target="_blank"
+                            rel="noopener noreferrer">
+                            <ng-lottie [options]="optionstwo" (animationCreated)="onAnimate($event)">
+                            </ng-lottie>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-footer-f></app-footer-f>

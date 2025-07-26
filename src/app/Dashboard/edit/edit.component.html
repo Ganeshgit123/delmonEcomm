@@ -1,0 +1,35 @@
+<div class="edit">
+  <h3 class="pb-1">{{"Edit Profile" | translate}}</h3>
+  <div class="vertical-line"></div>
+  <div class="pb-3"></div>
+  <form [formGroup]="profileForm">
+    <div class="form-row">
+      <div class="form-group col-lg-6">
+        <label>{{"Name" | translate}}</label>
+        <input type="text" formControlName="userName" class="form-control" placeholder='{{"Name" | translate}}'
+        [ngClass]="{ 'is-invalid': submitted && f['userName'].errors}">
+        <div *ngIf="submitted && f['userName'].errors" class="invalid-feedback">
+          <div *ngIf="f['userName'].errors['required']">{{"Name is required" | translate}}</div>
+      </div>
+      </div>
+      <div class="form-group col-lg-6">
+        <label for="inputPhone4">{{"Phone Number" | translate}}</label>
+        <input type="number" class="form-control" placeholder='{{"Phone Number" | translate}}'
+        value="{{phoneNumber}}" readonly>
+      </div>
+      <div class="form-group col-lg-6">
+        <label for="inputEmail4">{{"Email" | translate}}</label>
+        <input type="email" class="form-control" formControlName="email" placeholder='{{"Email" | translate}}'
+        [ngClass]="{ 'is-invalid': submitted && f['email'].errors}">
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">{{"Email is required" | translate}}</div>
+      </div>
+      </div>
+    </div>
+
+    <div class="text-center pt-5 pb-3">
+      <button [className]="websiteFlow == 'POULTRY' ? 'btn btn-lg px-5 btn-edit' : 'btn btn-lg px-5 btn-edit-f' " (click)="onSubmit()">{{"Save" | translate}}</button>
+      
+    </div>
+  </form>
+</div>

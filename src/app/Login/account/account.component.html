@@ -1,0 +1,30 @@
+<app-login-bar></app-login-bar>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-sm-12 col-md-7 mt-5 Login">
+      <h5>{{"OTPConent" | translate}}</h5>
+      <p class="pt-3">{{"OTPSecondContent" | translate}}</p>
+      <img src="././assets/images/Group-49006.png" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-5">
+      <div class="col-md-10 account-box mt-5 mx-auto">
+        <h5 class="text-center">{{"Type of Account" | translate}}</h5>
+        <!-- <p class="text-center"> Lorem Ipsum has been the industry's standard
+          dummy text.</p> -->
+        <div class="btn-select mt-3 mb-3" (click)="sentNormaluser()">
+          <img src="assets/images/Icon awesome-check-circle.svg">
+          <p class="ml-2">{{"Normal User" | translate}}</p>
+        </div>
+        <div class="btn-select mb-3" routerLink="/number">
+          <img src="assets/images/Icon awesome-check-circle.svg">
+          <p>{{"Merchants" | translate}}</p>
+        </div>
+        <div class="btn-select mb-3" routerLink="/employee">
+          <img src="assets/images/Icon awesome-check-circle.svg">
+          <p>{{"Employees" | translate}}</p>
+        </div>
+        <!-- <div class="btn btn-block btn-get" routerLink="/employee">GET IN</div> -->
+      </div>
+    </div>
+  </div>
+</div>

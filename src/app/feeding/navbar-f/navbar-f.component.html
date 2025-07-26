@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg">
+
+    <a class="navbar-brand" routerLink="/feeding/feed-home">
+      <img src="assets/images/delmon-main-logo.svg" alt="">
+    </a>
+    <!-- <div class="navbar-brand logo">
+      <h5><i class="fa fa-location-arrow"></i>Location</h5>
+     <div class="d-flex sub-logo">
+      <p>Al Khobar, Saudi Arabia</p>
+      <i class="fa fa-angle-down"></i>
+      </div>
+    </div> -->
+   
+ 
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fa fa-bars"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item d-flex">
+        <img src="assets/images/Icon-nav-search.svg" alt="">
+        <a class="nav-link" routerLink="/feed-search">{{"Search" | translate}} </a>
+      </li>
+      <!-- Pages -->
+      <li class="nav-item dropdown dropdown-slide d-flex">
+        <img src="assets/images/Icon-nav-dashboard.svg" alt="">
+        <a class="nav-link dropdown-toggle" routerLink="/feed" id="navbarDropdown4" role="button" data-delay="350"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{"Categories" | translate}}
+        </a>
+        <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown4">
+          <li><a *ngFor="let item of categoryList"><i class="fa fa-circle"></i> <span (click)="getProduct(item.id)">{{item.name}}</span> </a></li>
+        </ul> -->
+      </li>
+      <li class="nav-item d-flex">
+        <img src="assets/images/Icon-nav-cart.svg" alt="">
+        <a class="nav-link" (click)="cart()">{{"Cart" | translate}}</a>
+      </li>
+      <li class="nav-item d-flex" *ngIf="loggedUser != 'true'">
+        <img src="assets/images/Icon-nav-user.svg" alt="">
+        <a class="nav-link" routerLink="/phone">{{"Login" | translate}}</a>
+      </li>
+      <li class="nav-item d-flex" *ngIf="loggedUser == 'true'">
+        <img src="assets/images/Icon-nav-user.svg" alt="">
+        <a class="nav-link" routerLink="/my_profile">
+          <span *ngIf="!(userList?.userName == null || userList?.userName == '')">{{userList?.userName}}</span>
+          <span *ngIf="userList?.userName == null || userList?.userName == ''">{{"MyProfile" | translate}}</span>
+        </a>
+      </li>
+      <!-- <li class="nav-item d-flex">
+        <img src="assets/images/Icon-nav-info.svg" alt="">
+        <a class="nav-link">Notifications</a>
+      </li> -->
+      <li class="nav-item">
+        <button class="btn btn-md btn-nav" *ngIf="lang == 'en'" (click)="switchLang('ar')">Arabic</button>
+        <button class="btn btn-md btn-nav" *ngIf="lang == 'ar'" (click)="switchLang('en')">English</button>      </li>
+      <li class="nav-item">
+        <button class="btn btn-md btn-nav"><a (click)="feedSelect()">{{"Poultry" | translate}}</a></button>
+      </li>
+    </ul>
+    
+  </div>
+</nav>

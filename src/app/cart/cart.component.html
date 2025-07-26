@@ -1,0 +1,524 @@
+<div *ngIf="websiteFlow == 'POULTRY'">
+    <app-navbar></app-navbar>
+</div>
+<div *ngIf="websiteFlow == 'FEEDING'">
+    <app-navbar-f></app-navbar-f>
+</div>
+<section class="back">
+    <div class="container" *ngIf="cartLength == 0">
+        <div class="col-md-12 text-center pt-3 pb-4">
+            <h3 class="cart-h3">{{"Cart" | translate}}</h3>
+        </div>
+        <div class="img-address">
+            <ng-lottie [options]="options">
+            </ng-lottie>
+            <div class="text-center" *ngIf="websiteFlow == 'POULTRY'">
+                <button class="btn btn-item py-3 px-5" routerLink="/categories">{{"ADDITEMS" | translate}}</button>
+            </div>
+            <div class="text-center" *ngIf="websiteFlow == 'FEEDING'">
+                <button class="btn btn-item-feed py-3 px-5" routerLink="/feed">{{"ADDITEMS" | translate}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" *ngIf="cartLength !== 0">
+        <div class="row">
+            <div class="col-md-12 text-center pt-3 pb-2">
+                <h3 class="cart-h3">{{"Cart" | translate}}</h3>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-5 mt-4">
+                <div class="mx-4">
+                    <div class="col-md-12 cart-left p-4">
+                        <div class="cart-left-box pt-4 pb-3" *ngFor="let product of productDetails">
+                            <p>
+                                <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+                                <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+                                <br> {{product.weight}}g <br>
+                                <span *ngIf="product.vat && product.vat != 0">{{"Vat" | translate}} :
+                                    {{product.vat}}%</span>
+                                <span *ngIf="product.noOfPieces">
+                                    ({{product.noOfPieces}} {{"Pieces" | translate}})</span>
+                            </p>
+                            <div class="cart-left-content-box">
+                                <div
+                                    [ngClass]="websiteFlow === 'FEEDING' ? 'd-flex inc-container-f' : 'd-flex inc-container'">
+                                    <div style="height: auto;">
+                                        <!-- Condition check for svg image using for minus and plus -->
+                                        <img src="assets/images/Icon-main-feather-minus.svg" alt=""
+                                            (click)="minus(product)" style="cursor: pointer;"
+                                            *ngIf="websiteFlow == 'POULTRY'">
+                                        <img src="assets/images/feeding/minus.svg" alt="" (click)="minus(product)"
+                                            style="cursor: pointer;" *ngIf="websiteFlow == 'FEEDING'">
+
+                                        <input type="text" class="" placeholder="" value="{{product.quantity}}">
+
+                                        <img src="assets/images/Icon-main-feather-plus.svg" alt=""
+                                            (click)="plus(product)" style="cursor: pointer;"
+                                            *ngIf="websiteFlow == 'POULTRY'">
+                                        <img src="assets/images/feeding/plus_icon.svg" alt="" (click)="plus(product)"
+                                            style="cursor: pointer;" *ngIf="websiteFlow == 'FEEDING'">
+                                    </div>
+                                </div>
+                                <p class="">{{product.price}} BD</p>
+                            </div>
+                        </div>
+                        <div class="mb-4"></div>
+                    </div>
+                    <div class="col-md-12 cart-left-textarea">
+                        <h3 class="car-subheading pt-3">
+                            {{"Notes" | translate}}
+                        </h3>
+                        <form [formGroup]="notesForm">
+                            <div class="form-group">
+                                <textarea class="form-control" formControlName="notesText"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12 col-sm-12 cart-borders">
+                <div class="mx-5">
+                    <h3 class="car-subheading">{{"DeliveryType" | translate}}</h3>
+                    <div class="col-md-12 cart-right-box-new">
+                        <div class="col-md-6 py-3 px-5 text-center"
+                            [className]="websiteFlow === 'FEEDING' ? 'cart-box-one-f' : 'cart-box-one'"
+                            (click)="sendDeliveryType('PICKUP')" [ngClass]="typeButton == 'PICKUP' ? 'active' :'' "
+                            *ngIf="viewData?.isSelfPickup == 1">
+                            <img src="assets/images/pickup-1.svg" alt=""
+                                *ngIf="typeButton == 0 || typeButton == 'DELIVERY'">
+                            <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/pickup-2.svg" alt=""
+                                    *ngIf="typeButton !== 0 && typeButton == 'PICKUP' ">
+                            </span>
+                            <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/pickup-2.svg" alt=""
+                                    *ngIf="typeButton !== 0 && typeButton == 'PICKUP' ">
+                            </span>
+                            <h6 class="px-3 pt-2" [ngClass]="typeButton == 'PICKUP' ? 'active' :'' ">{{"Pickup" |
+                                translate}}</h6>
+                        </div>
+
+                        <div class="col-md-6 py-3 px-0 text-center"
+                            [className]="websiteFlow === 'FEEDING' ? 'cart-box-two-f' : 'cart-box-two'"
+                            (click)="sendDeliveryType('DELIVERY')" [ngClass]="typeButton == 'DELIVERY' ? 'active' :'' "
+                            *ngIf="viewData?.isDelivery == 1">
+                            <img src="assets/images/home-delivery-1.svg" alt=""
+                                *ngIf="typeButton == 0 || typeButton == 'PICKUP'">
+                            <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/home-delivery-2.svg" alt=""
+                                    *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'"></span>
+                            <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/home-delivery-2.svg"
+                                    alt="" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'"></span>
+                            <h6 class="pt-2 px-2 text-center" [ngClass]="typeButton == 'DELIVERY' ? 'active' :'' ">
+                                {{"HomeDelivery" | translate}}</h6>
+                        </div>
+                    </div>
+                    <p class="deliver_date">{{"YourOrderDeliveredOn" | translate}} <span>
+                            {{deliveryDAte | date: 'EEEE, MMM d, y'}}</span></p>
+
+                    <div *ngIf="canCalendarShowForDelivery === 'true' || isHoliday === true">
+                        <h3 class="car-subheading">{{"SelectDeliveryDAte" |
+                            translate}}</h3>
+                        <div class="col-md-12">
+                            <mat-form-field class="example-full-width">
+                                <mat-label>{{"ChooseDate" | translate}}</mat-label>
+                                <input (dateChange)="onDateChange($event)" matInput [min]="minDate" [max]="maxDate"
+                                    [matDatepicker]="picker" [formControl]="date">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <h3 class="car-subheading" *ngIf="typeButton !== 0 &&typeButton == 'PICKUP'">{{"PickupAddress"
+                        | translate}}
+                    </h3>
+
+                    <div class="col-md-12 cart-select" *ngIf="typeButton !== 0 && typeButton == 'PICKUP'">
+                        <form>
+                            <div class="form-group px-3 mb-0">
+                                <p class="mb-0">{{pickupAddress}}
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <h3 class="car-subheading pt-3" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'">
+                        {{"DeliveryAddress" | translate}}
+                    </h3>
+                    <div class="col-md-12 cart-left-textarea" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'"
+                        (click)="openModal(content)">
+                        <form>
+                            <div class="form-group"
+                                *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY' && addLength == 0">
+                                <input type="text" class="form-control" id="" placeholder="ADD" readonly>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-12" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY' && addLength !== 0">
+                        <div class="row">
+                            <div class="col-md-9 cart-select">
+                                <div class="form-group px-3 mb-0">
+                                    <p class="mb-0">
+                                        <span class="delv_type">{{fistData?.saveAs}}</span><br>
+                                        {{fistData?.zoneName}}, {{fistData?.area}}, {{fistData?.blockNo}},
+                                        {{fistData?.houseNo}}, {{fistData?.roadNo}}, {{fistData?.flat}} -
+                                        {{fistData?.pin}}
+                                        ({{fistData?.notes}})
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button *ngIf="getAddress?.length > 1"
+                                    [className]="websiteFlow === 'FEEDING' ? 'change_btn_f' : 'change_btn'"
+                                    (click)="changeDelivery(deleiveryAddModal)">{{"Change" |
+                                    translate}}</button>
+                                <ng-template #deleiveryAddModal role="document" let-modal="close">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{"SavedAddress" | translate}}</h5>
+                                        <button type="button" class="close" aria-label="Close"
+                                            (click)="modal('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body p-3">
+                                        <mat-radio-group aria-labelledby="example-radio-group-label"
+                                            class="example-radio-group" (change)="selctedAddress($event.value)">
+                                            <mat-radio-button class="example-radio-button"
+                                                *ngFor="let item of getAddress" [value]="item">
+                                                <span class="delv_type">{{item.saveAs}}</span><br>
+                                                {{item.zoneName}}, {{item.area}}, {{item.blockNo}},
+                                                {{item.houseNo}}, {{item.roadNo}}, {{item.flat}} - {{item.pin}}
+                                                ({{item.notes}})
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!adminLogin">
+                        <div *ngIf="loginType != 'EMPLOYEE' && loginType !='MERCHANT'">
+                            <h3 class="car-subheading">{{"Coupons" | translate}}</h3>
+                            <div class="col-md-12">
+                                <form [formGroup]="couponForm">
+                                    <div class="row">
+                                        <div class="col-md-9 p-0">
+                                            <input type="text" class="form-control coupon"
+                                                placeholder="{{'couponCode' | translate}}" formControlName="couponCode">
+                                        </div>
+                                        <div class="col-md-3 pr-0">
+                                            <button
+                                                [ngClass]="{'disable-submit1' : isLoyaltyApplied ,'apply_btn-f' :  (websiteFlow == 'FEEDING') ,'apply_btn' : (websiteFlow != 'FEEDING')}"
+                                                (click)="applyCoupon()">{{"Apply" | translate}}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p *ngIf="!(couponResponse == 'null' || couponResponse == null)" class="pt-2">
+                                    {{"AppliedCoupon"
+                                    | translate}} : {{couponResponse?.couponCode}}
+                                    <span class="rem_btn"><a (click)="removeCoupon()">{{"Remove"| translate}}</a></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!adminLogin">
+                        <div *ngIf="loginType != 'EMPLOYEE' && loginType !='MERCHANT'">
+                            <h3 class="car-subheading">{{"LoyalityPoints"| translate}}</h3>
+                            <div class="col-md-12 d-flex justify-content-between cart-right-content p-3">
+                                <p class="mb-0">{{"AvailablePoints" | translate}} : {{viewData?.loyaltyPoint}}</p>
+                                <label class="switch" *ngIf="viewData?.loyaltyPoint > 0 && isCouponApplied == false">
+                                    <input type="checkbox" (change)="applyLoyaltyPoint($event)" value="angular">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!adminLogin">
+                        <div *ngIf="loginType == 'EMPLOYEE'">
+                            <h3 class="car-subheading">{{"EmployeeDiscount"| translate}}</h3>
+                            <div class="col-md-12 d-flex justify-content-between cart-right-content p-3">
+                                <p class="mb-0">{{"YouHave" | translate}} {{viewData?.cartonDiscount}}
+                                    {{"PendingDiscountToAvail" | translate}}</p>
+                                <label class="switch" *ngIf="viewData?.cartonDiscount > 0">
+                                    <input type="checkbox" (change)="applyEmployeeDiscountFromHTML($event)"
+                                        value="angular">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pb-2">
+                        <h3 class="car-subheading mb-4">{{"paymentMethod" | translate}}</h3>
+                        <div class="payment-right">
+                            <span *ngIf="viewData?.isCod == 1">
+                                <div [className]="websiteFlow === 'FEEDING' ? 'payment-right-box-feed' : 'payment-right-box'"
+                                    (click)="sendPaymentType('CASH')" [ngClass]="paymentType == 'CASH' ? 'active' :''">
+                                    <span *ngIf="websiteFlow == 'POULTRY'"><img
+                                            src="assets/images/payment_cash_active.svg" alt=""
+                                            *ngIf="paymentType == 'CASH'"></span>
+                                    <span *ngIf="websiteFlow == 'FEEDING'"><img
+                                            src="assets/images/feeding/payment_cash_active.svg" alt=""
+                                            *ngIf="paymentType == 'CASH'"></span>
+                                    <img src="assets/images/payment-cash.svg" alt="" *ngIf="paymentType !== 'CASH'">
+                                    <p [ngClass]="paymentType == 'CASH' ? 'active' :'' ">{{"COD" | translate}}</p>
+                                </div>
+                            </span>
+                            <div *ngIf="!adminLogin">
+                                <div *ngIf="loginType != 'EMPLOYEE' && loginType !='MERCHANT'"
+                                    [className]="websiteFlow === 'FEEDING' ? 'payment-right-box-feed' : 'payment-right-box'"
+                                    (click)="sendPaymentType('WALLET')"
+                                    [ngClass]="paymentType == 'WALLET' ? 'active' :'' ">
+                                    <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/wallet_active.svg"
+                                            alt="" *ngIf="paymentType == 'WALLET'"></span>
+                                    <span *ngIf="websiteFlow == 'FEEDING'"><img
+                                            src="assets/images/feeding/wallet_active.svg" alt=""
+                                            *ngIf="paymentType == 'WALLET'"></span>
+                                    <img src="assets/images/wallet.svg" alt="" *ngIf="paymentType !== 'WALLET'">
+                                    <p [ngClass]="paymentType == 'WALLET' ? 'active' :'' ">{{"Wallet" | translate}}</p>
+                                </div>
+                            </div>
+                            <span *ngIf="viewData?.isCardPayment == 1">
+                                <div *ngIf="!adminLogin">
+                                    <div [className]="websiteFlow === 'FEEDING' ? 'payment-right-box-feed' : 'payment-right-box'"
+                                        (click)="sendPaymentType('CARD')"
+                                        [ngClass]="paymentType == 'CARD' ? 'active' :'' ">
+                                        <img src="assets/images/payment_card.svg" alt="" *ngIf="paymentType !== 'CARD'">
+                                        <span *ngIf="websiteFlow == 'POULTRY'"><img
+                                                src="assets/images/payment_card_active.svg" alt=""
+                                                *ngIf="paymentType == 'CARD'"></span>
+                                        <span *ngIf="websiteFlow == 'FEEDING'"><img
+                                                src="assets/images/feeding/payment_card_active.svg" alt=""
+                                                *ngIf="paymentType == 'CARD'"></span>
+                                        <p [ngClass]="paymentType == 'CARD' ? 'active' :'' ">{{"Card" | translate}}</p>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <p class="deliver_date" *ngIf="paymentType == 'WALLET'">{{"YourWalletBalance" | translate}}
+                        <span>{{viewData?.walletBalance}}</span>
+                    </p>
+
+                    <h3 class="car-subheading">{{"BillDetail" | translate}}</h3>
+                    <div class="col-md-12 cart-right-footer p-3">
+                        <div class="d-flex justify-content-between" *ngFor="let product of productDetails">
+                            <p>
+                                <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+                                <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+                                <span *ngIf="product.weight">({{product.weight}}g)</span>
+                            </p>
+                            <span>{{ product.quantity * product.price | number : '1.2-3'}} BD</span>
+                        </div>
+
+                        <!-- <div class="d-flex justify-content-between">
+                            <p>{{"prodTotal" | translate}}</p>
+                            <span>{{prodTotal | number : '1.2-3'}} BD</span>
+                        </div> -->
+
+                        <div class="d-flex justify-content-between"
+                            *ngIf="!(couponResponse == 'null' || couponResponse == null)">
+                            <p>{{"Coupon" | translate}} ({{couponResponse?.couponCode}})</p>
+                            <span> -{{couponAmount}} BD</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between" *ngIf="typeButton == 'DELIVERY'">
+                            <p>{{"DeliveryFees" | translate}}</p>
+                            <span>{{deliveryCharge}} BD</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between"
+                            *ngIf="!(loyaltyPointDiscount == undefined || loyaltyPointDiscount == 0) && isAppliedLoyaltyPoint">
+                            <p>{{"Loyalty Discount" | translate}}</p>
+                            <span>-{{loyaltyPointDiscount | number : '1.2-2'}} BD</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between" *ngIf="!(VATSum == undefined || VATSum == 0)">
+                            <p>{{"Vat" | translate}}</p>
+                            <span>{{VATSum | number : '1.2-2'}} BD</span>
+                        </div>
+
+                        <div *ngIf="loginType == 'EMPLOYEE' && isappliedEmployeeDiscount"
+                            class="d-flex justify-content-between">
+                            <p>{{"EmployeeDiscount" | translate}}</p>
+                            <span>{{-totalEmployeeDiscount | number : '1.2-2'}} BD</span>
+                        </div>
+                    </div>
+                    <div [ngClass]="websiteFlow == 'FEEDING' ? 'cart-right-footer-box-f' : 'cart-right-footer-box' "
+                        class="col-md-12 d-flex justify-content-around  cart-right-footer-box mb-2">
+                        <div class="text-center">
+                            <p class="mt-2"><span
+                                    [ngStyle]="{'color': (websiteFlow =='FEEDING') ? 'var(--main-color-f)' : 'var(--main-color)'}">{{totalAmount}}
+                                    BD</span> <br> {{"TotalAmount" |
+                                translate}}</p>
+                        </div>
+                        <div *ngIf="viewData?.isSelfPickup == 1 || viewData?.isDelivery == 1">
+                            <button [ngClass]="{'disable-submit': IsSubmitButtonEnable}" class="btn px-5 py-2"
+                                (click)="onSubmitBook(outOfStock)">{{"Book" | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!------------------------------------------------------Modal------------------------------------------------------->
+
+
+<!-- Modal -->
+<ng-template #content role="document" let-modal="close" class="address">
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!isEdit">{{"addAddress" | translate}}</h5>
+        <h5 class="modal-title" *ngIf="isEdit">{{"editAddress" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body padd">
+        <form [formGroup]="addressForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="zoneId" #zoneValue
+                            [ngClass]="{ 'is-invalid': submitted && f['zoneId'].errors }"
+                            (change)='onZoneChange(zoneValue.value)'>
+                            <option selected value="null" disabled>{{"Zone" | translate}}</option>
+                            <option *ngFor="let item of zoneData" value="{{item.id}}">
+                                <span *ngIf="dir == 'ltr'">{{item.name}}</span>
+                                <span *ngIf="dir == 'rtl'">{{item.arName}}</span>
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['zoneId'].errors" class="invalid-feedback">
+                            <div *ngIf="f['zoneId'].errors['required']">{{"zoneReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="area"
+                            [ngClass]="{ 'is-invalid': submitted && f['area'].errors }">
+                            <option selected value="null" disabled>{{"area" | translate}}</option>
+                            <option *ngFor="let item of areaList" value="{{item.areaName}}">
+                                <span *ngIf="dir == 'ltr'">{{item.areaName}}</span>
+                                <span *ngIf="dir == 'rtl'">{{item.arAreaName}}</span>
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['area'].errors" class="invalid-feedback">
+                            <div *ngIf="f['area'].errors['required']">{{"areaReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'blockNo' |translate}}"
+                            formControlName="blockNo" [ngClass]="{ 'is-invalid': submitted && f.blockNo.errors }">
+                        <div *ngIf="submitted && f.blockNo.errors" class="invalid-feedback">
+                            <div *ngIf="f.blockNo.errors.required">{{"blockReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'houseNum' |translate}}"
+                            formControlName="houseNo" [ngClass]="{ 'is-invalid': submitted && f.houseNo.errors }">
+                        <div *ngIf="submitted && f.houseNo.errors" class="invalid-feedback">
+                            <div *ngIf="f.houseNo.errors.required">{{"houseNumReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'roadNo' |translate}}"
+                            formControlName="roadNo" [ngClass]="{ 'is-invalid': submitted && f.roadNo.errors }">
+                        <div *ngIf="submitted && f.roadNo.errors" class="invalid-feedback">
+                            <div *ngIf="f.roadNo.errors.required">{{"roadNoReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'FlatNo' |translate}}"
+                            formControlName="flat">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="{{'notes' |translate}}"
+                            formControlName="notes"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="pin">
+                            <option selected value="null" disabled>{{"PinCode" | translate}}</option>
+                            <option *ngFor="let item of pincodeData" value="{{item.pin}}">{{item.pin}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="{{'notes' |translate}}" formControlName="notes"
+                            [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"></textarea>
+                        <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+                            <div *ngIf="f.notes.errors.required">{{"notesReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h5 class="cart-h5">{{"SaveAs" | translate}}</h5>
+                        <div class="row" [ngClass]="{ 'is-invalid': submitted && f['saveAs'].errors}">
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="home" value="Home" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="home">
+                                    <div class="owner_box">
+                                        <h6>{{"Home" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="office" value="Office" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="office">
+                                    <div class="owner_box">
+                                        <h6>{{"Office" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="other" value="Other" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="other">
+                                    <div class="owner_box">
+                                        <h6>{{"Other" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-12">
+                                <div *ngIf="submitted && f['saveAs'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['saveAs'].errors['required']">{{"saveasReq" | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-center">
+            <button type="submit" class="btn-lg px-5 address-btn" (click)="onSubmitData()">{{"SaveAddress" |
+                translate}}</button>
+            <!-- <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                translate}}</button> -->
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #outOfStock role="document" let-modal="close">
+    <div class="modal-body">
+        <div *ngFor="let product of productDetails">
+            <p><span *ngIf="(product.stock > 0) && (product.stock < product.quantity)">
+                    <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+                    <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+                    {{"stock" | translate}} {{product.stock}} {{"remainingStockMsg" | translate}}</span>
+            </p>
+            <p><span *ngIf="product.stock <= 0">
+                    <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+                    <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+                    {{"outOfStockMsg" | translate}}</span>
+            </p>
+        </div>
+        <p class="text-center mb-0"><button type="button" class="ok_btn" aria-label="Close"
+                (click)="modal('Cross click')">
+                {{"Ok" | translate}}
+            </button></p>
+    </div>
+</ng-template>

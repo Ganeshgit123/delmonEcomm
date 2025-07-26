@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row mt-5 mb-5 basket-header">
+    <h5 class="pb-3">{{getBasketName. basketName}} {{"Basket" | translate}}</h5>
+    <i class="fas fa-ellipsis-v" (click)="openVerticallyCentered(content)"></i>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 border-right" *ngIf="basketDataLength !== 0">
+      <div class="basket-left py-2 px-4" *ngFor="let basket of basketData">
+        <div class="basket-box pt-3 pb-2">
+          <h5>{{basket.name}}  ({{basket.weight}})g</h5>
+          <div class="d-flex">
+            <h6 *ngIf="basket.offerPrice != 0">{{basket.offerPrice}} BD</h6>
+            <h6 *ngIf="basket.offerPrice == 0">{{basket.price}} BD</h6>
+            <img src="assets/images/Icon-ionic-ios-close.svg" alt="" (click)="removeItem(basket.id)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 border-right" *ngIf="basketDataLength == 0">
+      <div class="img-address">
+        <ng-lottie [options]="options">
+        </ng-lottie>
+        <div class="text-center">
+            <button class="btn btn-item py-3 px-5" routerLink="/fresh">{{"ADDITEMS" | translate}}</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-lg-6" *ngIf="basketDataLength !== 0">
+      <div class="basket-right px-4 py-3">
+        <button class="btn btn-block btn-basket-cart" (click)="sendBasketValue()">{{"ADDTOCART" | translate}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="mt-5 pt-5"></div>
+<app-footer></app-footer>
+
+
+<ng-template #content let-modal>
+
+  <div class="modal-body ">
+    <div class="text-center px-4">
+      <h4 class="message">{{"deleteBasket" | translate}}</h4>
+      <div class="">
+        <button class="px-5 py-3 btn-cancel" (click)="modal.dismiss('Cross click')">{{"Cancel" | translate}}</button>
+        <button class="ml-3 px-5 py-3 btn-delete" (click)="removeBasket()">{{"Delete" | translate}}</button>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>

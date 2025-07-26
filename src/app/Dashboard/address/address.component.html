@@ -1,0 +1,183 @@
+<div class="edit" *ngIf="addLength == 0"
+    [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <div class="col-md-12">
+        <div class="form-group address text-center">
+            <div class="img-address pb-3">
+                <ng-lottie [options]="options">
+                </ng-lottie>
+            </div>
+            <p>{{"newAddressLine" | translate}}</p>
+
+            <div class="text-center pt-2 pb-2">
+                <button type="submit" class="btn btn-lg px-5 address-btn" (click)="openModal(content)">
+                    {{"addAddress" | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="edit" *ngIf="addLength !== 0"
+    [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <div class="add-side">
+        <h3 class="pb-1">{{"SavedAddress" | translate}}</h3>
+        <div class="addMod" (click)="openMap()">
+            <span *ngIf="websiteFlow == 'POULTRY'"><img src="assets/images/add_btn.svg" alt=""></span>
+            <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/add_btn.svg" alt=""></span><br>
+            <h5>{{"addAddress" | translate}}</h5>
+        </div>
+    </div>
+    <div class="vertical-line"></div>
+    <div class="row address_scroll">
+        <div class="col-md-6" *ngFor="let data of getAddress">
+            <div class="s-address-left">
+                <div class="d-flex">
+                    <img src="assets/images/Icon-feather-home.svg" alt="" width="15px">
+                    <h6>{{data.saveAs}}</h6>
+                </div>
+                <div class="px-4">
+                    <p>{{data.zoneName}}, {{data.area}}, {{data.blockNo}}, {{data.houseNo}}, {{data?.roadNo}},
+                        {{data?.flat}} - {{data?.pin}} ({{data?.notes}})
+                    </p>
+                    <div class="btn_seccc">
+                        <a (click)="editAddress(data,content)">{{"EDIT" | translate}}</a>
+                        <a (click)="removeAddress(data.id)">{{"DELETE" | translate}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [hidden]="canOpenMap">
+        <!-- {{canOpenMap}}{{isMapSaveButtonEnabled}} -->
+        <div id="map" style="height: 400px;"></div>
+        <button [disabled]="isMapSaveButtonEnabled" class="btn btn-lg px-5 address-btn"
+            (click)="openModal(content)">{{"ADD" | translate}}</button>
+        <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"CANCEL" | translate}}</button>
+    </div>
+</div>
+
+<ng-template #content role="document" let-modal="close" class="address">
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!isEdit">{{"addAddress" | translate}}</h5>
+        <h5 class="modal-title" *ngIf="isEdit">{{"editAddress" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body padd">
+        <form [formGroup]="addressForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="zoneId" #zoneValue
+                            [ngClass]="{ 'is-invalid': submitted && f['zoneId'].errors }"
+                            (change)='onZoneChange(zoneValue.value)'>
+                            <option selected value="null" disabled>{{"Zone" | translate}}</option>
+                            <option *ngFor="let item of zoneData" value="{{item.id}}">
+                                <span *ngIf="dir == 'ltr'">{{item.name}}</span>
+                                <span *ngIf="dir == 'rtl'">{{item.arName}}</span>
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['zoneId'].errors" class="invalid-feedback">
+                            <div *ngIf="f['zoneId'].errors['required']">{{"zoneReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="area"
+                            [ngClass]="{ 'is-invalid': submitted && f['area'].errors }">
+                            <option selected value="null" disabled>{{"area" | translate}}</option>
+                            <option *ngFor="let item of areaList" value="{{item.areaName}}">
+                                <span *ngIf="dir == 'ltr'">{{item.areaName}}</span>
+                                <span *ngIf="dir == 'rtl'">{{item.arAreaName}}</span>
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['area'].errors" class="invalid-feedback">
+                            <div *ngIf="f['area'].errors['required']">{{"areaReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'blockNo' |translate}}"
+                            formControlName="blockNo" [ngClass]="{ 'is-invalid': submitted && f['blockNo'].errors }">
+                        <div *ngIf="submitted && f['blockNo'].errors" class="invalid-feedback">
+                            <div *ngIf="f['blockNo'].errors['required']">{{"blockReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'houseNum' |translate}}"
+                            formControlName="houseNo" [ngClass]="{ 'is-invalid': submitted && f['houseNo'].errors }">
+                        <div *ngIf="submitted && f['houseNo'].errors" class="invalid-feedback">
+                            <div *ngIf="f['houseNo'].errors['required']">{{"houseNumReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'roadNo' |translate}}"
+                            formControlName="roadNo" [ngClass]="{ 'is-invalid': submitted && f['roadNo'].errors }">
+                        <div *ngIf="submitted && f['roadNo'].errors" class="invalid-feedback">
+                            <div *ngIf="f['roadNo'].errors['required']">{{"roadNoReq" | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="{{'FlatNo' |translate}}"
+                            formControlName="flat">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="{{'notes' |translate}}"
+                            formControlName="notes"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control d-address" formControlName="pin">
+                            <option selected value="null" disabled>{{"PinCode" | translate}}</option>
+                            <option *ngFor="let item of pincodeData" value="{{item.pin}}">{{item.pin}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group"
+                        [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+                        <h5 class="cart-h5">{{"SaveAs" | translate}}</h5>
+                        <div class="row" [ngClass]="{ 'is-invalid': submitted && f['saveAs'].errors}">
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="home" value="Home" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="home">
+                                    <div class="owner_box">
+                                        <h6>{{"Home" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="office" value="Office" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="office">
+                                    <div class="owner_box">
+                                        <h6>{{"Office" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-4 col-md-3">
+                                <input type="radio" name="saveAs" id="other" value="Other" formControlName="saveAs"
+                                    class="user_radio">
+                                <label for="other">
+                                    <div class="owner_box">
+                                        <h6>{{"Other" | translate}}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-12">
+                                <div *ngIf="submitted && f['saveAs'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['saveAs'].errors['required']">{{"saveasReq" | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-center">
+            <button type="submit" class="btn btn-own w-100" (click)="onSubmitData()"
+                [ngClass]="websiteFlow == 'FEEDING' ? 'feed' : 'poul'">{{"SaveAddress" |
+                translate}}</button>
+            <!-- <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
+                translate}}</button> -->
+        </div>
+    </div>
+</ng-template>

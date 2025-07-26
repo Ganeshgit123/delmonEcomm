@@ -1,0 +1,94 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <h3 class="mt-5 mb-2 fresh-head">{{"OurCategories" | translate}}</h3>
+  <hr>
+  <div class="row">
+    <div class="button-container active px-4" *ngFor="let item of categoryList; let i = index;let first = first">
+      <button class="btn-receipie" [ngClass]="activeStyle == item.id ? 'active': ''"
+        (click)="getProduts(item.id)">{{item.name}}</button>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row" *ngIf="prodLength == 0">
+    <div class="img-address">
+      <ng-lottie [options]="options">
+      </ng-lottie>
+      <div class="text-center">
+        <h1 class="btn-item py-0 px-3">{{"ThereNoProductcategory" | translate}}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps mb-2" *ngFor="let product of productList">
+      <div class="fresh" routerLink="/description/{{product.id}}">
+        <div class="card box-shadow product">
+          <div class="data_image">
+            <p class="text-center mb-0"><img src="{{product.image}}" class="card-img-top mx-auto" alt="..."></p>
+          </div>
+          <div class="card-body">
+            <h5 class="card-text">
+              <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+              <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+            </h5>
+            <div class="common_height">
+              <p class="card-title" [innerHTML]="product.description" *ngIf="dir == 'ltr'"></p>
+              <p class="card-title" [innerHTML]="product.arDescription" *ngIf="dir == 'rtl'"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+<div class="modal" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-weight">
+          <h4 class="" style="margin-right: 280px;">{{"Baskets" | translate}}</h4>
+          <button class="btn-sm fresh-btn" data-toggle="modal" data-target="#staticBackdrop">{{"NEWBASKET" |
+            translate}}</button>
+        </div>
+      </div>
+      <div class="modal-body" *ngFor="let basket of basketList">
+        <div class="content px-3">
+          <h4>{{basket.name}}</h4>
+          <div>
+            <img src="assets/images/Icon awesome-check-circle.svg" (click)="addProductBasket(basket.id)" alt="">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header ">
+        <h5 class="modal-title" id="staticBackdropLabel">{{"ADDBASKETNAME" | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-lg-12">
+          <input type="text" class="form-control" [(ngModel)]="basketListValue" placeholder="Enter your basket name">
+          <button type="button" class="btn btn-lg py-1 px-4 mt-3" (click)="sendBasketValue()">{{"ADD" |
+            translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
