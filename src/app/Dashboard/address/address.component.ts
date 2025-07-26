@@ -82,24 +82,31 @@ export class AddressComponent {
   }
 
   loadGoogleMaps(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise((resolve, reject) => {
       if ((window as any).google && (window as any).google.maps) {
-        resolve(); // Already loaded
+        resolve();
+        return;
+      }
+
+      const scriptId = 'google-maps-script';
+      if (document.getElementById(scriptId)) {
+        resolve();
         return;
       }
 
       const script = document.createElement('script');
-      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCglNATKhgzk-0FNfN86RUwBhPiqJHOClM&libraries=places&callback=initMap';
+      script.id = scriptId;
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCglNATKhgzk-0FNfN86RUwBhPiqJHOClM&libraries=places&loading=async';
       script.async = true;
       script.defer = true;
 
-      (window as any).initMap = () => {
-        resolve();
-      };
+      script.onload = () => resolve();
+      script.onerror = (err) => reject(err);
 
       document.body.appendChild(script);
     });
   }
+
 
 
   openModal(content: any) {
@@ -110,14 +117,23 @@ export class AddressComponent {
     // this.addressForm.controls["area"].value = this.selectedArea;
     this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
   }
-
   openMap() {
     this.canOpenMap = false;
     this.isMapSaveButtonEnabled = true;
+
     this.loadGoogleMaps().then(() => {
-      this.initMap();
+      setTimeout(() => {
+        const mapDiv = document.getElementById('map');
+        if (mapDiv && mapDiv.offsetParent !== null) {
+          this.initMap();
+        } else {
+          // Retry if container not visible yet
+          setTimeout(() => this.initMap(), 300);
+        }
+      }, 300); // Ensure container is rendered
     });
   }
+
 
   sendSaveAs(data: any) {
     this.addressForm.value.saveAs = data;
@@ -142,7 +158,11 @@ export class AddressComponent {
     this.addressForm.value.latitude = (this.selectedLat).toFixed(4);
     this.addressForm.value.longitude = (this.selectedLng).toFixed(4);
     this.addressForm.value.zoneId = Number(this.addressForm.value.zoneId);
-    this.addressForm.value.zoneName = zoneNameArray[0]?.name;
+    if (this.dir == 'ltr') {
+      this.addressForm.value.zoneName = zoneNameArray[0]?.name;
+    } else if (this.dir == 'rtl') {
+      this.addressForm.value.zoneName = zoneNameArray[0]?.arName;
+    }
     // console.log("fef",this.addressForm.value)
     this.auth.add_Address(this.addressForm.value)
       .subscribe((res: any) => {
@@ -182,8 +202,11 @@ export class AddressComponent {
     var zoneNameArray = this.zoneData.filter((element: any) => {
       return element.id === Number(data.zoneId);
     })
-    // console.log("name", zoneNameArray)
-    data['zoneName'] = zoneNameArray[0]?.name;
+    if (this.dir == 'ltr') {
+      data['zoneName'] = zoneNameArray[0]?.name;
+    } else if (this.dir == 'rtl') {
+      data['zoneName'] = zoneNameArray[0]?.arName;
+    }
     data['zoneId'] = Number(data.zoneId);
     this.auth.updateAddress(data, this.addressId)
       .subscribe((res: any) => {
@@ -212,10 +235,15 @@ export class AddressComponent {
 
 
   initMap(): void {
+    const mapDiv = document.getElementById("map");
+    if (!mapDiv) {
+      console.error("Map div not found!");
+      return;
+    }
     this.selectedLat = null;
     this.selectedLng = null;
     this.selectedArea = null;
-    this.map = new google.maps.Map(document.getElementById("map"), {
+    this.map = new google.maps.Map(mapDiv, {
       center: { lat: 26.0667, lng: 50.5577 },
       zoom: 10
     });

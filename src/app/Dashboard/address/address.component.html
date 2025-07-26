@@ -1,3 +1,11 @@
+<div *ngIf="!canOpenMap">
+    <!-- {{canOpenMap}}{{isMapSaveButtonEnabled}} -->
+    <div id="map" style="height: 400px;"></div>
+    <button [disabled]="isMapSaveButtonEnabled" class="btn btn-lg px-5 address-btn" (click)="openModal(content)">{{"ADD"
+        | translate}}</button>
+    <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"CANCEL" |
+        translate}}</button>
+</div>
 <div class="edit" *ngIf="addLength == 0"
     [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
     <div class="col-md-12">
@@ -9,13 +17,12 @@
             <p>{{"newAddressLine" | translate}}</p>
 
             <div class="text-center pt-2 pb-2">
-                <button type="submit" class="btn btn-lg px-5 address-btn" (click)="openModal(content)">
+                <button type="submit" class="btn btn-lg px-5 address-btn" (click)="openMap()">
                     {{"addAddress" | translate}}</button>
             </div>
         </div>
     </div>
 </div>
-
 <div class="edit" *ngIf="addLength !== 0"
     [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
     <div class="add-side">
@@ -45,14 +52,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div [hidden]="canOpenMap">
-        <!-- {{canOpenMap}}{{isMapSaveButtonEnabled}} -->
-        <div id="map" style="height: 400px;"></div>
-        <button [disabled]="isMapSaveButtonEnabled" class="btn btn-lg px-5 address-btn"
-            (click)="openModal(content)">{{"ADD" | translate}}</button>
-        <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"CANCEL" | translate}}</button>
     </div>
 </div>
 
@@ -86,10 +85,16 @@
                         <select class="form-control d-address" formControlName="area"
                             [ngClass]="{ 'is-invalid': submitted && f['area'].errors }">
                             <option selected value="null" disabled>{{"area" | translate}}</option>
-                            <option *ngFor="let item of areaList" value="{{item.areaName}}">
-                                <span *ngIf="dir == 'ltr'">{{item.areaName}}</span>
-                                <span *ngIf="dir == 'rtl'">{{item.arAreaName}}</span>
-                            </option>
+                            <span *ngIf="dir == 'ltr'">
+                                <option *ngFor="let item of areaList" value="{{item.areaName}}">
+                                    <span>{{item.areaName}}</span>
+                                </option>
+                            </span>
+                            <span *ngIf="dir == 'rtl'">
+                                <option *ngFor="let item of areaList" value="{{item.arAreaName}}">
+                                    <span>{{item.arAreaName}}</span>
+                                </option>
+                            </span>
                         </select>
                         <div *ngIf="submitted && f['area'].errors" class="invalid-feedback">
                             <div *ngIf="f['area'].errors['required']">{{"areaReq" | translate}}</div>
