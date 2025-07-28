@@ -23,7 +23,6 @@ export class AddressComponent {
   isEdit = false;
   addressId: any;
   map: any;
-  test: boolean = true;
   marker: any;
   selectedLat: any;
   selectedLng: any;
@@ -247,7 +246,6 @@ export class AddressComponent {
       center: { lat: 26.0667, lng: 50.5577 },
       zoom: 10
     });
-    this.test = false;
 
     if (this.map) {
       google.maps.event.addListener(this.map, 'click', (event: any) => {

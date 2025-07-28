@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
+declare const google: any;
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -101,9 +102,15 @@ export class CartComponent {
   areaList: any;
   adminLogin: any;
   currentCartonDiscountEmployee: any = 0;
+  isMapSaveButtonEnabled: boolean = true;
+  map: any;
+  marker: any;
+  selectedLat: any;
+  selectedLng: any;
+  selectedArea: any;
 
   constructor(private auth: AuthService, private builder: FormBuilder, private toastr: ToastrService,
-    private modalService: NgbModal, private router: Router,) { }
+    private modalService: NgbModal, private router: Router, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem('dir') || 'ltr';
@@ -276,7 +283,101 @@ export class CartComponent {
       });
   }
 
+  openMap(mapModel: any) {
+    this.isMapSaveButtonEnabled = true;
+    this.modalService.open(mapModel, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+
+    this.loadGoogleMaps().then(() => {
+      setTimeout(() => {
+        const mapDiv = document.getElementById('map');
+        if (mapDiv && mapDiv.offsetParent !== null) {
+          this.initMap();
+        } else {
+          // Retry if container not visible yet
+          setTimeout(() => this.initMap(), 300);
+        }
+      }, 300); // Ensure container is rendered
+    });
+  }
+
+  loadGoogleMaps(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).google && (window as any).google.maps) {
+        resolve();
+        return;
+      }
+
+      const scriptId = 'google-maps-script';
+      if (document.getElementById(scriptId)) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCglNATKhgzk-0FNfN86RUwBhPiqJHOClM&libraries=places&loading=async';
+      script.async = true;
+      script.defer = true;
+
+      script.onload = () => resolve();
+      script.onerror = (err) => reject(err);
+
+      document.body.appendChild(script);
+    });
+  }
+
+  initMap(): void {
+    const mapDiv = document.getElementById("map");
+    if (!mapDiv) {
+      console.error("Map div not found!");
+      return;
+    }
+    this.selectedLat = null;
+    this.selectedLng = null;
+    this.selectedArea = null;
+    this.map = new google.maps.Map(mapDiv, {
+      center: { lat: 26.0667, lng: 50.5577 },
+      zoom: 10
+    });
+
+    if (this.map) {
+      google.maps.event.addListener(this.map, 'click', (event: any) => {
+        if (this.marker && this.marker.setMap) {
+          this.marker.setMap(null);
+        }
+        this.marker = new google.maps.Marker({ position: event.latLng, map: this.map });
+
+        this.ngZone.run(() => {
+          this.selectedLat = this.marker.position.lat();
+          this.selectedLng = this.marker.position.lng();
+          this.isMapSaveButtonEnabled = false;  // <-- update inside Angular zone
+        });
+        var geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(this.selectedLat, this.selectedLng);
+
+        geocoder.geocode({ 'latLng': latlng }, (results: any, status: any) => {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              this.selectedArea = results[1].formatted_address;
+              // console.log(results[1].formatted_address);
+            } else {
+              // console.log('Location not found');
+            }
+          } else {
+            // console.log('Geocoder failed due to: ' + status);
+          }
+        });
+
+      });
+    }
+  }
+
+  closeMap() {
+    this.modalService.dismissAll();
+  }
+
   openModal(content: any) {
+    this.modalService.dismissAll();
     this.addressForm.reset();
     this.isEdit = false;
     this.submitted = false;
@@ -712,9 +813,14 @@ export class CartComponent {
       return element.id === Number(this.addressForm.value.zoneId);
     })
     this.submitted = false;
+    this.addressForm.value.latitude = (this.selectedLat).toFixed(4);
+    this.addressForm.value.longitude = (this.selectedLng).toFixed(4);
     this.addressForm.value.zoneId = Number(this.addressForm.value.zoneId);
-    this.addressForm.value.zoneName = zoneNameArray[0]?.name;
-    this.auth.add_Address(this.addressForm.value)
+    if (this.dir == 'ltr') {
+      this.addressForm.value.zoneName = zoneNameArray[0]?.name;
+    } else if (this.dir == 'rtl') {
+      this.addressForm.value.zoneName = zoneNameArray[0]?.arName;
+    } this.auth.add_Address(this.addressForm.value)
       .subscribe((res: any) => {
         if (res.error == false) {
           this.toastr.success('Success ', res.message);
@@ -732,8 +838,11 @@ export class CartComponent {
       return element.id === Number(data.zoneId);
     })
     // console.log("name", zoneNameArray)
-    data['zoneName'] = zoneNameArray[0]?.name;
-    data['zoneId'] = Number(data.zoneId);
+    if (this.dir == 'ltr') {
+      data['zoneName'] = zoneNameArray[0]?.name;
+    } else if (this.dir == 'rtl') {
+      data['zoneName'] = zoneNameArray[0]?.arName;
+    } data['zoneId'] = Number(data.zoneId);
 
     this.auth.updateAddress(data, this.addressId)
       .subscribe((res: any) => {
@@ -758,6 +867,7 @@ export class CartComponent {
         this.areaList = res.data;
       });
     this.addressForm = this.builder.group({
+      zoneId: [data['zoneId']],
       area: [data['area']],
       blockNo: [data['blockNo']],
       houseNo: [data['houseNo']],

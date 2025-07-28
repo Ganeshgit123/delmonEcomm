@@ -141,20 +141,21 @@
                         </form>
                     </div>
 
-                    <h3 class="car-subheading pt-3" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'">
+                    <h3 class="car-subheading pt-3" *ngIf="typeButton !== 0 && typeButton == 'DELIVERY'">
                         {{"DeliveryAddress" | translate}}
                     </h3>
-                    <div class="col-md-12 cart-left-textarea" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY'"
-                        (click)="openModal(content)">
+                    <div class="col-md-12 cart-left-textarea" *ngIf="typeButton !== 0 && typeButton == 'DELIVERY'"
+                        (click)="openMap(mapModel)">
                         <form>
                             <div class="form-group"
-                                *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY' && addLength == 0">
-                                <input type="text" class="form-control" id="" placeholder="ADD" readonly>
+                                *ngIf="typeButton !== 0 && typeButton == 'DELIVERY' && addLength == 0">
+                                <input type="text" class="form-control" id="" placeholder="{{'ADD' | translate}}"
+                                    readonly>
                             </div>
                         </form>
                     </div>
 
-                    <div class="col-md-12" *ngIf="typeButton !== 0 &&typeButton == 'DELIVERY' && addLength !== 0">
+                    <div class="col-md-12" *ngIf="typeButton !== 0 && typeButton == 'DELIVERY' && addLength !== 0">
                         <div class="row">
                             <div class="col-md-9 cart-select">
                                 <div class="form-group px-3 mb-0">
@@ -207,7 +208,7 @@
                                             <input type="text" class="form-control coupon"
                                                 placeholder="{{'couponCode' | translate}}" formControlName="couponCode">
                                         </div>
-                                        <div class="col-md-3 pr-0">
+                                        <div class="col-md-3">
                                             <button
                                                 [ngClass]="{'disable-submit1' : isLoyaltyApplied ,'apply_btn-f' :  (websiteFlow == 'FEEDING') ,'apply_btn' : (websiteFlow != 'FEEDING')}"
                                                 (click)="applyCoupon()">{{"Apply" | translate}}</button>
@@ -332,7 +333,7 @@
 
                         <div class="d-flex justify-content-between"
                             *ngIf="!(loyaltyPointDiscount == undefined || loyaltyPointDiscount == 0) && isAppliedLoyaltyPoint">
-                            <p>{{"Loyalty Discount" | translate}}</p>
+                            <p>{{"LoyaltyAmount" | translate}}</p>
                             <span>-{{loyaltyPointDiscount | number : '1.2-2'}} BD</span>
                         </div>
 
@@ -401,10 +402,16 @@
                         <select class="form-control d-address" formControlName="area"
                             [ngClass]="{ 'is-invalid': submitted && f['area'].errors }">
                             <option selected value="null" disabled>{{"area" | translate}}</option>
-                            <option *ngFor="let item of areaList" value="{{item.areaName}}">
-                                <span *ngIf="dir == 'ltr'">{{item.areaName}}</span>
-                                <span *ngIf="dir == 'rtl'">{{item.arAreaName}}</span>
-                            </option>
+                            <span *ngIf="dir == 'ltr'">
+                                <option *ngFor="let item of areaList" value="{{item.areaName}}">
+                                    <span>{{item.areaName}}</span>
+                                </option>
+                            </span>
+                            <span *ngIf="dir == 'rtl'">
+                                <option *ngFor="let item of areaList" value="{{item.arAreaName}}">
+                                    <span>{{item.arAreaName}}</span>
+                                </option>
+                            </span>
                         </select>
                         <div *ngIf="submitted && f['area'].errors" class="invalid-feedback">
                             <div *ngIf="f['area'].errors['required']">{{"areaReq" | translate}}</div>
@@ -452,12 +459,13 @@
                             <div *ngIf="f.notes.errors.required">{{"notesReq" | translate}}</div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group"
+                        [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
                         <h5 class="cart-h5">{{"SaveAs" | translate}}</h5>
                         <div class="row" [ngClass]="{ 'is-invalid': submitted && f['saveAs'].errors}">
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="home" value="Home" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="home" value='{{"Home" | translate}}'
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="home">
                                     <div class="owner_box">
                                         <h6>{{"Home" | translate}}</h6>
@@ -465,8 +473,8 @@
                                 </label>
                             </div>
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="office" value="Office" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="office" value="{{'Office' | translate}}"
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="office">
                                     <div class="owner_box">
                                         <h6>{{"Office" | translate}}</h6>
@@ -474,8 +482,8 @@
                                 </label>
                             </div>
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="other" value="Other" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="other" value="{{'Other' | translate}}"
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="other">
                                     <div class="owner_box">
                                         <h6>{{"Other" | translate}}</h6>
@@ -494,7 +502,8 @@
             </div>
         </form>
         <div class="text-center">
-            <button type="submit" class="btn-lg px-5 address-btn" (click)="onSubmitData()">{{"SaveAddress" |
+            <button type="submit" class="btn btn-own w-100" (click)="onSubmitData()"
+                [ngClass]="websiteFlow == 'FEEDING' ? 'feed' : 'poul'">{{"SaveAddress" |
                 translate}}</button>
             <!-- <button type="button" class="btn btn-own-cancel ml-1" (click)="modal('close click')">{{"Cancel" |
                 translate}}</button> -->
@@ -520,5 +529,22 @@
                 (click)="modal('Cross click')">
                 {{"Ok" | translate}}
             </button></p>
+    </div>
+</ng-template>
+
+<ng-template #mapModel role="document" let-modal="close" class="address">
+    <div class="modal-header">
+        <h5 class="modal-title">{{"addAddress" | translate}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body padd">
+        <div id="map" style="height: 500px;"></div>
+        <button [disabled]="isMapSaveButtonEnabled" class="btn btn-lg px-5 address-btn"
+            (click)="openModal(content)">{{"ADD"
+            | translate}}</button>
+        <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"Cancel" |
+            translate}}</button>
     </div>
 </ng-template>

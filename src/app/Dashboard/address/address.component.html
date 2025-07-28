@@ -3,7 +3,7 @@
     <div id="map" style="height: 400px;"></div>
     <button [disabled]="isMapSaveButtonEnabled" class="btn btn-lg px-5 address-btn" (click)="openModal(content)">{{"ADD"
         | translate}}</button>
-    <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"CANCEL" |
+    <button type="button" class="btn btn-lg px-5 address-btn" (click)="closeMap()">{{"Cancel" |
         translate}}</button>
 </div>
 <div class="edit" *ngIf="addLength == 0"
@@ -140,8 +140,8 @@
                         <h5 class="cart-h5">{{"SaveAs" | translate}}</h5>
                         <div class="row" [ngClass]="{ 'is-invalid': submitted && f['saveAs'].errors}">
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="home" value="Home" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="home" value="{{'Home' | translate}}"
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="home">
                                     <div class="owner_box">
                                         <h6>{{"Home" | translate}}</h6>
@@ -149,8 +149,8 @@
                                 </label>
                             </div>
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="office" value="Office" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="office" value="{{'Office' | translate}}"
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="office">
                                     <div class="owner_box">
                                         <h6>{{"Office" | translate}}</h6>
@@ -158,8 +158,8 @@
                                 </label>
                             </div>
                             <div class="col-4 col-md-3">
-                                <input type="radio" name="saveAs" id="other" value="Other" formControlName="saveAs"
-                                    class="user_radio">
+                                <input type="radio" name="saveAs" id="other" value="{{'Other' | translate}}"
+                                    formControlName="saveAs" class="user_radio">
                                 <label for="other">
                                     <div class="owner_box">
                                         <h6>{{"Other" | translate}}</h6>
