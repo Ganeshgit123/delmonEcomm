@@ -3,13 +3,14 @@
   <div class="vertical-line"></div>
   <div class="pb-3"></div>
 
-  <mat-tab-group fitInkBarToContent [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
-    <mat-tab label="My Orders">
+  <mat-tab-group fitInkBarToContent
+    [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    <mat-tab label="{{'MyOrders' | translate}}">
       <div class="orders-main mt-3" *ngFor="let data of orderData">
         <div class="orders-main-top d-flex justify-content-between">
           <p>{{"OrderID" | translate}} : {{data.orderId}}</p>
           <p>{{"OrderPlaced" | translate}} : <span class="date_time_class">
-            {{data.orderPlaceTime | date: 'EEEE, MMM d, y'}}</span></p>
+              {{data.orderPlaceTime | date: 'EEEE, MMM d, y'}}</span></p>
         </div>
         <div class="vertical-line"></div>
         <p class="status_btn"><button class="orders-main-btn-f px-4 py-1 mt-3 mb-2"> {{"WaitingAdminApproval" |
@@ -19,7 +20,7 @@
         <div class="d-flex justify-content-between pt-2">
           <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{data.netAmount}} BD</span></p>
           <div class="d-flex">
-            <p class="pr-2" (click)="orderDetail(content,data.id)">{{"Your Order Detail" | translate}}
+            <p class="pr-2" (click)="orderDetail(content,data.id)">{{"YourOrderDetail" | translate}}
               <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
             </p>
           </div>
@@ -30,7 +31,7 @@
       </div>
     </mat-tab>
     <!---------------------------------------------------------------------------------------------->
-    <mat-tab label="Confirmed Orders">
+    <mat-tab label="{{'confirmedOrders' | translate}}">
 
       <div class="orders-main mt-3" *ngFor="let confirm of confirmData">
 
@@ -115,7 +116,7 @@
         <div class="d-flex justify-content-between pt-2">
           <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{confirm.netAmount}} BD</span></p>
           <div class="d-flex">
-            <p class="pr-2" (click)="orderDetail(content,confirm.id)">{{"Your Order Detail" | translate}}
+            <p class="pr-2" (click)="orderDetail(content,confirm.id)">{{"YourOrderDetail" | translate}}
               <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
             </p>
           </div>
@@ -126,13 +127,14 @@
       </div>
     </mat-tab>
     <!---------------------------------------------------------------------------------------------->
-    <mat-tab label="Completed Orders">
+    <mat-tab label="{{'completedOrders' | translate}}">
       <div class="orders-main mt-3" *ngFor="let complete of completeData">
         <div class="orders-main-top d-flex justify-content-between">
           <p>{{"OrderID" | translate}} : {{complete.orderId}}</p>
           <div class="orders-confirm-top">
             <p class="text-center mx-3" style="color: var(--dash-btn-color);">
-              <span *ngIf="complete?.deliveryOrderDate != null">{{"Deliveryon" | translate}} {{date(complete?.deliveryOrderDate)}}</span>
+              <span *ngIf="complete?.deliveryOrderDate != null">{{"Deliveryon" | translate}}
+                {{date(complete?.deliveryOrderDate)}}</span>
             </p>
           </div>
         </div>
@@ -140,7 +142,7 @@
         <div class="d-flex justify-content-between pt-2">
           <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{complete.netAmount}} BD</span></p>
           <div class="d-flex">
-            <p class="pr-2" (click)="orderDetail(content,complete.id)">{{"Your Order Detail" | translate}}
+            <p class="pr-2" (click)="orderDetail(content,complete.id)">{{"YourOrderDetail" | translate}}
               <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
             </p>
           </div>
@@ -151,7 +153,7 @@
       </div>
     </mat-tab>
     <!---------------------------------------------------------------------------------------------->
-    <mat-tab label="Cancelled Orders">
+    <mat-tab label="{{'cancelledOrders' | translate}}">
 
       <div class="orders-main mt-3" *ngFor="let cancel of cancelData">
 
@@ -166,7 +168,8 @@
         <div class="d-flex justify-content-between pt-2">
           <p class="mb-0">{{"TotalAmount" | translate}} <br> <span class="netAmt">{{cancel.netAmount}} BD</span></p>
           <div class="d-flex">
-            <p class="pr-2" (click)="orderDetail(content,cancel.id)">{{"Your Order Detail" | translate}}
+            <p class="pr-2" (click)="orderDetail(content,cancel.id)">
+              {{"YourOrderDetail" | translate}}
               <img src="assets/images/ionic-ios-arrow-back.svg" alt="">
             </p>
           </div>
@@ -197,7 +200,8 @@
       <div *ngIf="orderedData.orderStatus =='COMPLETED'">
         <div class="d-flex justify-content-between pt-1">
           <p class="invoice">{{"Invoice" | translate}}</p>
-          <p class="invoi_bnt"><a href="{{endpoint}}/getInvoice/{{orderedData.id}}" target="_blank">{{"View" | translate}}</a></p>
+          <p class="invoi_bnt"><a href="{{endpoint}}/getInvoice/{{orderedData.id}}" target="_blank">{{"View" |
+              translate}}</a></p>
         </div>
         <hr class="dashed_hr">
         <div class="d-flex justify-content-between pt-1 delivery_sec">
@@ -209,8 +213,11 @@
     <div class="order-three">
       <div class="order-three-top p-4" *ngFor="let cartData of orderCartData">
         <div class="d-flex justify-content-between pt-1">
-          <p>{{cartData.enProductName}} <br>{{cartData.weight}}</p>
-          <p>{{cartData.price}} BD</p>
+          <p> <span *ngIf="dir == 'ltr'">{{cartData.enProductName}}</span>
+            <span *ngIf="dir == 'rtl'">{{cartData.arProductName}}</span> <br>{{cartData.weight}}
+          </p>
+          <p *ngIf="cartData.offerPrice == 0 || cartData.offerPrice == null">{{cartData.normalPrice}} BD</p>
+          <p *ngIf="!(cartData.offerPrice == 0 || cartData.offerPrice == null)">{{cartData.offerPrice}} BD</p>
         </div>
         <div class="vertical-dotted-line"></div>
       </div>
@@ -225,7 +232,7 @@
           </h5>
           <h5 *ngIf="orderedData.deliveryType == 'PICKUP'">{{"Pickup" | translate}}</h5>
           <div class="order-muted" *ngIf="orderedData.deliveryType == 'PICKUP'">
-            <p class="order-mute"> 
+            <p class="order-mute">
               <span>{{orderedData.pickupAddress}}</span>
           </div>
           <div class="order-muted" *ngIf="orderedData.deliveryType == 'DELIVERY'">

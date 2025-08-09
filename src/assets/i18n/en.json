@@ -54,7 +54,7 @@
     "OrderID": "Order ID",
     "OrderPlaced": "Order Placed",
     "TotalAmount": "Total Amount",
-    "Your Order Detail ": "Your Order Detail",
+    "YourOrderDetail": "Your Order Detail",
     "MyOrder": "My Order",
     "AddressType": "Address Type",
     "Delivery": "Delivery",
@@ -211,5 +211,8 @@
     "TrendingProducts": "Trending Products",
     "NoOrdersFound": "No orders found",
     "OTPConent": "Enjoy the best 100% natural chicken in the Bahraini market",
-    "OTPSecondContent": "Working with 30+ Farms across the Kingdom, we deliver Fresh Products, Every Time. Taste the Difference Today!"
+    "OTPSecondContent": "Working with 30+ Farms across the Kingdom, we deliver Fresh Products, Every Time. Taste the Difference Today!",
+    "confirmedOrders": "Confirmed Orders",
+    "completedOrders": "Completed Orders",
+    "cancelledOrders": "Cancelled Orders"
 }

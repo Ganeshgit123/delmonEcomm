@@ -9,6 +9,17 @@
     color: var(--text-color-two);
 }
 
+.footer h3 a {
+    font-family: var(--font-family);
+    font-size: var(--heading-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-color-two);
+}
+
+.footer h3 a:hover {
+    color: var(--main-color);
+}
+
 .footer p {
     font-family: var(--font-family);
     font-size: var(--para-size);
@@ -17,6 +28,17 @@
     direction: ltr;
 }
 
+.footer p a {
+    font-family: var(--font-family);
+    font-size: var(--para-size);
+    font-weight: var(--font-weight-small);
+    color: var(--text-color-two);
+    direction: ltr;
+}
+
+.footer p a:hover {
+    color: var(--main-color);
+}
 
 .footer-left-content {
     display: flex;

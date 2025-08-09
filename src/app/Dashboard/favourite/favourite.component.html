@@ -8,7 +8,8 @@
                 </div>
                 <p class="text-center">{{"EmptyFavourityLine" | translate}}</p>
                 <div class="text-center pt-2 pb-2" *ngIf="!adminLogin">
-                    <button type="submit" class="btn btn-lg px-5 address-btn" routerLink="/categories">{{"ADDFAVOURITES" |
+                    <button type="submit" class="btn btn-lg px-5 address-btn" routerLink="/categories">{{"ADDFAVOURITES"
+                        |
                         translate}}</button>
                 </div>
             </div>
@@ -27,8 +28,9 @@
                                     <button class="badge badge-pill out-btn" *ngIf="product.isStock == 0">{{"OutofStock" | translate}}</button>
                                 </div> -->
                                 <div class="col-md-12">
-                                    <p class="text-right mb-0" *ngIf="!adminLogin"><img src="assets/images/Icon-feather-heart-two.svg" (click)="removeFav(product.id)"
-                                        alt="heart"></p>
+                                    <p class="text-right mb-0" *ngIf="!adminLogin"><img
+                                            src="assets/images/Icon-feather-heart-two.svg"
+                                            (click)="removeFav(product.id)" alt="heart"></p>
                                 </div>
                             </div>
                         </div>

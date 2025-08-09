@@ -15,13 +15,12 @@ export class SettingsComponent {
   about: any;
   termsAndCondition: any;
   privacyPolicy: any;
-  faq:any;
+  faq: any;
   lang: any;
   dir: any;
   websiteFlow: any;
 
-  constructor( public translate: TranslateService, private auth:AuthService, private toastr: ToastrService, private router: Router) { }
-
+  constructor(public translate: TranslateService, private auth: AuthService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.websiteFlow = localStorage.getItem('flow');
@@ -30,7 +29,7 @@ export class SettingsComponent {
     this.translate.use(this.lang);
     this.dir = localStorage.getItem("dir") || "rtl"
 
-    this.auth.settingsUrl().subscribe((res:any) =>{
+    this.auth.settingsUrl().subscribe((res: any) => {
       this.support = res.data.support;
       this.about = res.data.about;
       this.termsAndCondition = res.data.termsAndCondition;

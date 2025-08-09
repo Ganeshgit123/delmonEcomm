@@ -29,8 +29,10 @@ export class OrderComponent {
   pipe = new DatePipe('en-US');
   websiteFlow: any;
   adminLogin: any;
+  dir: any;
 
   ngOnInit(): void {
+    this.dir = localStorage.getItem("dir") || "rtl";
     this.adminLogin = sessionStorage.getItem('adminLogin');
     this.websiteFlow = localStorage.getItem('flow');
     this.userId = sessionStorage.getItem('userId');
