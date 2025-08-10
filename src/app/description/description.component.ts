@@ -104,7 +104,6 @@ export class DescriptionComponent {
       this.productNserves = res.data?.serves;
       this.productdescription = res.data?.description;
       this.productdescriptionAr = res.data?.arDescription;
-      // this.productprice = res.data.price;
       this.relatedProduct = res.data?.relatedProduct.sort((a: any, b: any) => a.id - b.id);
 
       this.recipiesList = res.data?.recipiesList;
@@ -121,39 +120,20 @@ export class DescriptionComponent {
         this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
           return element.soldType == this.soldType;
         })
-        // console.log("nromal", this.relatedProductFilter[0].normalPrice)
-        // console.log("price", this.relatedProductFilter[0].price)
-        // console.log("offerPrice", this.relatedProductFilter[0].offerPrice)
-        if (!(this.relatedProductFilter[0].offerPrice == 0 || this.relatedProductFilter[0].offerPrice == null)) {
-          if (this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.offerPrice && this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.price) {
-            this.normalPrice = this.relatedProductFilter[0].normalPrice
-          }
-        }
-        if (this.relatedProductFilter[0].price == 0) {
-          this.productprice = this.relatedProductFilter[0].normalPrice
-        } else {
-          this.productprice = this.relatedProductFilter[0].price
-        }
-        this.selectedId = this.relatedProductFilter[0].id
-        this.isStock = this.relatedProductFilter[0].stock;
+        const firstProduct = this.relatedProductFilter[0];
+        this.setPrices(firstProduct);
+        this.selectedId = firstProduct.id
+        this.isStock = firstProduct.stock;
       } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
         this.soldType = 2
         this.updateSoldtype(2)
         this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
           return element.soldType == this.soldType;
         })
-        if (!(this.relatedProductFilter[0].offerPrice == 0 || this.relatedProductFilter[0].offerPrice == null)) {
-          if (this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.offerPrice && this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.price) {
-            this.normalPrice = this.relatedProductFilter[0].normalPrice
-          }
-        }
-        if (this.relatedProductFilter[0].price == 0) {
-          this.productprice = this.relatedProductFilter[0].normalPrice
-        } else {
-          this.productprice = this.relatedProductFilter[0].price
-        }
-        this.selectedId = this.relatedProductFilter[0].id;
-        this.isStock = this.relatedProductFilter[0].stock;
+        const firstProduct = this.relatedProductFilter[0];
+        this.setPrices(firstProduct);
+        this.selectedId = firstProduct.id;
+        this.isStock = firstProduct.stock;
       }
     })
 
@@ -171,6 +151,22 @@ export class DescriptionComponent {
     }
   }
 
+  private setPrices(product: any) {
+    const offer = Number(product.offerPrice);
+    const normal = Number(product.normalPrice);
+
+    if (offer > 0 && offer < normal) {
+      this.productprice = offer;
+      this.normalPrice = normal;
+    } else if (normal > 0) {
+      this.productprice = normal;
+      this.normalPrice = null; // No strike out
+    } else {
+      this.productprice = null;
+      this.normalPrice = null;
+    }
+  }
+
   sendRecipiesListId(id: any, recipies: any) {
     let navigationExtras: NavigationExtras = {
       state: {
@@ -183,18 +179,10 @@ export class DescriptionComponent {
     this.router.navigate([`/ingredients/${id}`], navigationExtras);
   }
 
-  getWeightId(id: any, price: any, stockValue: any, normalPrice: any, offerPrice: any) {
+  getWeightId(id: any, stockValue: any, normalPrice: any, offerPrice: any) {
     this.activePack = id;
     this.selectedId = id;
-    if (!(offerPrice == 0 || offerPrice == null))
-      if (normalPrice > offerPrice && normalPrice > price) {
-        this.normalPrice = normalPrice;
-      }
-    if (price == 0) {
-      this.productprice = normalPrice
-    } else {
-      this.productprice = price
-    }
+    this.setPrices({ offerPrice, normalPrice });
     this.isStock = stockValue;
     // console.log("fe",stockValue)
   }
@@ -231,19 +219,11 @@ export class DescriptionComponent {
     this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
       return element.soldType == this.soldType;
     })
-    if (!(this.relatedProductFilter[0].offerPrice == 0 || this.relatedProductFilter[0].offerPrice == null)) {
-      if (this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.offerPrice && this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0]?.price) {
-        this.normalPrice = this.relatedProductFilter[0].normalPrice
-      }
-    }
-    if (this.relatedProductFilter[0].price == 0) {
-      this.productprice = this.relatedProductFilter[0].normalPrice
-    } else {
-      this.productprice = this.relatedProductFilter[0].price
-    }
-    this.selectedId = this.relatedProductFilter[0].id;
-    this.activePack = this.relatedProductFilter[0].id
-    this.isStock = this.relatedProductFilter[0].stock;
+    const firstProduct = this.relatedProductFilter[0];
+    this.setPrices(firstProduct);
+    this.selectedId = firstProduct.id;
+    this.activePack = firstProduct.id
+    this.isStock = firstProduct.stock;
     // console.log("filter", this.relatedProductFilter);
     // console.log("data", this.relatedProduct);
   }

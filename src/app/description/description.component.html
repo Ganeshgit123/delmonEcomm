@@ -80,7 +80,7 @@
                 <h5 class="desc-con">{{"PackSizes" | translate}}</h5>
                 <span *ngFor="let weight of relatedProductFilter">
                     <button class="desc-button" [ngClass]="activePack == weight.id ? 'active': '' "
-                        (click)="getWeightId(weight.id,weight.price,weight.stock,weight.normalPrice,weight.offerPrice)">
+                        (click)="getWeightId(weight.id,weight.stock,weight.normalPrice,weight.offerPrice)">
                         {{weight.weight}}g
                     </button>
                 </span>
@@ -89,8 +89,10 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 desc-btn-box mt-4">
                 <div class="text-center">
                     <p class="mt-2">
-                        <span class="offer_price" *ngIf="normalPrice">{{normalPrice | number : '1.0-2' }} BD</span>
-                        <span>{{productprice | number : '1.0-2'}} BD</span> <br> {{"TotalAmount" | translate}}
+                        <span class="offer_price" *ngIf="normalPrice">{{normalPrice | number : '1.0-2'
+                            }} BD</span>
+                        <span>{{productprice | number : '1.0-2'}} BD</span> <br>
+                        {{"TotalAmount" | translate}}
                     </p>
                 </div>
                 <div *ngIf="isStock > 0">
