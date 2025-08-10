@@ -70,36 +70,38 @@ export class DescriptionFComponent {
       this.productNserves = res.data.serves;
       this.productdescription = res.data.description;
       this.productdescriptionAr = res.data?.arDescription;
-      // this.productprice = res.data.price;
-      this.relatedProduct = res.data.relatedProduct;
-      this.recipiesList = res.data.recipiesList;
-      this.cartonActive = res.data.cartonActive;
-      this.piecesActive = res.data.piecesActive;
-      this.isFavorites = res.data.isFavorites;
+      this.relatedProduct = res.data?.relatedProduct?.sort((a: any, b: any) => a.id - b.id);
+      this.recipiesList = res.data?.recipiesList;
+      this.cartonActive = res.data?.cartonActive;
+      this.piecesActive = res.data?.piecesActive;
+      this.isFavorites = res.data?.isFavorites;
 
       if ((res.data.cartonActive == 1 && res.data.piecesActive == 1) || res.data.piecesActive == 1 && res.data.cartonActive == 0) {
         this.soldType = 1
         this.updateSoldtype(1)
         this.activePiece = true;
         this.activeCarton = false;
-        this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
+        this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
           return element.soldType == this.soldType;
         })
-        this.productprice = this.relatedProductFilter[0].price
-        this.selectedId = this.relatedProductFilter[0].id
-        this.isStock = this.relatedProductFilter[0].stock;
+        if (this.relatedProductFilter) {
+          const firstProduct = this.relatedProductFilter[0];
+          this.setPrices(firstProduct);
+          this.selectedId = firstProduct.id
+          this.isStock = firstProduct.stock;
+        }
       } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
         this.soldType = 2
         this.updateSoldtype(2)
-        this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
+        this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
           return element.soldType == this.soldType;
         })
-        if (this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0].offerPrice && this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0].price) {
-          this.normalPrice = this.relatedProductFilter[0].normalPrice
+        if (this.relatedProductFilter) {
+          const firstProduct = this.relatedProductFilter[0];
+          this.setPrices(firstProduct);
+          this.selectedId = firstProduct.id;
+          this.isStock = firstProduct.stock;
         }
-        this.productprice = this.relatedProductFilter[0].price
-        this.selectedId = this.relatedProductFilter[0].id
-        this.isStock = this.relatedProductFilter[0].stock;
       }
     })
 
@@ -114,6 +116,21 @@ export class DescriptionFComponent {
     }
   }
 
+  private setPrices(product: any) {
+    const offer = Number(product.offerPrice);
+    const normal = Number(product.normalPrice);
+
+    if (offer > 0 && offer < normal) {
+      this.productprice = offer;
+      this.normalPrice = normal;
+    } else if (normal > 0) {
+      this.productprice = normal;
+      this.normalPrice = null; // No strike out
+    } else {
+      this.productprice = null;
+      this.normalPrice = null;
+    }
+  }
 
   updateSoldtype(type: any) {
     if (type == 1) {
@@ -125,16 +142,16 @@ export class DescriptionFComponent {
     }
     this.soldType = type;
     // console.log("sold type id", this.soldType);
-    this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
+    this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
       return element.soldType == this.soldType;
     })
-    if (this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0].offerPrice && this.relatedProductFilter[0].normalPrice > this.relatedProductFilter[0].price) {
-      this.normalPrice = this.relatedProductFilter[0].normalPrice
+    if (this.relatedProductFilter) {
+      const firstProduct = this.relatedProductFilter[0];
+      this.setPrices(firstProduct);
+      this.selectedId = firstProduct.id;
+      this.activePack = firstProduct.id
+      this.isStock = firstProduct.stock;
     }
-    this.productprice = this.relatedProductFilter[0].price
-    this.activePack = this.relatedProductFilter[0].id
-    // console.log("filter", this.relatedProductFilter);
-    // console.log("data", this.relatedProduct);
   }
 
 
@@ -199,10 +216,7 @@ export class DescriptionFComponent {
   getWeightId(id: any, price: any, stockValue: any, normalPrice: any, offerPrice: any) {
     this.activePack = id;
     this.selectedId = id;
-    if (normalPrice > offerPrice && normalPrice > price) {
-      this.normalPrice = normalPrice;
-    }
-    this.productprice = price;
+    this.setPrices({ offerPrice, normalPrice });
     this.isStock = stockValue;
   }
 

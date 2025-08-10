@@ -104,7 +104,7 @@ export class DescriptionComponent {
       this.productNserves = res.data?.serves;
       this.productdescription = res.data?.description;
       this.productdescriptionAr = res.data?.arDescription;
-      this.relatedProduct = res.data?.relatedProduct.sort((a: any, b: any) => a.id - b.id);
+      this.relatedProduct = res.data?.relatedProduct?.sort((a: any, b: any) => a.id - b.id);
 
       this.recipiesList = res.data?.recipiesList;
       this.cartonActive = res.data?.cartonActive;
@@ -127,13 +127,15 @@ export class DescriptionComponent {
       } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
         this.soldType = 2
         this.updateSoldtype(2)
-        this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
+        this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
           return element.soldType == this.soldType;
         })
-        const firstProduct = this.relatedProductFilter[0];
-        this.setPrices(firstProduct);
-        this.selectedId = firstProduct.id;
-        this.isStock = firstProduct.stock;
+        if (this.relatedProductFilter) {
+          const firstProduct = this.relatedProductFilter[0];
+          this.setPrices(firstProduct);
+          this.selectedId = firstProduct.id;
+          this.isStock = firstProduct.stock;
+        }
       }
     })
 
@@ -171,9 +173,6 @@ export class DescriptionComponent {
     let navigationExtras: NavigationExtras = {
       state: {
         recipiesData: recipies
-        // frompage: "this.backgroundColor",
-        // previouspage: "this.previousPage",
-        // prevPage: "his.prevPage",
       }
     }
     this.router.navigate([`/ingredients/${id}`], navigationExtras);
@@ -184,13 +183,11 @@ export class DescriptionComponent {
     this.selectedId = id;
     this.setPrices({ offerPrice, normalPrice });
     this.isStock = stockValue;
-    // console.log("fe",stockValue)
   }
 
   sendCartValue() {
     if (this.loggedUser == 'true') {
       this.sendCartData = { 'productId': this.selectedId, 'price': this.productprice };
-      // console.log("add_To_cart", this.sendCartData);
       this.authService.addtoCart(this.sendCartData).subscribe((res: any) => {
         if (res.error == false) {
           this.toastr.success('Successfully', res.message);
@@ -215,17 +212,16 @@ export class DescriptionComponent {
       this.activePiece = false;
     }
     this.soldType = type;
-    // console.log("sold type id", this.soldType);
-    this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
+    this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
       return element.soldType == this.soldType;
     })
-    const firstProduct = this.relatedProductFilter[0];
-    this.setPrices(firstProduct);
-    this.selectedId = firstProduct.id;
-    this.activePack = firstProduct.id
-    this.isStock = firstProduct.stock;
-    // console.log("filter", this.relatedProductFilter);
-    // console.log("data", this.relatedProduct);
+    if (this.relatedProductFilter) {
+      const firstProduct = this.relatedProductFilter[0];
+      this.setPrices(firstProduct);
+      this.selectedId = firstProduct.id;
+      this.activePack = firstProduct.id
+      this.isStock = firstProduct.stock;
+    }
   }
 
   openVerticallyCentered(content: any) {
@@ -250,7 +246,6 @@ export class DescriptionComponent {
 
   sendBasketName() {
     this.authService.createBasket(this.sendBasketValue.value).subscribe((res: any) => {
-      // this.modalService.dismissAll();
     })
   }
 
@@ -259,7 +254,6 @@ export class DescriptionComponent {
     this.authService.addProductBasket(this.basketData).subscribe((res: any) => {
       if (res.error == false) {
         this.toastr.success(res.message);
-        // this.modalService.dismissAll();
       }
       else {
         this.toastr.error('Kindly Login to Your Account')
