@@ -437,6 +437,9 @@ export class CartComponent {
   sendPaymentType(data: any) {
     this.paymentType = data;
     this.checkEnableDisableOrderButton();
+    if (data === "WALLET") {
+      this.router.navigate(['/payment-gateway'])
+    }
   }
 
   plus(prod: any) {

@@ -1,0 +1,9 @@
+<form id="payment-form" method="POST" action="https://credimax.gateway.mastercard.com/checkout/pay">
+    <input type="hidden" name="merchant" value="E15251950" />
+    <input type="hidden" name="order.id" value="{{ orderId }}" />
+    <input type="hidden" name="order.amount" value="{{ totalAmount }}" />
+    <input type="hidden" name="order.currency" value="BD" />
+    <input type="hidden" name="session.id" value="{{ sessionId }}" />
+    <!-- Add other required fields as per documentation -->
+    <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+</form>

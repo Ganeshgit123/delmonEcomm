@@ -67,6 +67,7 @@ import { FeedingModule } from './feeding/feeding.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AdminBasketComponent } from './admin-basket/admin-basket.component';
+import { PaymentGatewayComponent } from './payment-gateway/payment-gateway.component';
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -110,6 +111,7 @@ export function playerFactory() {
     BookingCompleteComponent,
     BasketListComponent,
     AdminBasketComponent,
+    PaymentGatewayComponent,
   ],
   imports: [
     AppRoutingModule,
