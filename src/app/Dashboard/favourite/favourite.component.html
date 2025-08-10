@@ -8,9 +8,8 @@
                 </div>
                 <p class="text-center">{{"EmptyFavourityLine" | translate}}</p>
                 <div class="text-center pt-2 pb-2" *ngIf="!adminLogin">
-                    <button type="submit" class="btn btn-lg px-5 address-btn" routerLink="/categories">{{"ADDFAVOURITES"
-                        |
-                        translate}}</button>
+                    <button type="submit" class="btn btn-lg px-5 address-btn" routerLink="/categories">
+                        {{"ADDFAVOURITES" | translate}}</button>
                 </div>
             </div>
         </form>
@@ -19,7 +18,7 @@
     <div class="container" *ngIf="favoriteLength !== 0">
         <div class="row">
             <div class="col-lg-4 col-sm-12 col-md-6 fresh gaps mb-2" *ngFor="let product of favoriteData">
-                <div class="fresh">
+                <div class="fresh" routerLink="/description/{{product.id}}">
                     <div class="card box-shadow product">
                         <div class="top-button">
                             <div class="row">
@@ -41,7 +40,12 @@
                         <div class="card-body">
                             <h5 class="card-text">{{product.name}}</h5>
                             <div class="common_height">
-                                <p class="card-title" [innerHTML]="product.description"></p>
+                                <span *ngIf="dir == 'ltr'">
+                                    <p class="card-title" [innerHTML]="product.description"></p>
+                                </span>
+                                <span *ngIf="dir == 'rtl'">
+                                    <p class="card-title" [innerHTML]="product.arDescription"></p>
+                                </span>
                             </div>
                         </div>
                     </div>
