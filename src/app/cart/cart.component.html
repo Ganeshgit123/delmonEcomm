@@ -282,7 +282,7 @@
                                     <p [ngClass]="paymentType == 'WALLET' ? 'active' :'' ">{{"Wallet" | translate}}</p>
                                 </div>
                             </div>
-                            <span *ngIf="viewData?.isCardPayment == 1">
+                            <!-- <span *ngIf="viewData?.isCardPayment == 1">
                                 <div *ngIf="!adminLogin">
                                     <div [className]="websiteFlow === 'FEEDING' ? 'payment-right-box-feed' : 'payment-right-box'"
                                         (click)="sendPaymentType('CARD')"
@@ -297,7 +297,7 @@
                                         <p [ngClass]="paymentType == 'CARD' ? 'active' :'' ">{{"Card" | translate}}</p>
                                     </div>
                                 </div>
-                            </span>
+                            </span> -->
                         </div>
                     </div>
                     <p class="deliver_date" *ngIf="paymentType == 'WALLET'">{{"YourWalletBalance" | translate}}
