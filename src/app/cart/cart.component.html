@@ -111,8 +111,11 @@
                                 {{"HomeDelivery" | translate}}</h6>
                         </div>
                     </div>
-                    <p class="deliver_date">{{"YourOrderDeliveredOn" | translate}} <span>
-                            {{deliveryDAte | date: 'EEEE, MMM d, y'}}</span></p>
+                    <p class="deliver_date">{{"YourOrderDeliveredOn" | translate}}
+                        <span [dir]="dir">
+                            {{ deliveryDAte | date:'EEEE, MMM d, y':'': (dir === 'rtl' ? 'ar-BH' : 'en-US') }}
+                        </span>
+                    </p>
 
                     <div *ngIf="canCalendarShowForDelivery === 'true' || isHoliday === true">
                         <h3 class="car-subheading">{{"SelectDeliveryDAte" |

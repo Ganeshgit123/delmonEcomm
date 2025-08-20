@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common'
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.prod';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-order',
@@ -12,10 +13,6 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class OrderComponent {
   endpoint = environment.baseUrl;
-
-  constructor(private auth: AuthService, private modalService: NgbModal,
-    private toastr: ToastrService,) { }
-
   userId: any;
   orderData: any;
   confirmData: any;
@@ -30,6 +27,10 @@ export class OrderComponent {
   websiteFlow: any;
   adminLogin: any;
   dir: any;
+  loadedTabs: { [key: string]: boolean } = {};
+
+  constructor(private auth: AuthService, private modalService: NgbModal,
+    private toastr: ToastrService,) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem("dir") || "rtl";
@@ -37,21 +38,55 @@ export class OrderComponent {
     this.websiteFlow = localStorage.getItem('flow');
     this.userId = sessionStorage.getItem('userId');
 
-    this.auth.getOrder(this.userId).subscribe((res: any) => {
-      this.orderData = res.data;
-    });
+    this.loadOrders('PLACED');
+  }
 
-    this.auth.confirmOrder(this.userId).subscribe((res: any) => {
-      this.confirmData = res.data;
-    });
+  onTabChange(event: MatTabChangeEvent) {
+    switch (event.index) {
+      case 0:
+        this.loadOrders('PLACED');
+        break;
+      case 1:
+        this.loadOrders('CONFIRMED');
+        break;
+      case 2:
+        this.loadOrders('COMPLETED');
+        break;
+      case 3:
+        this.loadOrders('CANCELLED');
+        break;
+    }
+  }
 
-    this.auth.completeOrder(this.userId).subscribe((res: any) => {
-      this.completeData = res.data;
-    });
+  loadOrders(type: string) {
+    if (this.loadedTabs[type]) return; // prevent multiple API calls
 
-    this.auth.cancelOrder(this.userId).subscribe((res: any) => {
-      this.cancelData = res.data;
-    });
+    switch (type) {
+      case 'PLACED':
+        this.auth.getOrder(this.userId).subscribe((res: any) => {
+          this.orderData = res.data;
+          this.loadedTabs[type] = true;
+        });
+        break;
+      case 'CONFIRMED':
+        this.auth.confirmOrder(this.userId).subscribe((res: any) => {
+          this.confirmData = res.data;
+          this.loadedTabs[type] = true;
+        });
+        break;
+      case 'COMPLETED':
+        this.auth.completeOrder(this.userId).subscribe((res: any) => {
+          this.completeData = res.data;
+          this.loadedTabs[type] = true;
+        });
+        break;
+      case 'CANCELLED':
+        this.auth.cancelOrder(this.userId).subscribe((res: any) => {
+          this.cancelData = res.data;
+          this.loadedTabs[type] = true;
+        });
+        break;
+    }
   }
 
   date(value: any) {

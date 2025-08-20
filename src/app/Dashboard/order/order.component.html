@@ -4,13 +4,17 @@
   <div class="pb-3"></div>
 
   <mat-tab-group fitInkBarToContent
-    [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}">
+    [ngClass]="{'poul_flow': websiteFlow === 'POULTRY', 'feed_flow': websiteFlow !== 'POULTRY'}"
+    (selectedTabChange)="onTabChange($event)">
     <mat-tab label="{{'MyOrders' | translate}}">
       <div class="orders-main mt-3" *ngFor="let data of orderData">
         <div class="orders-main-top d-flex justify-content-between">
           <p>{{"OrderID" | translate}} : {{data.orderId}}</p>
-          <p>{{"OrderPlaced" | translate}} : <span class="date_time_class">
-              {{data.orderPlaceTime | date: 'EEEE, MMM d, y'}}</span></p>
+          <p>{{"OrderPlaced" | translate}} :
+            <span [dir]="dir" class="date_time_class">
+              {{ data.orderPlaceTime | date:'EEEE, MMM d, y':'': (dir === 'rtl' ? 'ar-BH' : 'en-US') }}
+            </span>
+          </p>
         </div>
         <div class="vertical-line"></div>
         <p class="status_btn"><button class="orders-main-btn-f px-4 py-1 mt-3 mb-2"> {{"WaitingAdminApproval" |
@@ -39,8 +43,9 @@
           <p>{{"OrderID" | translate}} : {{confirm.orderId}}</p>
           <div class="orders-confirm-top">
             <p class="text-center mx-3" style="color: var(--dash-btn-color);">
-              <span *ngIf="confirm.newDeliveryDate == null">{{"Deliveryon" | translate}} {{confirm.deliveredTime |
-                date:'EEEE, MMM d, y'}}</span>
+              <span [dir]="dir" *ngIf="confirm.newDeliveryDate == null">
+                {{ confirm.deliveredTime | date:'EEEE, MMM d, y':'': (dir === 'rtl' ? 'ar-BH' : 'en-US') }}
+              </span>
               <span *ngIf="confirm.newDeliveryDate != null">{{"Deliveryon" | translate}}
                 {{date(confirm.newDeliveryDate)}}</span>
             </p>
@@ -161,7 +166,10 @@
           <p>{{"OrderID" | translate}} : {{cancel.orderId}}</p>
           <div class="orders-confirm-top">
             <p class="text-center mx-3" style="color: var(--main-color);">{{"cancelledOn" | translate}}
-              {{cancel.updatedAt | date: 'EEEE, MMM d, y'}}</p>
+              <span [dir]="dir">
+                {{ cancel.updatedAt | date:'EEEE, MMM d, y':'': (dir === 'rtl' ? 'ar-BH' : 'en-US') }}
+              </span>
+            </p>
           </div>
         </div>
         <hr class="dashed_hr">

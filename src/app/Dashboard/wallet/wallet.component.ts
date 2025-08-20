@@ -12,49 +12,51 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class WalletComponent {
 
   amount: any;
-  userId:any;
-  orderId :any = 10;
-  type:any = 'ADD';
+  userId: any;
+  orderId: any = 10;
+  type: any = 'ADD';
   paymentType = 'CARD';
-  walletData:any;
-  getWalletDetails:any;
-  walletAmount:any;
+  walletData: any;
+  getWalletDetails: any;
+  walletAmount: any;
   websiteFlow: any;
-  adminLogin:any;
+  adminLogin: any;
+  dir: any;
 
-  constructor(private auth: AuthService,  private toastr: ToastrService, private modalService: NgbModal) { }
+  constructor(private auth: AuthService, private toastr: ToastrService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.dir = localStorage.getItem('dir') || 'ltr';
     this.websiteFlow = localStorage.getItem('flow');
     this.userId = sessionStorage.getItem('userId');
     this.adminLogin = sessionStorage.getItem('adminLogin');
-    
-    this.auth.get_Wallet(this.userId).subscribe((res:any)=>{
+
+    this.auth.get_Wallet(this.userId).subscribe((res: any) => {
       this.getWalletDetails = res.data;
       this.walletAmount = res.walletAmount;
       // console.log(this.getWalletDetails);
-      
+
     })
   }
 
-  btnAmount(price:any){
+  btnAmount(price: any) {
     this.amount = price;
   }
 
-  add_Wallet(){
+  add_Wallet() {
 
-    this.walletData = {"paymentType":this.paymentType,"orderId":this.orderId,"type":this.type,"amount":this.amount};
-    this.auth.add_Wallet(this.walletData,this.userId).subscribe((res:any)=>{
+    this.walletData = { "paymentType": this.paymentType, "orderId": this.orderId, "type": this.type, "amount": this.amount };
+    this.auth.add_Wallet(this.walletData, this.userId).subscribe((res: any) => {
       this.toastr.success(res.message);
       this.ngOnInit();
       this.modalService.dismissAll();
     })
-    
+
   }
 
-  openVerticallyCentered(content:any) {
-		this.modalService.open(content, { centered: true });
-	}
+  openVerticallyCentered(content: any) {
+    this.modalService.open(content, { centered: true });
+  }
 
 
 

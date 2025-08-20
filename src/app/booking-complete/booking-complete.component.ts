@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AnimationItem } from 'lottie-web';
+import { Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
@@ -8,18 +8,21 @@ import { AnimationOptions } from 'ngx-lottie';
   styleUrls: ['./booking-complete.component.css']
 })
 export class BookingCompleteComponent {
-
+  message: string | null = null;
 
   options: AnimationOptions = {
-    path: '../../assets/images/Animations/6761-check-box-3.json'
+    path: 'assets/images/Animations/6761-check-box-3.json'
   };
 
-  constructor() { }
+  options1: AnimationOptions = {
+    path: 'assets/images/Animations/cancel.json'
+  };
+
+  constructor(private router: Router) {
+    const nav = this.router.getCurrentNavigation();
+    this.message = nav?.extras.state?.['message'] || null;
+  }
 
   ngOnInit(): void { }
-
-  onAnimate(animationItem: AnimationItem): void {
-    // console.log(animationItem);
-  }
 
 }

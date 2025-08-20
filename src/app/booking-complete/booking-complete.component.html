@@ -2,13 +2,17 @@
     <div class="row mt-5 pt-5">
         <div class="box text-center">
             <div>
-                <div class="img-address pb-4 mx-auto">
-                    <ng-lottie [options]="options" (animationCreated)="onAnimate($event)">
+                <div class="img-address pb-4 mx-auto" *ngIf="message !== 'Cart is empty'">
+                    <ng-lottie [options]="options">
+                    </ng-lottie>
+                </div>
+                <div class="img-address pb-4 mx-auto" *ngIf="message === 'Cart is empty'">
+                    <ng-lottie [options]="options1">
                     </ng-lottie>
                 </div>
             </div>
-            <p class="text-center pb-2">Thank you for the payment,<br> Your order is placed successfully.</p>
-            <button class="btn btn-lg btn-complete" routerLink="/my_profile">{{"MyOrder" | translate}}</button>
+            <p class="text-center pb-2" *ngIf="message">{{ message }}</p>
+            <button class="btn btn-lg btn-complete" routerLink="/my_profile/orders">{{"MyOrder" | translate}}</button>
         </div>
     </div>
 </div>

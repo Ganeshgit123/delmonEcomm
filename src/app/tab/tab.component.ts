@@ -10,15 +10,6 @@ import { Router } from '@angular/router';
 export class TabComponent {
 
   websiteFlow: any;
-  viewOrder = false;
-  viewAddress = false;
-  walletPage = false;
-  favouritePage = false;
-  loyaltyPage = false;
-  helpPage = false;
-  settingPage = false;
-  feedbackPage = false;
-  viewProfile = true;
   adminLogin: any;
 
   constructor(private router: Router, private toastr: ToastrService) { }
@@ -26,7 +17,6 @@ export class TabComponent {
   ngOnInit(): void {
     this.adminLogin = sessionStorage.getItem('adminLogin');
     this.websiteFlow = localStorage.getItem('flow');
-    //  console.log("sfe",this.websiteFlow);
   }
 
   logOut() {
@@ -40,48 +30,4 @@ export class TabComponent {
     }
   }
 
-  profile() {
-    window.scroll(0, 0);
-    this.viewProfile = true;
-  }
-
-  myOrder() {
-    window.scroll(0, 0);
-    this.viewOrder = true;
-  }
-
-  address() {
-    window.scroll(0, 0);
-    this.viewAddress = true;
-  }
-
-  wallet() {
-    window.scroll(0, 0);
-    this.walletPage = true;
-  }
-
-  favourite() {
-    window.scroll(0, 0);
-    this.favouritePage = true;
-  }
-
-  loyality() {
-    window.scroll(0, 0);
-    this.loyaltyPage = true;
-  }
-
-  help() {
-    window.scroll(0, 0);
-    this.helpPage = true;
-  }
-
-  settings() {
-    window.scroll(0, 0);
-    this.settingPage = true;
-  }
-
-  feedback() {
-    window.scroll(0, 0);
-    this.feedbackPage = true;
-  }
 }

@@ -8,285 +8,94 @@
 <section class="back">
     <div class="container">
         <div class="row pt-5 pb-5">
+            <!-- Sidebar -->
             <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12">
-                <div class="nav flex-column nav-pills tab-border large" id="v-pills-tab" role="tablist"
-                    aria-orientation="vertical">
+                <div class="nav flex-column nav-pills tab-border large">
 
-                    <div class="nav-link d-flex active sidebox-content" id="v-pills-edit-tab" data-toggle="pill"
-                        data-target="#v-pills-edit" type="button" role="tab" aria-controls="v-pills-edit"
-                        aria-selected="true">
+                    <a class="nav-link d-flex sidebox-content" routerLink="edit" routerLinkActive="active">
                         <img src="assets/images/Icon-awesome-address-book.svg" alt="">
                         <div>
-                            <h5>{{"Edit Profile" | translate}}</h5>
-                            <p>{{"EditAddYourName" | translate}}</p>
+                            <h5>{{ "Edit Profile" | translate }}</h5>
+                            <p>{{ "EditAddYourName" | translate }}</p>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-order-tab" data-toggle="pill"
-                        data-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order"
-                        aria-selected="true" (click)="myOrder()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="orders" routerLinkActive="active">
                         <img src="assets/images/Icon-awesome-address-book.svg" alt="">
                         <div>
-                            <h5>{{"MyOrder" | translate}}</h5>
-                            <p>{{"TrackPurchasesOnePlace" | translate}}</p>
+                            <h5>{{ "MyOrder" | translate }}</h5>
+                            <p>{{ "TrackPurchasesOnePlace" | translate }}</p>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-address-tab" data-toggle="pill"
-                        data-target="#v-pills-address" type="button" role="tab" aria-controls="v-pills-address"
-                        aria-selected="true" (click)="address()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="address" routerLinkActive="active">
                         <img src="assets/images/Icon-awesome-address-book.svg" alt="">
                         <div>
-                            <h5>{{"Addressess" | translate}}</h5>
-                            <p>{{"EditAddNewAddress" | translate}}</p>
+                            <h5>{{ "Addressess" | translate }}</h5>
+                            <p>{{ "EditAddNewAddress" | translate }}</p>
                         </div>
+                    </a>
 
-                    </div>
-
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-wallet-tab" data-toggle="pill"
-                        data-target="#v-pills-wallet" type="button" role="tab" aria-controls="v-pills-wallet"
-                        aria-selected="true" (click)="wallet()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="wallet" routerLinkActive="active">
                         <img src="assets/images/Icon-ionic-md-wallet.svg" alt="">
                         <div>
-                            <h5>{{"WalletBalance" | translate}}</h5>
-                            <p>{{"RelatedContent" | translate}}</p>
+                            <h5>{{ "WalletBalance" | translate }}</h5>
+                            <p>{{ "RelatedContent" | translate }}</p>
                         </div>
+                    </a>
 
-                    </div>
-
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-favourite-tab" data-toggle="pill"
-                        data-target="#v-pills-favourite" type="button" role="tab" aria-controls="v-pills-favourite"
-                        aria-selected="true" (click)="favourite()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="favourites" routerLinkActive="active">
                         <img src="assets/images/Icon-metro-favorite.svg" alt="">
                         <div>
-                            <h5>{{"Favourites" | translate}}</h5>
-                            <p>{{"RelatedContent" | translate}}</p>
+                            <h5>{{ "Favourites" | translate }}</h5>
+                            <p>{{ "RelatedContent" | translate }}</p>
                         </div>
+                    </a>
 
-                    </div>
-
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-points-tab" data-toggle="pill"
-                        data-target="#v-pills-points" type="button" role="tab" aria-controls="v-pills-points"
-                        aria-selected="true" (click)="loyality()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="points" routerLinkActive="active">
                         <img src="assets/images/Icon-metro-token.svg" alt="">
                         <div>
-                            <h5>{{"LoyalityPoints" | translate}}</h5>
-                            <p>{{"RelatedContent" | translate}}</p>
+                            <h5>{{ "LoyalityPoints" | translate }}</h5>
+                            <p>{{ "RelatedContent" | translate }}</p>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-help-tab" data-toggle="pill"
-                        data-target="#v-pills-help" type="button" role="tab" aria-controls="v-pills-help"
-                        aria-selected="true" (click)="help()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="help" routerLinkActive="active">
                         <img src="assets/images/Icon-awesome-hands-helping.svg" alt="">
                         <div>
-                            <h5>{{"HelpSupport" | translate}}</h5>
-                            <p>{{"RelatedContent" | translate}}</p>
+                            <h5>{{ "HelpSupport" | translate }}</h5>
+                            <p>{{ "RelatedContent" | translate }}</p>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-settings-tab" data-toggle="pill"
-                        data-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings"
-                        aria-selected="true" (click)="settings()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="settings" routerLinkActive="active">
                         <img src="assets/images/Icon-ionic-md-settings.svg" alt="">
                         <div>
-                            <h5>{{"Settings" | translate}}</h5>
-                            <p>{{"RelatedContent" | translate}}</p>
+                            <h5>{{ "Settings" | translate }}</h5>
+                            <p>{{ "RelatedContent" | translate }}</p>
                         </div>
+                    </a>
 
-                    </div>
-
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-feedback-tab" data-toggle="pill"
-                        data-target="#v-pills-feedback" type="button" role="tab" aria-controls="v-pills-feedback"
-                        aria-selected="true" (click)="feedback()">
+                    <a class="nav-link d-flex sidebox-content" routerLink="feedback" routerLinkActive="active">
                         <img src="assets/images/Icon-material-feedback.svg" alt="">
                         <div>
-                            <h5>{{"SendFeedback" | translate}}</h5>
-                            <p>{{"ComplaintsSuggestions" | translate}}</p>
+                            <h5>{{ "SendFeedback" | translate }}</h5>
+                            <p>{{ "ComplaintsSuggestions" | translate }}</p>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="nav-link d-flex sidebox-content" id="v-pills-logout-tab" data-toggle="pill"
-                        data-target="#v-pills-logout" type="button" role="tab" aria-controls="v-pills-logout"
-                        aria-selected="true" *ngIf="!adminLogin">
+                    <div class="nav-link d-flex sidebox-content" *ngIf="!adminLogin" (click)="logOut()">
                         <img src="assets/images/Icon-open-account-logout.svg" alt="">
                         <div>
-                            <h5 (click)="logOut()">{{"LogOut" | translate}}</h5>
+                            <h5>{{ "LogOut" | translate }}</h5>
                         </div>
                     </div>
                 </div>
-
-                <!-- <ul class="nav nav-pills small" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex active sidebox-content" id="v-pills-edit-tab" data-toggle="pill"
-                            data-target="#v-pills-edit" type="button" role="tab" aria-controls="v-pills-edit"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-awesome-address-book.svg" alt="">
-                            <div>
-                                <h5>Edit Profile</h5>
-                                <p>Edit and Add your name</p>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-order-tab" data-toggle="pill"
-                            data-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order"
-                            aria-selected="true">
-
-                            <img src="assets/images/Icon-awesome-address-book.svg" alt="">
-                            <div>
-                                <h5 class="">My Order</h5>
-                                <p>Related Content</p>
-                            </div>
-
-                        </div>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-address-tab" data-toggle="pill"
-                            data-target="#v-pills-address" type="button" role="tab" aria-controls="v-pills-address"
-                            aria-selected="true">
-
-                            <img src="assets/images/Icon-awesome-address-book.svg" alt="">
-                            <div>
-                                <h5 class="">Adressess</h5>
-                                <p>Edit and Add new address</p>
-                            </div>
-
-                        </div>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-wallet-tab" data-toggle="pill"
-                            data-target="#v-pills-wallet" type="button" role="tab" aria-controls="v-pills-wallet"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-ionic-md-wallet.svg" alt="">
-                            <div>
-                                <h5>Wallet Balance</h5>
-                                <p>Related Content</p>
-                            </div>
-
-                        </div>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-favourite-tab" data-toggle="pill"
-                            data-target="#v-pills-favourite" type="button" role="tab" aria-controls="v-pills-favourite"
-                            aria-selected="true">
-
-                            <img src="assets/images/Icon-metro-favorite.svg" alt="">
-                            <div>
-                                <h5>Favourites</h5>
-                                <p>Related Content</p>
-                            </div>
-
-                        </div>
-
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-points-tab" data-toggle="pill"
-                            data-target="#v-pills-points" type="button" role="tab" aria-controls="v-pills-points"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-metro-token.svg" alt="">
-                            <div>
-                                <h5>Loyality Points</h5>
-                                <p>Related Content</p>
-                            </div>
-                        </div>
-                    </li>
-
-
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-help-tab" data-toggle="pill"
-                            data-target="#v-pills-help" type="button" role="tab" aria-controls="v-pills-help"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-awesome-hands-helping.svg" alt="">
-                            <div>
-                                <h5>Help and Support</h5>
-                                <p>Related Content</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-settings-tab" data-toggle="pill"
-                            data-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-ionic-md-settings.svg" alt="">
-                            <div>
-                                <h5>Settings</h5>
-                                <p>Related Content</p>
-                            </div>
-
-                        </div>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-feedback-tab" data-toggle="pill"
-                            data-target="#v-pills-feedback" type="button" role="tab" aria-controls="v-pills-feedback"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-material-feedback.svg" alt="">
-                            <div>
-                                <h5>Send Feedback</h5>
-                                <p>Complaints and Suggestions</p>
-                            </div>
-
-                        </div>
-                    </li>
-
-                    <li class="nav-item" role="presentation">
-                        <div class="nav-link d-flex sidebox-content" id="v-pills-logout-tab" data-toggle="pill"
-                            data-target="#v-pills-logout" type="button" role="tab" aria-controls="v-pills-logout"
-                            aria-selected="true">
-                            <img src="assets/images/Icon-open-account-logout.svg" alt="">
-                            <div>
-                                <h5 routerLink="/looking">LogOut</h5>
-                            </div>
-                        </div>
-                    </li>
-                </ul> -->
             </div>
+
+            <!-- Main Content -->
             <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
-                <div class="tab-content" id="v-pills-tabContent">
-
-                    <div class="tab-pane fade show active" id="v-pills-edit" role="tabpanel"
-                        aria-labelledby="v-pills-edit-tab">
-                        <app-edit *ngIf="viewProfile"></app-edit>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
-                        <app-order *ngIf="viewOrder"></app-order>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-address" role="tabpanel"
-                        aria-labelledby="v-pills-address-tab">
-                        <app-address *ngIf="viewAddress"></app-address>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-wallet" role="tabpanel" aria-labelledby="v-pills-wallet-tab">
-                        <app-wallet *ngIf="walletPage"></app-wallet>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-favourite" role="tabpanel"
-                        aria-labelledby="v-pills-favourite-tab">
-                        <app-favourite *ngIf="favouritePage"></app-favourite>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-points" role="tabpanel" aria-labelledby="v-pills-points-tab">
-                        <app-points *ngIf="loyaltyPage"></app-points>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-help" role="tabpanel" aria-labelledby="v-pills-help-tab">
-                        <app-help *ngIf="helpPage"></app-help>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                        aria-labelledby="v-pills-settings-tab">
-                        <app-settings *ngIf="settingPage"></app-settings>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-feedback" role="tabpanel"
-                        aria-labelledby="v-pills-feedback-tab">
-                        <app-feedback *ngIf="feedbackPage"></app-feedback>
-                    </div>
-                </div>
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>

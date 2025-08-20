@@ -23,7 +23,9 @@
         <h6 class="pt-3" *ngIf="item.loyaltyType == 'DEBIT'">{{ item.usedLoyaltyPoint }} {{"pts" | translate}} </h6>
         <h6 class="pt-3" style="color: var(--dash-btn-color);" *ngIf="item.loyaltyType == 'CREDIT'">{{
           item.usedLoyaltyPoint }} {{"pts" | translate}} </h6>
-        <p class="">{{ item.updatedAt | date:'EEEE, MMM d, y' }}</p>
+        <p [dir]="dir">
+          {{ item.updatedAt | date:'EEEE, MMM d, y':'': (dir === 'rtl' ? 'ar-BH' : 'en-US') }}
+        </p>
       </div>
       <div class="img-arrow">
         <img src="assets/images/feather-arrow-down.svg" *ngIf="item.loyaltyType == 'CREDIT'" alt="" />

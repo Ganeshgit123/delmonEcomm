@@ -688,11 +688,13 @@ export class CartComponent {
                 // console.log("empCartoon", data);
                 this.auth.bookOrder(data).subscribe((res: any) => {
                   if (res.success == true) {
-                    this.toastr.success('Order confirmed! ', res.message);
-                    this.router.navigate([`/booking-complete`]);
+                    this.toastr.success('Order confirmed!', res.massage);
+                    this.router.navigate(['/booking-complete'], {
+                      state: { message: res.massage }
+                    });
                     this.ngOnInit();
                   } else if (res.error == true) {
-                    this.toastr.error('Order not confirmed ', res.message);
+                    this.toastr.error('Order not confirmed', res.massage);
                   }
                 })
               }
@@ -746,11 +748,13 @@ export class CartComponent {
                 // console.log("UserCartoon", data);
                 this.auth.bookOrder(data).subscribe((res: any) => {
                   if (res.success == true) {
-                    this.toastr.success('Order confirmed! ', res.message);
-                    this.router.navigate([`/booking-complete`]);
+                    this.toastr.success('Order confirmed! ', res.massage);
+                    this.router.navigate(['/booking-complete'], {
+                      state: { message: res.massage }
+                    });
                     this.ngOnInit();
                   } else if (res.error == true) {
-                    this.toastr.error('Order not confirmed ', res.message);
+                    this.toastr.error('Order not confirmed ', res.massage);
                   }
                 })
               }
@@ -785,11 +789,13 @@ export class CartComponent {
             // console.log("piece", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
               if (res.success == true) {
-                this.toastr.success('Order confirmed! ', res.message);
-                this.router.navigate([`/booking-complete`]);
+                this.toastr.success('Order confirmed! ', res.massage);
+                this.router.navigate(['/booking-complete'], {
+                  state: { message: res.massage }
+                });
                 this.ngOnInit();
               } else if (res.error == true) {
-                this.toastr.error('Order not confirmed ', res.message);
+                this.toastr.error('Order not confirmed ', res.massage);
               }
             })
           }

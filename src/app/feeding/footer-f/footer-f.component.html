@@ -5,18 +5,21 @@
                 <img src="assets/images/feeding/feeding_logo.svg" alt="">
                 <div class="container">
                     <div class="mt-3 d-flex footer-left-main">
-                        <h3>Contact us</h3>
+                        <h3>{{"contactUs" | translate}}</h3>
                         <div class="footer-left-content px-3">
-                            <p class="pb-1">Delmon Poultry Company (B.S.C) <br>Hamala - Kingdom of Bahrain, PO. Box.
-                                20535</p>
+                            <p class="pb-1">{{"DelmonAddress" | translate}} <br>
+                                {{"Address2" | translate}} <br> {{"Address3" | translate}}</p>
                         </div>
                     </div>
                     <div class="d-flex mt-3 footer-left-main">
-                        <h3>Support</h3>
+                        <h3><a href="{{ support }}" target="_blank">{{"Support" | translate}}</a></h3>
                         <div class="footer-left-content text-center px-3">
-                            <p class="pl-3">About Us</p>
-                            <p class="pl-3">Privacy and Policy</p>
-                            <p class="pl-3">Terms and Conditions</p>
+                            <p class="pl-3"> <a href="{{ about }}" target="_blank"> {{"Aboutus" | translate}}</a></p>
+                            <p class="pl-3"><a href="{{ privacyPolicy }}" target="_blank">{{"PrivacyPolicy" |
+                                    translate}}</a></p>
+                            <p class="pl-3"><a href="{{ termsAndCondition }}" target="_blank">{{"TermsandConditions" |
+                                    translate}}</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -25,25 +28,25 @@
                 <div class="container">
                     <div class="row mt-4">
                         <div class="col">
-                            <h3>Main Office:</h3>
+                            <h3>{{"mainOffice" | translate}} :</h3>
                             <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17608282</p>
                             <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17601930</p>
                         </div>
                         <div class="col">
-                            <h3>Fed-Mill Factory</h3>
+                            <h3>{{"feedmillFactory" | translate}} :</h3>
                             <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17608282</p>
                             <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17601930</p>
                         </div>
                         <div class="w-100"></div>
                         <div class="col">
-                            <h3>Processing Plant:</h3>
-                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17727690</p>
-                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17729041</p>
+                            <h3>{{"processingPlant" | translate}} :</h3>
+                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17608282</p>
+                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17601930</p>
                         </div>
                         <div class="col">
-                            <h3 class="">Hatchery</h3>
-                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17624832</p>
-                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17624901</p>
+                            <h3 class="">{{"hatchery" | translate}} :</h3>
+                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17608282</p>
+                            <p><img src="assets/images/Icon-ionic-md-call.svg">+973 17601930</p>
                         </div>
 
                     </div>
@@ -54,10 +57,13 @@
         <div class="col-12 social-icons d-flex justify-content-center align-items-center pb-2">
             <hr>
             <div class="d-flex justify-content-center">
-                <p>Follow At</p>
-                <img src="assets/images/Icon awesome-facebook-f.svg" alt="" class="mx-2" style="width: 10px;">
-                <img src="assets/images/Icon ionic-logo-instagram.svg" alt="" class="mx-2">
-                <img src="assets/images/Icon awesome-linkedin-in.svg" alt="" class="mx-2">
+                <p>{{"followUs" | translate}}</p>
+                <a href="https://www.facebook.com/dawajen.bh/" target="_blank">
+                    <img src="assets/images/Icon awesome-facebook-f.svg" alt="" class="mx-2" style="width: 10px;"></a>
+                <a href="https://www.instagram.com/dawajen.bh/" target="_blank">
+                    <img src="assets/images/Icon ionic-logo-instagram.svg" alt="" class="mx-2"></a>
+                <a href="https://www.linkedin.com/company/delmon-poultry-co/?_l=en_US" target="_blank">
+                    <img src="assets/images/Icon awesome-linkedin-in.svg" alt="" class="mx-2"></a>
             </div>
             <hr>
         </div>

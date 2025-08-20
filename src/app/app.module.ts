@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { AuthInterceptor } from "./shared/auth.interceptor";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,25 +35,25 @@ import { IngredientsComponent } from './ingredients/ingredients.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { NgOtpInputModule } from  'ng-otp-input';
+import { NgOtpInputModule } from 'ng-otp-input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from "@angular/forms";
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { BookingCompleteComponent } from './booking-complete/booking-complete.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DatePipe } from '@angular/common';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 
 // import { AuthInterceptor } from "./shared/auth.interceptor";
 
@@ -67,6 +67,9 @@ import { FeedingModule } from './feeding/feeding.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AdminBasketComponent } from './admin-basket/admin-basket.component';
+import { registerLocaleData } from '@angular/common';
+import localeAr from '@angular/common/locales/ar';
+registerLocaleData(localeAr);
 
 export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -119,8 +122,8 @@ export function playerFactory() {
     MatExpansionModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule, 
-    MatNativeDateModule, 
+    MatInputModule,
+    MatNativeDateModule,
     MatDatepickerModule,
     MomentDateModule,
     MatTabsModule,
@@ -135,7 +138,7 @@ export function playerFactory() {
     ToastrModule.forRoot(),
     HttpClientModule,
     TranslateModule.forRoot({
-      defaultLanguage:'ar',
+      defaultLanguage: 'ar',
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
@@ -150,6 +153,10 @@ export function playerFactory() {
       useClass: AuthInterceptor,
       multi: true,
     },
+    {
+      provide: LOCALE_ID,
+      useValue: 'ar-BH'
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
@@ -12,10 +11,12 @@ export class PointsComponent {
   loyaltyData: any;
   totalLoyaltyPoint: any;
   websiteFlow: any;
+  dir: any;
 
-  constructor(private auth: AuthService, private toastr: ToastrService) { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.dir = localStorage.getItem('dir') || 'ltr';
     this.websiteFlow = localStorage.getItem('flow');
 
     this.auth.getLoyaltyPoints().subscribe((res: any) => {
