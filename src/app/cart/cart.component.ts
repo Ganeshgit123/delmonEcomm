@@ -637,130 +637,90 @@ export class CartComponent {
         this.viewData.data.forEach((element: any) => {
           if (element.cartonActive == 1) {
             cartoonCount++;
-            totalQuantity += element.quantity; // Assuming 'quantity' holds the number of products
-            if (this.loginType === "EMPLOYEE") {
-              if (this.viewData.maxCartonDiscountPerDay == 0) {
-                if (this.dir == 'ltr') {
-                  const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDay} cartons remaining for today`
-                  this.toastr.error(msg);
-                } else if (this.dir == 'rtl') {
-                  const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDay} كرتون متبقية لهذا اليوم."`
-                  this.toastr.error(msg);
-                }
-              } else if (this.viewData.maxCartonDiscountPerDay < totalQuantity) {
-                if (this.dir == 'ltr') {
-                  const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDay} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
-                  this.toastr.error(msg);
-                } else if (this.dir == 'rtl') {
-                  const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون والحد المتاح لديك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
-                  this.toastr.error(msg);
-                }
-              } else {
-                let pending = this.viewData.maxCartonDiscountPerDay - totalQuantity;
-                maxCartonDiscountPerDayValue = pending < 0 ? 0 : pending;
-                // console.log("order Details", this.order);
-                let data = {
-                  "couponName": this.couponResponse?.arCouponName,
-                  "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
-                  "orderReferenceId": "",
-                  "deliveryType": this.deliveryType,
-                  "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
-                  "vat": this.VATSum,
-                  "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
-                  "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
-                  "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
-                  "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
-                  "paymentTypeId": this.paymentType,
-                  "couponId": this.couponResponse?.id,
-                  "order": JSON.stringify(this.order),
-                  "deliveryAddressType": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].saveAs,
-                  "deliveryNotes": this.notesForm.controls['notesText'].value,
-                  "deliveryOrderDate": formatDate(new Date(), 'shortDate', 'en-US'),
-                  "cartId": JSON.stringify(cardIds),
-                  "netAmount": this.totalAmount,
-                  "deliveryCharge": this.deliveryCharge,
-                  "couponAmount": this.couponVal,
-                  "cartonDiscount": this.currentCartonDiscountEmployee,
-                  "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
-                  "maxCartonDiscountPerDay": maxCartonDiscountPerDayValue,
-                  "employeeCartonDiscount": totalQuantity
-                }
-                // console.log("empCartoon", data);
-                this.auth.bookOrder(data).subscribe((res: any) => {
-                  if (res.success == true) {
-                    this.toastr.success('Order confirmed!', res.massage);
-                    this.router.navigate(['/booking-complete'], {
-                      state: { message: res.massage }
-                    });
-                    this.ngOnInit();
-                  } else if (res.error == true) {
-                    this.toastr.error('Order not confirmed', res.massage);
-                  }
-                })
-              }
-            } else if (this.loginType === "USER") {
-              if (this.viewData.maxCartonDiscountPerDayUser == 0) {
-                if (this.dir == 'ltr') {
-                  const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDayUser} cartons remaining for today`
-                  this.toastr.error(msg);
-                } else if (this.dir == 'rtl') {
-                  const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDayUser} كرتون متبقية لهذا اليوم."`
-                  this.toastr.error(msg);
-                }
-              } else if (this.viewData.maxCartonDiscountPerDayUser < totalQuantity) {
-                if (this.dir == 'ltr') {
-                  const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDayUser} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
-                  this.toastr.error(msg);
-                } else if (this.dir == 'rtl') {
-                  const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون والحد المتاح لديك من ${this.viewData.maxCartonDiscountPerDayUser} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
-                  this.toastr.error(msg);
-                }
-              } else {
-                let pending = this.viewData.maxCartonDiscountPerDayUser - totalQuantity;
-                maxCartonDiscountPerDayValue = pending < 0 ? 0 : pending;
-                // console.log("order Details", this.order);
-                let data = {
-                  "couponName": this.couponResponse?.arCouponName,
-                  "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
-                  "orderReferenceId": "",
-                  "deliveryType": this.deliveryType,
-                  "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
-                  "vat": this.VATSum,
-                  "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
-                  "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
-                  "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
-                  "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
-                  "paymentTypeId": this.paymentType,
-                  "couponId": this.couponResponse?.id,
-                  "order": JSON.stringify(this.order),
-                  "deliveryAddressType": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].saveAs,
-                  "deliveryNotes": this.notesForm.controls['notesText'].value,
-                  "deliveryOrderDate": formatDate(new Date(), 'shortDate', 'en-US'),
-                  "cartId": JSON.stringify(cardIds),
-                  "netAmount": this.totalAmount,
-                  "deliveryCharge": this.deliveryCharge,
-                  "couponAmount": this.couponVal,
-                  "cartonDiscount": this.viewData?.cartonDiscount,
-                  "maxCartonDiscountPerDayUser": maxCartonDiscountPerDayValue,
-                  "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay,
-                  "userCartonDiscount": totalQuantity
-                }
-                // console.log("UserCartoon", data);
-                this.auth.bookOrder(data).subscribe((res: any) => {
-                  if (res.success == true) {
-                    this.toastr.success('Order confirmed! ', res.massage);
-                    this.router.navigate(['/booking-complete'], {
-                      state: { message: res.massage }
-                    });
-                    this.ngOnInit();
-                  } else if (res.error == true) {
-                    this.toastr.error('Order not confirmed ', res.massage);
-                  }
-                })
-              }
-
+            totalQuantity += element.quantity;
+          }
+        });
+        if (this.loginType === "EMPLOYEE") {
+          if (this.viewData.maxCartonDiscountPerDay == 0) {
+            if (this.dir == 'ltr') {
+              const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDay} cartons remaining for today`
+              this.toastr.error(msg);
+            } else if (this.dir == 'rtl') {
+              const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDay} كرتون متبقية لهذا اليوم."`
+              this.toastr.error(msg);
+            }
+          } else if (this.viewData.maxCartonDiscountPerDay < totalQuantity) {
+            if (this.dir == 'ltr') {
+              const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDay} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
+              this.toastr.error(msg);
+            } else if (this.dir == 'rtl') {
+              const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون والحد المتاح لديك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
+              this.toastr.error(msg);
             }
           } else {
+            let pending = this.viewData.maxCartonDiscountPerDay - totalQuantity;
+            maxCartonDiscountPerDayValue = pending < 0 ? 0 : pending;
+            // console.log("order Details", this.order);
+            let data = {
+              "couponName": this.couponResponse?.arCouponName,
+              "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
+              "orderReferenceId": "",
+              "deliveryType": this.deliveryType,
+              "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
+              "vat": this.VATSum,
+              "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
+              "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
+              "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
+              "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
+              "paymentTypeId": this.paymentType,
+              "couponId": this.couponResponse?.id,
+              "order": JSON.stringify(this.order),
+              "deliveryAddressType": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].saveAs,
+              "deliveryNotes": this.notesForm.controls['notesText'].value,
+              "deliveryOrderDate": formatDate(new Date(), 'shortDate', 'en-US'),
+              "cartId": JSON.stringify(cardIds),
+              "netAmount": this.totalAmount,
+              "deliveryCharge": this.deliveryCharge,
+              "couponAmount": this.couponVal,
+              "cartonDiscount": this.currentCartonDiscountEmployee,
+              "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
+              "maxCartonDiscountPerDay": maxCartonDiscountPerDayValue,
+              "employeeCartonDiscount": totalQuantity
+            }
+            // console.log("empCartoon", data);
+            this.auth.bookOrder(data).subscribe((res: any) => {
+              if (res.success == true) {
+                this.toastr.success('Order confirmed!', res.massage);
+                this.router.navigate(['/booking-complete'], {
+                  state: { message: res.massage }
+                });
+                this.ngOnInit();
+              } else if (res.error == true) {
+                this.toastr.error('Order not confirmed', res.massage);
+              }
+            })
+          }
+        } else if (this.loginType === "USER") {
+          if (this.viewData.maxCartonDiscountPerDayUser == 0) {
+            if (this.dir == 'ltr') {
+              const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDayUser} cartons remaining for today`
+              this.toastr.error(msg);
+            } else if (this.dir == 'rtl') {
+              const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDayUser} كرتون متبقية لهذا اليوم."`
+              this.toastr.error(msg);
+            }
+          } else if (this.viewData.maxCartonDiscountPerDayUser < totalQuantity) {
+            if (this.dir == 'ltr') {
+              const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDayUser} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
+              this.toastr.error(msg);
+            } else if (this.dir == 'rtl') {
+              const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون والحد المتاح لديك من ${this.viewData.maxCartonDiscountPerDayUser} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
+              this.toastr.error(msg);
+            }
+          } else {
+            let pending = this.viewData.maxCartonDiscountPerDayUser - totalQuantity;
+            maxCartonDiscountPerDayValue = pending < 0 ? 0 : pending;
+            // console.log("order Details", this.order);
             let data = {
               "couponName": this.couponResponse?.arCouponName,
               "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
@@ -783,10 +743,11 @@ export class CartComponent {
               "deliveryCharge": this.deliveryCharge,
               "couponAmount": this.couponVal,
               "cartonDiscount": this.viewData?.cartonDiscount,
-              "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
-              "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay
+              "maxCartonDiscountPerDayUser": maxCartonDiscountPerDayValue,
+              "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay,
+              "userCartonDiscount": totalQuantity
             }
-            // console.log("piece", data);
+            // console.log("UserCartoon", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
               if (res.success == true) {
                 this.toastr.success('Order confirmed! ', res.massage);
@@ -799,7 +760,46 @@ export class CartComponent {
               }
             })
           }
-        });
+
+        } else {
+          let data = {
+            "couponName": this.couponResponse?.arCouponName,
+            "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
+            "orderReferenceId": "",
+            "deliveryType": this.deliveryType,
+            "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
+            "vat": this.VATSum,
+            "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
+            "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
+            "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
+            "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
+            "paymentTypeId": this.paymentType,
+            "couponId": this.couponResponse?.id,
+            "order": JSON.stringify(this.order),
+            "deliveryAddressType": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].saveAs,
+            "deliveryNotes": this.notesForm.controls['notesText'].value,
+            "deliveryOrderDate": formatDate(new Date(), 'shortDate', 'en-US'),
+            "cartId": JSON.stringify(cardIds),
+            "netAmount": this.totalAmount,
+            "deliveryCharge": this.deliveryCharge,
+            "couponAmount": this.couponVal,
+            "cartonDiscount": this.viewData?.cartonDiscount,
+            "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
+            "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay
+          }
+          // console.log("piece", data);
+          this.auth.bookOrder(data).subscribe((res: any) => {
+            if (res.success == true) {
+              this.toastr.success('Order confirmed! ', res.massage);
+              this.router.navigate(['/booking-complete'], {
+                state: { message: res.massage }
+              });
+              this.ngOnInit();
+            } else if (res.error == true) {
+              this.toastr.error('Order not confirmed ', res.massage);
+            }
+          })
+        }
       }
     }
   }
