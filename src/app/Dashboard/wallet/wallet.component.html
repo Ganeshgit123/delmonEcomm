@@ -8,11 +8,11 @@
             <span *ngIf="websiteFlow == 'FEEDING'"><img src="assets/images/feeding/feeding_wallet.svg" alt=""></span>
             <p class="pt-4">{{"WalletAmount" | translate}}<br> <span>{{walletAmount}} BD</span></p>
         </div>
-        <div class="text-center" *ngIf="!adminLogin">
+        <!-- <div class="text-center" *ngIf="!adminLogin">
             <button type="submit" class="btn btn-lg px-5 wallet-btn" (click)="openVerticallyCentered(content)">
                 {{"ADDMONEY" | translate}}</button>
 
-        </div>
+        </div> -->
     </div>
     <br>
     <h6 class="pt-2 pb-1">{{"TransactionHistory" | translate}}</h6>
