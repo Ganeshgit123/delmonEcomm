@@ -5,8 +5,8 @@
         <div class="col-md-12 pr-0">
             <div class="form">
                 <i class="fa fa-search"></i>
-                <input type="text" class="form-control form-input" [(ngModel)]="value" placeholder="{{'SearchAnything' | translate}}..."
-                    (keyup.enter)="sendValue(value)">
+                <input type="text" class="form-control form-input" [(ngModel)]="value"
+                    placeholder="{{'SearchAnything' | translate}}..." (keyup.enter)="sendValue(value)">
                 <button (click)="sendValue(value)" class="search_btn">{{"Search" | translate}}</button>
             </div>
         </div>
