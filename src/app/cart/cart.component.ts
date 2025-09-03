@@ -446,11 +446,7 @@ export class CartComponent {
     if (updateValue) {
       this.auth.updateCart(updateObj, updateId).subscribe((res: any) => {
         this.toastr.success(res.message);
-        this.ngOnInit();
-        this.order = [];
-        if (this.isappliedEmployeeDiscount) {
-          this.applyEmployeeDiscount()
-        }
+        this.reloadCart();
       })
     }
   }
@@ -462,23 +458,32 @@ export class CartComponent {
     if (updateZero == 0) {
       this.auth.removeCart(updatedId).subscribe((res: any) => {
         this.toastr.success(res.message);
-        this.ngOnInit();
-        this.order = [];
-        if (this.isappliedEmployeeDiscount) {
-          this.applyEmployeeDiscount()
-        }
+        this.reloadCart();
       })
     }
     else {
       this.auth.updateCart(updatedObj, updatedId).subscribe((res: any) => {
         this.toastr.success(res.message);
-        this.ngOnInit();
-        this.order = [];
-        if (this.isappliedEmployeeDiscount) {
-          this.applyEmployeeDiscount()
-        }
+        this.reloadCart();
       })
     }
+  }
+
+  reloadCart() {
+    this.auth.viewCart().subscribe((res: any) => {
+      this.viewData = res;
+      this.productDetails = res.data;
+      let totSum = 0;
+      this.productDetails.forEach((element: any) => {
+        const prodTot = element.quantity * element.price
+        this.prodTotal = totSum += prodTot;
+      })
+      this.order = [];
+      if (this.isappliedEmployeeDiscount) {
+        this.applyEmployeeDiscount();
+      }
+      this.calculateTotal();
+    });
   }
 
   applyCoupon() {
@@ -886,24 +891,35 @@ export class CartComponent {
   }
 
   calculateTotal() {
-    this.totalAmount = ((this.VATSum == undefined ? 0 : this.VATSum) + this.prodTotal).toFixed(2);
+    // Ensure VAT and product total are numbers
+    const vat = Number(this.VATSum) || 0;
+    const productTotal = Number(this.prodTotal) || 0;
 
+    // Start with subtotal
+    let total = vat + productTotal;
+
+    // Loyalty points
     if (this.isAppliedLoyaltyPoint) {
-      this.totalAmount = parseFloat(this.totalAmount) - parseFloat(this.loyaltyPointDiscount);
+      total -= Number(this.loyaltyPointDiscount) || 0;
     }
 
+    // Delivery charge
     if (this.deliveryType === "DELIVERY") {
-      this.totalAmount = parseFloat(this.deliveryCharge) + parseFloat(this.totalAmount);
+      total += Number(this.deliveryCharge) || 0;
     }
 
-    if (this.isAppliedCoupon === true) {
-      this.totalAmount = parseFloat(this.totalAmount) - parseFloat(this.couponAmount);
+    // Coupon
+    if (this.isAppliedCoupon) {
+      total -= Number(this.couponAmount) || 0;
     }
 
+    // Employee discount
     if (this.loginType === "EMPLOYEE" && this.isappliedEmployeeDiscount) {
-      this.totalAmount = parseFloat(this.totalAmount) - parseFloat(this.totalEmployeeDiscount);
+      total -= Number(this.totalEmployeeDiscount) || 0;
     }
-    this.totalAmount = parseFloat(this.totalAmount).toFixed(2);
+
+    // Final rounding to 2 decimals
+    this.totalAmount = total.toFixed(2);
     this.checkEnableDisableOrderButton();
   }
 
@@ -955,18 +971,33 @@ export class CartComponent {
           this.totalEmployeeDiscount = 0.0;
           cartoonProduct = this.cartoonDiscountProductCount()?.data;
           maxIteration = this.cartoonDiscountProductCount()?.maxIteration;
+
+          // How many cartons are allowed for discount (e.g., 2)
           this.currentCartonDiscountEmployee = this.viewData?.cartonDiscount;
+
           for (let index = 0; index < maxIteration; index++) {
-            if (this.currentCartonDiscountEmployee > 0) {
-              let item = cartoonProduct[index];
-              let quantity = item.quantity > this.currentCartonDiscountEmployee ? this.currentCartonDiscountEmployee : item.quantity;
-              this.currentCartonDiscountEmployee = this.currentCartonDiscountEmployee - quantity;
-              let totalWeight = parseFloat(item.weight) * (parseFloat(item.noOfPieces) * (parseFloat(this.viewData?.cartonDiscount) - parseFloat(this.currentCartonDiscountEmployee)) == 0 ? 1 : (parseFloat(item.noOfPieces) * (parseFloat(this.viewData?.cartonDiscount) - parseFloat(this.currentCartonDiscountEmployee))));
-              let kilograms = totalWeight / 1000;
-              let discountFills = kilograms * 100;
-              let discountBD = discountFills / 1000;
-              this.totalEmployeeDiscount += discountBD;
+            if (this.currentCartonDiscountEmployee <= 0) {
+              break; // No more discount cartons available
             }
+
+            const item = cartoonProduct[index];
+
+            // How many cartons from this item can still get discount
+            const eligibleCartons = Math.min(item.quantity, this.currentCartonDiscountEmployee);
+
+            // Update remaining discount cartons
+            this.currentCartonDiscountEmployee -= eligibleCartons;
+
+            // Weight per carton in KG
+            const weightPerCartonKg = parseFloat(item.weight) / 1000;
+
+            // Total eligible weight in KG
+            const eligibleWeightKg = eligibleCartons * weightPerCartonKg;
+
+            // Discount = 1 BD per KG
+            const discountBD = eligibleWeightKg * 1.0;
+
+            this.totalEmployeeDiscount += discountBD;
           }
         }
       }
