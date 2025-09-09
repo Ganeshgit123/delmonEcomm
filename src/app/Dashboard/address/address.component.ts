@@ -45,13 +45,6 @@ export class AddressComponent {
     this.dir = localStorage.getItem('dir') || 'ltr';
     this.websiteFlow = localStorage.getItem('flow');
 
-    this.auth.getZones().subscribe((res: any) => {
-      this.zoneData = res.data;
-    });
-
-    this.auth.getPincode().subscribe((res: any) => {
-      this.pincodeData = res.data;
-    });
     this.auth.getAddress().subscribe((res: any) => {
       // console.log(res.data);
       this.getAddress = res.data;
@@ -106,7 +99,15 @@ export class AddressComponent {
     });
   }
 
+  private fetchZonesAndPincodes() {
+    this.auth.getZones().subscribe((res: any) => {
+      this.zoneData = res.data;
+    });
 
+    this.auth.getPincode().subscribe((res: any) => {
+      this.pincodeData = res.data;
+    });
+  }
 
   openModal(content: any) {
     this.canOpenMap = true;
@@ -114,6 +115,7 @@ export class AddressComponent {
     this.isEdit = false;
     this.submitted = false;
     // this.addressForm.controls["area"].value = this.selectedArea;
+    this.fetchZonesAndPincodes();
     this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
   }
   openMap() {
@@ -177,6 +179,7 @@ export class AddressComponent {
   }
 
   editAddress(data: any, content: any) {
+    this.fetchZonesAndPincodes();
     this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
     this.isEdit = true;
     this.addressId = data['id'];
@@ -274,7 +277,6 @@ export class AddressComponent {
             // console.log('Geocoder failed due to: ' + status);
           }
         });
-
       });
     }
   }

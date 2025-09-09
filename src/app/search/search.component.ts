@@ -14,10 +14,12 @@ export class SearchComponent {
   trendingProducts: any[] = [];
   clickSearch: any;
   productLength: any;
+  dir: any;
 
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.dir = localStorage.getItem("dir") || "rtl";
     this.auth.getTrendingProducts().subscribe(
       (res: any) => {
         this.trendingProducts = res.data;
@@ -28,7 +30,7 @@ export class SearchComponent {
 
   addValue(value: any) {
     // Push the new value to the array
-    this.recentSearches?.push(value);
+    this.recentSearches.push(value);
 
     // Check if the array length exceeds the limit
     if (this.recentSearches?.length > 5) {

@@ -122,8 +122,8 @@ export class DescriptionComponent {
         })
         const firstProduct = this.relatedProductFilter[0];
         this.setPrices(firstProduct);
-        this.selectedId = firstProduct.id
-        this.isStock = firstProduct.stock;
+        this.selectedId = firstProduct?.id
+        this.isStock = firstProduct?.stock;
       } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
         this.soldType = 2
         this.updateSoldtype(2)
@@ -154,8 +154,8 @@ export class DescriptionComponent {
   }
 
   private setPrices(product: any) {
-    const offer = Number(product.offerPrice);
-    const normal = Number(product.normalPrice);
+    const offer = Number(product?.offerPrice);
+    const normal = Number(product?.normalPrice);
 
     if (offer > 0 && offer < normal) {
       this.productprice = offer;
@@ -218,9 +218,9 @@ export class DescriptionComponent {
     if (this.relatedProductFilter) {
       const firstProduct = this.relatedProductFilter[0];
       this.setPrices(firstProduct);
-      this.selectedId = firstProduct.id;
-      this.activePack = firstProduct.id
-      this.isStock = firstProduct.stock;
+      this.selectedId = firstProduct?.id;
+      this.activePack = firstProduct?.id
+      this.isStock = firstProduct?.stock;
     }
   }
 

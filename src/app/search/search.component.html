@@ -6,7 +6,8 @@
             <div class="form">
                 <i class="fa fa-search"></i>
                 <input type="text" class="form-control form-input" [(ngModel)]="value"
-                    placeholder="{{'SearchAnything' | translate}}..." (keyup.enter)="sendValue(value)">
+                    placeholder="{{'SearchAnything' | translate}}..." (keyup.enter)="sendValue(value)"
+                    [ngClass]="{'text-right': dir === 'rtl', 'text-left': dir === 'ltr'}">
                 <button (click)="sendValue(value)" class="search_btn">{{"Search" | translate}}</button>
             </div>
         </div>
@@ -33,9 +34,13 @@
                             <img src="{{product.image}}" class="card-img-top mx-auto" alt="...">
                         </div>
                         <div class="card-body">
-                            <h5 class="card-text">{{product.name}}</h5>
+                            <h5 class="card-text">
+                                <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
+                                <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
+                            </h5>
                             <div class="common_height">
-                                <p class="card-title" [innerHTML]="product.description"></p>
+                                <p class="card-title" [innerHTML]="product.description" *ngIf="dir == 'ltr'"></p>
+                                <p class="card-title" [innerHTML]="product.arDescription" *ngIf="dir == 'rtl'"></p>
                             </div>
                         </div>
                     </div>
@@ -54,7 +59,10 @@
             <h3 class="mt-3">{{"TrendingProducts" | translate}}</h3>
             <div class="row pb-2">
                 <div class="col-md-3" *ngFor="let item of trendingProducts">
-                    <button class="orders-main-btn">{{item.name}}</button>
+                    <button class="orders-main-btn" routerLink="/description/{{item.productId}}">
+                        <span *ngIf="dir == 'ltr'">{{item.enProductName}}</span>
+                        <span *ngIf="dir == 'rtl'">{{item.arProductName}}</span>
+                    </button>
                 </div>
             </div>
         </div>
