@@ -162,7 +162,7 @@ export class CartComponent {
         var price = element.quantity * element.price
         var item = {
           title: element.name,
-          price: price.toFixed(2) + " BD",
+          price: parseFloat(price.toFixed(3)) + " BD",
         }
         this.productDetailsObject.push(item);
       });
@@ -192,9 +192,9 @@ export class CartComponent {
       var couponDisc = this.prodTotal * (this.couponResponse?.discountPercentage / 100);
 
       if (couponDisc < this.couponResponse?.maximumDiscount) {
-        this.couponAmount = (couponDisc)?.toFixed(2)
+        this.couponAmount = parseFloat((couponDisc)?.toFixed(3))
       } else {
-        this.couponAmount = (this.couponResponse?.maximumDiscount)?.toFixed(2);
+        this.couponAmount = parseFloat((this.couponResponse?.maximumDiscount)?.toFixed(3));
       }
 
       if (this.couponResponse) {
@@ -226,7 +226,7 @@ export class CartComponent {
 
       this.vatObject = {
         title: 'VAT',
-        price: this.VATSum?.toFixed(2) + " BD"
+        price: parseFloat(this.VATSum?.toFixed(3)) + " BD"
       }
 
       // console.log("rer", this.order)
@@ -415,9 +415,10 @@ export class CartComponent {
       sessionStorage.setItem('deliveryFullAddress', this.pickupAddress)
       this.deliverAddressArray.push(this.pickupAddress)
       if (this.deliveryCharge > 0) {
-        this.totalAmount = (parseFloat(this.totalAmount) - parseFloat(this.deliveryCharge)).toFixed(2);
+        this.totalAmount = (parseFloat(this.totalAmount) - parseFloat(this.deliveryCharge)).toFixed(3);
       }
       this.deliveryCharge = 0;
+      this.calculateTotal();
     } else {
       sessionStorage.setItem('deliverrType', 'DELIVERY');
       this.deliveryType = "DELIVERY";
@@ -425,7 +426,7 @@ export class CartComponent {
         this.deliverAddressArray = [];
         this.addData = res.data;
         this.deliverAddressArray.push(this.fistData)
-        this.deliveryCharge = this.fistData?.deliveryCharge.toFixed(2);
+        this.deliveryCharge = parseFloat(this.fistData?.deliveryCharge.toFixed(3));
         sessionStorage.setItem('deliveryCharg', this.deliveryCharge);
         this.addLength = this.addData.length;
         this.checkEnableDisableOrderButton();
@@ -558,6 +559,7 @@ export class CartComponent {
         }
         this.loyaltyPointsObject = null;
       }
+      this.calculateTotal();
     }
   }
 
@@ -582,7 +584,7 @@ export class CartComponent {
     sessionStorage.setItem('delivAddChange', 'true')
     sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.fistData))
     this.deliverAddressArray.push(this.fistData)
-    this.deliveryCharge = value.deliveryCharge.toFixed(2);
+    this.deliveryCharge = parseFloat(value.deliveryCharge.toFixed(3));
     sessionStorage.setItem('deliveryCharg', this.deliveryCharge);
     this.modalService.dismissAll();
     this.ngOnInit();
@@ -918,8 +920,8 @@ export class CartComponent {
       total -= Number(this.totalEmployeeDiscount) || 0;
     }
 
-    // Final rounding to 2 decimals
-    this.totalAmount = total.toFixed(2);
+    // Final rounding to 3 decimals
+    this.totalAmount = parseFloat(total.toFixed(3));
     this.checkEnableDisableOrderButton();
   }
 
@@ -952,6 +954,8 @@ export class CartComponent {
       this.applyEmployeeDiscount();
     } else {
       this.currentCartonDiscountEmployee = this.viewData?.cartonDiscount;
+      this.totalEmployeeDiscount = 0; // reset discount
+      this.calculateTotal(); // recalc without employee discount
     }
   }
 
