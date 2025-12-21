@@ -479,6 +479,41 @@ export class CartComponent {
         const prodTot = element.quantity * element.price
         this.prodTotal = totSum += prodTot;
       })
+      // Recalculate VAT based on current cart
+      const vatIncludeAray = this.productDetails.filter((element: any) => element.vat != 0);
+      if (vatIncludeAray.length !== 0) {
+        let sum = 0;
+        vatIncludeAray.forEach((element: any) => {
+          const vatCalc = (element.quantity * element.price) * (element.vat / 100);
+          this.VATSum = sum += vatCalc;
+        });
+      } else {
+        this.VATSum = 0;
+      }
+
+      // Refresh coupon state and amount against updated product total
+      this.couponResponse = JSON.parse(sessionStorage.getItem('Coupon') || "null");
+      if (this.couponResponse != null && this.couponResponse != undefined) {
+        this.isCouponApplied = true;
+        this.isAppliedCoupon = true;
+        // Recompute coupon amount with latest prodTotal
+        const percentAmount = this.prodTotal * (this.couponResponse.discountPercentage / 100);
+        if (percentAmount > this.couponResponse.maximumDiscount) {
+          this.couponAmount = parseFloat((this.couponResponse.maximumDiscount)?.toFixed(3));
+        } else {
+          this.couponAmount = parseFloat((percentAmount)?.toFixed(3));
+        }
+        this.couponResponseObject = {
+          title: this.couponResponse?.couponCode,
+          price: "-" + this.couponAmount + " BD"
+        };
+      } else {
+        this.isCouponApplied = false;
+        this.isAppliedCoupon = false;
+        this.couponAmount = 0;
+        this.couponResponseObject = null;
+      }
+
       this.order = [];
       if (this.isappliedEmployeeDiscount) {
         this.applyEmployeeDiscount();
