@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-number',
-  templateUrl: './number.component.html',
-  styleUrls: ['./number.component.css']
+    selector: 'app-number',
+    templateUrl: './number.component.html',
+    styleUrls: ['./number.component.css'],
+    standalone: false
 })
 export class NumberComponent {
 

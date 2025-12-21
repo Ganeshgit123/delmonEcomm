@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-looking',
-  templateUrl: './looking.component.html',
-  styleUrls: ['./looking.component.css']
+    selector: 'app-looking',
+    templateUrl: './looking.component.html',
+    styleUrls: ['./looking.component.css'],
+    standalone: false
 })
 export class LookingComponent implements OnInit {
 

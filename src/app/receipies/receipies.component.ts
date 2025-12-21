@@ -4,9 +4,10 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-receipies',
-  templateUrl: './receipies.component.html',
-  styleUrls: ['./receipies.component.css']
+    selector: 'app-receipies',
+    templateUrl: './receipies.component.html',
+    styleUrls: ['./receipies.component.css'],
+    standalone: false
 })
 export class ReceipiesComponent {
 

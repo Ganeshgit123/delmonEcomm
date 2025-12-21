@@ -5,9 +5,10 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-fresh',
-  templateUrl: './fresh.component.html',
-  styleUrls: ['./fresh.component.css']
+    selector: 'app-fresh',
+    templateUrl: './fresh.component.html',
+    styleUrls: ['./fresh.component.css'],
+    standalone: false
 })
 export class FreshComponent {
 

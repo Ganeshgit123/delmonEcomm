@@ -4,9 +4,10 @@ import { AnimationOptions } from 'ngx-lottie';
 
 
 @Component({
-  selector: 'app-booking-complete-f',
-  templateUrl: './booking-complete-f.component.html',
-  styleUrls: ['./booking-complete-f.component.css']
+    selector: 'app-booking-complete-f',
+    templateUrl: './booking-complete-f.component.html',
+    styleUrls: ['./booking-complete-f.component.css'],
+    standalone: false
 })
 export class BookingCompleteFComponent {
   

@@ -5,9 +5,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-  selector: 'app-wallet',
-  templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.css']
+    selector: 'app-wallet',
+    templateUrl: './wallet.component.html',
+    styleUrls: ['./wallet.component.css'],
+    standalone: false
 })
 export class WalletComponent {
 

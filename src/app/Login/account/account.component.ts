@@ -4,9 +4,10 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.css'],
+    standalone: false
 })
 export class AccountComponent {
 

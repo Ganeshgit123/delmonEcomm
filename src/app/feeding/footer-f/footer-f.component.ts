@@ -3,9 +3,10 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-footer-f',
-  templateUrl: './footer-f.component.html',
-  styleUrls: ['./footer-f.component.css']
+    selector: 'app-footer-f',
+    templateUrl: './footer-f.component.html',
+    styleUrls: ['./footer-f.component.css'],
+    standalone: false
 })
 export class FooterFComponent {
   support: any;

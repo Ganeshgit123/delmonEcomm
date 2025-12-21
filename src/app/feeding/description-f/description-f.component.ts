@@ -5,9 +5,10 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
-  selector: 'app-description-f',
-  templateUrl: './description-f.component.html',
-  styleUrls: ['./description-f.component.css']
+    selector: 'app-description-f',
+    templateUrl: './description-f.component.html',
+    styleUrls: ['./description-f.component.css'],
+    standalone: false
 })
 export class DescriptionFComponent {
   loggedUser: any;

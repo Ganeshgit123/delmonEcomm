@@ -6,9 +6,10 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-  selector: 'app-home-f',
-  templateUrl: './home-f.component.html',
-  styleUrls: ['./home-f.component.css']
+    selector: 'app-home-f',
+    templateUrl: './home-f.component.html',
+    styleUrls: ['./home-f.component.css'],
+    standalone: false
 })
 export class HomeFComponent {
 

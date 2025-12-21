@@ -5,9 +5,10 @@ import { AuthService } from '../shared/auth.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-basket-list',
-  templateUrl: './basket-list.component.html',
-  styleUrls: ['./basket-list.component.css']
+    selector: 'app-basket-list',
+    templateUrl: './basket-list.component.html',
+    styleUrls: ['./basket-list.component.css'],
+    standalone: false
 })
 export class BasketListComponent {
 

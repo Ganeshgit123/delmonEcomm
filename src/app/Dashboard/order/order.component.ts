@@ -7,9 +7,10 @@ import { environment } from 'src/environments/environment.prod';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
-  selector: 'app-order',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.css']
+    selector: 'app-order',
+    templateUrl: './order.component.html',
+    styleUrls: ['./order.component.css'],
+    standalone: false
 })
 export class OrderComponent {
   endpoint = environment.baseUrl;

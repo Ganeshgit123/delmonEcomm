@@ -23,9 +23,10 @@ interface ExampleFlatNode {
 }
 
 @Component({
-  selector: 'app-poul-feed',
-  templateUrl: './poul-feed.component.html',
-  styleUrls: ['./poul-feed.component.css']
+    selector: 'app-poul-feed',
+    templateUrl: './poul-feed.component.html',
+    styleUrls: ['./poul-feed.component.css'],
+    standalone: false
 })
 
 export class PoulFeedComponent {

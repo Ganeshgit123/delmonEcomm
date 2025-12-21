@@ -3,9 +3,10 @@ import { AuthService } from '../shared/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-ingredients',
-  templateUrl: './ingredients.component.html',
-  styleUrls: ['./ingredients.component.css']
+    selector: 'app-ingredients',
+    templateUrl: './ingredients.component.html',
+    styleUrls: ['./ingredients.component.css'],
+    standalone: false
 })
 export class IngredientsComponent {
 

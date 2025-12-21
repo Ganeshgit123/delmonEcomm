@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-phone',
-  templateUrl: './phone.component.html',
-  styleUrls: ['./phone.component.css']
+    selector: 'app-phone',
+    templateUrl: './phone.component.html',
+    styleUrls: ['./phone.component.css'],
+    standalone: false
 })
 export class PhoneComponent implements OnInit {
   websiteFlow:any;

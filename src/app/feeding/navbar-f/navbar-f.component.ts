@@ -4,9 +4,10 @@ import { Router , ActivatedRoute} from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-  selector: 'app-navbar-f',
-  templateUrl: './navbar-f.component.html',
-  styleUrls: ['./navbar-f.component.css']
+    selector: 'app-navbar-f',
+    templateUrl: './navbar-f.component.html',
+    styleUrls: ['./navbar-f.component.css'],
+    standalone: false
 })
 export class NavbarFComponent {
 

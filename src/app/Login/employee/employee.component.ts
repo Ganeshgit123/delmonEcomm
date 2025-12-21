@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-employee',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+    selector: 'app-employee',
+    templateUrl: './employee.component.html',
+    styleUrls: ['./employee.component.css'],
+    standalone: false
 })
 export class EmployeeComponent {
 

@@ -6,9 +6,10 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
-  selector: 'app-basket',
-  templateUrl: './basket.component.html',
-  styleUrls: ['./basket.component.css']
+    selector: 'app-basket',
+    templateUrl: './basket.component.html',
+    styleUrls: ['./basket.component.css'],
+    standalone: false
 })
 export class BasketComponent {
 

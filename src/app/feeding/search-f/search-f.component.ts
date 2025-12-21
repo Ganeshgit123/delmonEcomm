@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-  selector: 'app-search-f',
-  templateUrl: './search-f.component.html',
-  styleUrls: ['./search-f.component.css']
+    selector: 'app-search-f',
+    templateUrl: './search-f.component.html',
+    styleUrls: ['./search-f.component.css'],
+    standalone: false
 })
 
 export class SearchFComponent {

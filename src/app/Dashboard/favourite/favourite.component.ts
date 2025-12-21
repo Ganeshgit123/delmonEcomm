@@ -5,9 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-  selector: 'app-favourite',
-  templateUrl: './favourite.component.html',
-  styleUrls: ['./favourite.component.css']
+    selector: 'app-favourite',
+    templateUrl: './favourite.component.html',
+    styleUrls: ['./favourite.component.css'],
+    standalone: false
 })
 export class FavouriteComponent {
 

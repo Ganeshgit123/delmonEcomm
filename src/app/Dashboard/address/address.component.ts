@@ -7,9 +7,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare const google: any;
 
 @Component({
-  selector: 'app-address',
-  templateUrl: './address.component.html',
-  styleUrls: ['./address.component.css']
+    selector: 'app-address',
+    templateUrl: './address.component.html',
+    styleUrls: ['./address.component.css'],
+    standalone: false
 })
 
 export class AddressComponent {

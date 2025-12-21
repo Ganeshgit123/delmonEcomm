@@ -6,9 +6,10 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-basket-list',
-  templateUrl: './admin-basket.component.html',
-  styleUrls: ['./admin-basket.component.css']
+    selector: 'app-basket-list',
+    templateUrl: './admin-basket.component.html',
+    styleUrls: ['./admin-basket.component.css'],
+    standalone: false
 })
 export class AdminBasketComponent {
 

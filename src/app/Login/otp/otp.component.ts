@@ -5,9 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-otp',
-  templateUrl: './otp.component.html',
-  styleUrls: ['./otp.component.css']
+    selector: 'app-otp',
+    templateUrl: './otp.component.html',
+    styleUrls: ['./otp.component.css'],
+    standalone: false
 })
 export class OtpComponent {
   otp: any;

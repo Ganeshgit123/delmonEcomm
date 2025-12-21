@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-  selector: 'app-points',
-  templateUrl: './points.component.html',
-  styleUrls: ['./points.component.css']
+    selector: 'app-points',
+    templateUrl: './points.component.html',
+    styleUrls: ['./points.component.css'],
+    standalone: false
 })
 export class PointsComponent {
 

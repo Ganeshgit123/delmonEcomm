@@ -3,9 +3,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.css']
+    selector: 'app-tab',
+    templateUrl: './tab.component.html',
+    styleUrls: ['./tab.component.css'],
+    standalone: false
 })
 export class TabComponent {
 
