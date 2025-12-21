@@ -5,30 +5,30 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-employee',
-    templateUrl: './employee.component.html',
-    styleUrls: ['./employee.component.css'],
-    standalone: false
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.css'],
+  standalone: false
 })
 export class EmployeeComponent {
 
   sendEmpvalue !: FormGroup;
   submitted = false;
-  websiteFlow:any;
+  websiteFlow: any;
 
   constructor(private auth: AuthService, private builder: FormBuilder, private router: Router,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
-    
+
     this.websiteFlow = localStorage.getItem('flow');
-  //  console.log("sfe",this.websiteFlow);
+    //  console.log("sfe",this.websiteFlow);
 
 
     this.sendEmpvalue = this.builder.group({
       userType: ["EMPLOYEE"],
-      employeeNumber: ["",[Validators.required]],
+      employeeNumber: ["", [Validators.required]],
     });
   }
 
@@ -48,9 +48,9 @@ export class EmployeeComponent {
 
     this.auth.verifyEmployee(data).subscribe((res: any) => {
 
-      if (res.error == false) {
+      if (res.error === false) {
         this.router.navigate(['/otp']);
-        sessionStorage.setItem("userType",'EMPLOYEE');
+        sessionStorage.setItem("userType", 'EMPLOYEE');
         this.toastr.success('Success', res.message);
       }
       else {

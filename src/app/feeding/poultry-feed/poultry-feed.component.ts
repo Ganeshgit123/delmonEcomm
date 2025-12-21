@@ -2,10 +2,10 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-    selector: 'app-poultry-feed',
-    templateUrl: './poultry-feed.component.html',
-    styleUrls: ['./poultry-feed.component.css'],
-    standalone: false
+  selector: 'app-poultry-feed',
+  templateUrl: './poultry-feed.component.html',
+  styleUrls: ['./poultry-feed.component.css'],
+  standalone: false
 })
 
 export class PoultryFeedComponent implements OnInit {
@@ -20,7 +20,8 @@ export class PoultryFeedComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['subCategoryId'].currentValue != undefined || changes['subCategoryId'].currentValue != null) {
+    const change = changes['subCategoryId'];
+    if (change && change.currentValue != null) {
       this.auth.getProduct(this.subCategoryId).subscribe((res: any) => {
         this.ProductList = res.data;
         // console.log("this.ProductList", this.ProductList);

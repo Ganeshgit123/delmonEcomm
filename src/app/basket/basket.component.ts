@@ -57,7 +57,7 @@ export class BasketComponent {
 
 
     this.authService.basketToCart(this.basketId).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Successfully', res.message);
       }
       else {
@@ -99,7 +99,7 @@ export class BasketComponent {
 
     this.authService.removeProductBasket(id).subscribe(
       (res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success(res.message);
           this.ngOnInit();
         }
@@ -114,7 +114,7 @@ export class BasketComponent {
     console.log(this.basketId);
     this.authService.removeBasket(this.basketId).subscribe(
       (res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Successfully', res.message);
           this.router.navigate([`/basket-list`]);
           this.dialog.closeAll();

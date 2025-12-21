@@ -70,7 +70,7 @@ export class DescriptionComponent {
   activePack: any;
   getBasket: any;
   basketData: any;
-  loggedUser: any;
+  isLoggedIn = false;
   isFavorites: any;
   sendFavData: any;
   favoriteData = [];
@@ -89,7 +89,7 @@ export class DescriptionComponent {
   ngOnInit(): void {
     this.dir = localStorage.getItem("dir") || "rtl";
     window.scroll(0, 0);
-    this.loggedUser = sessionStorage.getItem('isLogged');
+    this.isLoggedIn = sessionStorage.getItem('isLogged') === 'true';
     this.route.params.subscribe((params) => {
       this.productId = params['id'];
     });
@@ -112,42 +112,43 @@ export class DescriptionComponent {
       this.piecesActive = res.data?.piecesActive;
       this.isFavorites = res.data?.isFavorites;
 
-      if ((res.data.cartonActive == 1 && res.data.piecesActive == 1) || res.data.piecesActive == 1 && res.data.cartonActive == 0) {
-        this.soldType = 1
-        this.updateSoldtype(1)
+      // If piecesActive is 1, default to Pieces; else if only cartonActive is 1, default to Carton
+      if (res.data?.piecesActive === 1) {
+        this.soldType = 1;
+        this.updateSoldtype(1);
         this.activePiece = true;
         this.activeCarton = false;
 
         this.relatedProductFilter = this.relatedProduct.filter((element: any) => {
-          return element.soldType == this.soldType;
-        })
+          return element.soldType === this.soldType;
+        });
         const firstProduct = this.relatedProductFilter[0];
         this.setPrices(firstProduct);
-        this.selectedId = firstProduct?.id
+        this.selectedId = firstProduct?.id;
         this.isStock = firstProduct?.stock;
-      } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
-        this.soldType = 2
-        this.updateSoldtype(2)
+      } else if (res.data?.cartonActive === 1) {
+        this.soldType = 2;
+        this.updateSoldtype(2);
         this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
-          return element.soldType == this.soldType;
-        })
-        if (this.relatedProductFilter) {
+          return element.soldType === this.soldType;
+        });
+        if (this.relatedProductFilter?.length) {
           const firstProduct = this.relatedProductFilter[0];
           this.setPrices(firstProduct);
-          this.selectedId = firstProduct.id;
-          this.isStock = firstProduct.stock;
+          this.selectedId = firstProduct?.id;
+          this.isStock = firstProduct?.stock;
         }
       }
     })
 
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.authService.viewBasket().subscribe((res: any) => {
         this.getBasket = res.data;
       })
       this.authService.getFavorites().subscribe(
         (res: any) => {
           this.favoriteData = res.data.filter((element: any) => {
-            return element.id == this.productId;
+            return element.id === this.productId;
           })
           this.favLength = this.favoriteData.length;
         })
@@ -187,10 +188,10 @@ export class DescriptionComponent {
   }
 
   sendCartValue() {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.sendCartData = { 'productId': this.selectedId, 'price': this.productprice };
       this.authService.addtoCart(this.sendCartData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Successfully', res.message);
         }
         else {
@@ -205,28 +206,28 @@ export class DescriptionComponent {
   }
 
   updateSoldtype(type: any) {
-    if (type == 1) {
+    if (type === 1) {
       this.activePiece = true;
       this.activeCarton = false;
-    } else if (type == 2) {
+    } else if (type === 2) {
       this.activeCarton = true;
       this.activePiece = false;
     }
     this.soldType = type;
     this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
-      return element.soldType == this.soldType;
+      return element.soldType === this.soldType;
     })
-    if (this.relatedProductFilter) {
+    if (this.relatedProductFilter?.length) {
       const firstProduct = this.relatedProductFilter[0];
       this.setPrices(firstProduct);
       this.selectedId = firstProduct?.id;
-      this.activePack = firstProduct?.id
+      this.activePack = firstProduct?.id;
       this.isStock = firstProduct?.stock;
     }
   }
 
   openVerticallyCentered(content: any) {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.dialog.open(content, {});
       this.authService.viewBasket().subscribe((res: any) => {
         this.getBasket = res.data;
@@ -253,7 +254,7 @@ export class DescriptionComponent {
   sendBasketdata(id: any) {
     this.basketData = { 'basketId': id, 'productId': this.selectedId, 'price': this.productprice };
     this.authService.addProductBasket(this.basketData).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success(res.message);
       }
       else {
@@ -263,11 +264,11 @@ export class DescriptionComponent {
   }
 
   addFav() {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.isFavorites = 1;
       this.sendFavData = { 'productId': this.productId, 'isFavorites': 1 };
       this.authService.setFavorites(this.sendFavData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success(res.message);
           this.ngOnInit();
         }
@@ -282,11 +283,11 @@ export class DescriptionComponent {
   }
 
   removeFav() {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.isFavorites = 0;
       this.sendFavData = { 'productId': this.productId, 'isFavorites': 0 };
       this.authService.setFavorites(this.sendFavData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success(res.message);
           this.ngOnInit();
         } else {

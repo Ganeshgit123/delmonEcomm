@@ -5,10 +5,10 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-fresh',
-    templateUrl: './fresh.component.html',
-    styleUrls: ['./fresh.component.css'],
-    standalone: false
+  selector: 'app-fresh',
+  templateUrl: './fresh.component.html',
+  styleUrls: ['./fresh.component.css'],
+  standalone: false
 })
 export class FreshComponent {
 
@@ -36,7 +36,7 @@ export class FreshComponent {
     window.scroll(0, 0);
     this.route.params.subscribe((params) => {
       this.categoryId = params['id'];
-      if (this.categoryId == undefined) {
+      if (this.categoryId == null) {
         this.getProduts(0);
         this.activeStyle = 0;
       } else {
@@ -73,7 +73,7 @@ export class FreshComponent {
   sendCartValue(id: any, price: any) {
     this.sendCartData = { 'productId': id, 'price': price, };
     this.authService.addtoCart(this.sendCartData).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Successfully', res.message);
       }
       else {

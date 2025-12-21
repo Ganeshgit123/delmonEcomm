@@ -5,10 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-    selector: 'app-favourite',
-    templateUrl: './favourite.component.html',
-    styleUrls: ['./favourite.component.css'],
-    standalone: false
+  selector: 'app-favourite',
+  templateUrl: './favourite.component.html',
+  styleUrls: ['./favourite.component.css'],
+  standalone: false
 })
 export class FavouriteComponent {
 
@@ -42,7 +42,7 @@ export class FavouriteComponent {
     this.unFavData = { 'productId': id, 'isFavorites': 0 };
     this.authService.setFavorites(this.unFavData).subscribe((res: any) => {
       this.ngOnInit();
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success(res.message);
       }
     })

@@ -4,27 +4,27 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  standalone: false
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'delmon';
   lang: any;
   dir: any;
   mobile = false;
-  optionsone: AnimationOptions = {    
+  optionsone: AnimationOptions = {
     path: '../../../assets/images/feeding/27169-apple-download.json'
-  };  
-  optionstwo: AnimationOptions = {    
+  };
+  optionstwo: AnimationOptions = {
     path: '../../../assets/images/feeding/27173-googleplay-button.json'
-  };  
-  constructor(private translateservice: TranslateService,private breakpointObserver: BreakpointObserver, ){
+  };
+  constructor(private translateservice: TranslateService, private breakpointObserver: BreakpointObserver,) {
     this.breakpointObserver.observe([
       "(max-width: 767px)"
     ]).subscribe((result: BreakpointState) => {
-      if (result.matches == true) {
+      if (result.matches === true) {
         // hide stuff      
         this.mobile = true;
       } else {

@@ -138,7 +138,7 @@ export class CartComponent {
       this.zoneData = res.data;
     });
 
-    if (this.delivAddresChange == 'true') {
+    if (this.delivAddresChange === 'true') {
       this.fistData = JSON.parse(sessionStorage.getItem('deliveryFullAddress') || "null");
       this.deliverAddressArray = this.fistData;
     }
@@ -149,14 +149,14 @@ export class CartComponent {
       this.userId = sessionStorage.getItem('userId');
       this.cartLength = this.productDetails.length;
       this.pickupAddress = res.address?.address;
-      if (res.isSelfPickup == 1) {
+      if (res.isSelfPickup === 1) {
         this.sendDeliveryType('PICKUP');
         sessionStorage.setItem('deliverrType', 'PICKUP');
         sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
-      } else if (res.isDelivery == 1) {
+      } else if (res.isDelivery === 1) {
         this.sendDeliveryType('DELIVERY');
         sessionStorage.setItem('deliverrType', 'DELIVERY');
-      } else if (res.isDelivery == 1 && res.isSelfPickup == 1) {
+      } else if (res.isDelivery === 1 && res.isSelfPickup === 1) {
         this.sendDeliveryType('PICKUP');
         sessionStorage.setItem('deliverrType', 'PICKUP');
         sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
@@ -190,7 +190,7 @@ export class CartComponent {
       this.prodTotal = this.totals.computeProductTotal(this.productDetails);
 
       this.couponResponse = this.storage.getSessionJSON<Coupon>('Coupon');
-      if (this.couponResponse != null || this.couponResponse != undefined) {
+      if (this.couponResponse != null) {
         this.isCouponApplied = true;
         this.isAppliedCoupon = true;
       }
@@ -232,7 +232,7 @@ export class CartComponent {
     this.auth.getAddress().subscribe((res: any) => {
       this.getAddress = res.data;
       this.addLength = this.getAddress.length;
-      if (this.delivAddresChange == 'true') {
+      if (this.delivAddresChange === 'true') {
         this.fistData = JSON.parse(sessionStorage.getItem('deliveryFullAddress') || "null");
         this.deliverAddressArray = this.fistData;
       }
@@ -348,7 +348,7 @@ export class CartComponent {
         var latlng = new google.maps.LatLng(this.selectedLat, this.selectedLng);
 
         geocoder.geocode({ 'latLng': latlng }, (results: any, status: any) => {
-          if (status == google.maps.GeocoderStatus.OK) {
+          if (status === google.maps.GeocoderStatus.OK) {
             if (results[1]) {
               this.selectedArea = results[1].formatted_address;
               // console.log(results[1].formatted_address);
@@ -398,7 +398,7 @@ export class CartComponent {
 
   sendDeliveryType(data: any) {
     this.typeButton = data;
-    if (this.typeButton == 'PICKUP') {
+    if (this.typeButton === 'PICKUP') {
       this.deliverAddressArray = [];
       sessionStorage.setItem('deliverrType', 'PICKUP');
       this.deliveryType = "PICKUP";
@@ -449,7 +449,7 @@ export class CartComponent {
     var updateZero = prod.quantity -= 1;
     const updatedObj = { "quantity": updateZero }
     var updatedId = prod.id;
-    if (updateZero == 0) {
+    if (updateZero === 0) {
       this.auth.removeCart(updatedId).subscribe((res: any) => {
         this.toastr.success(res.message);
         this.reloadCart();
@@ -474,7 +474,7 @@ export class CartComponent {
 
       // Refresh coupon state and amount against updated product total
       this.couponResponse = this.storage.getSessionJSON<Coupon>('Coupon');
-      if (this.couponResponse != null && this.couponResponse != undefined) {
+      if (this.couponResponse != null) {
         this.isCouponApplied = true;
         this.isAppliedCoupon = true;
         // Recompute coupon amount with latest prodTotal
@@ -506,7 +506,7 @@ export class CartComponent {
     this.submitted = false;
     this.auth.applyCoupon(this.couponForm.value)
       .subscribe((res: any) => {
-        if (res.success == true) {
+        if (res.success === true) {
           this.isCouponApplied = true;
           this.isAppliedCoupon = true;
           this.storage.setSessionJSON('Coupon', res.data[0]);
@@ -539,7 +539,7 @@ export class CartComponent {
     this.isAppliedLoyaltyPoint = values.currentTarget.checked;
     // console.log(values.currentTarget.checked);
     // console.log(this.totalAmount, this.loyaltyPoint);
-    if (values.currentTarget.checked == true) {
+    if (values.currentTarget.checked === true) {
       this.auth.applyLoyaltyPoint(this.loyaltyPoint, this.totalAmount).subscribe((res: any) => {
         this.loyaltyPointDiscount = res.data;
         this.toastr.success(res.massage);
@@ -558,7 +558,7 @@ export class CartComponent {
       if (this.loyaltyPointDiscount > 0) {
         this.totalAmount = Number((Number(this.totalAmount) + Number(this.loyaltyPointDiscount)).toFixed(3));
         this.loyaltyPointDiscount = 0;
-        if (this.order.findIndex((x: any) => x.title == 'Loyalty amount') != -1) {
+        if (this.order.findIndex((x: any) => x.title == 'Loyalty amount') !== -1) {
           this.order.splice(this.order.findIndex((x: any) => x.title == 'Loyalty amount'), 1)
         }
         this.loyaltyPointsObject = null;
@@ -619,13 +619,13 @@ export class CartComponent {
           }
           this.order.push(this.deliveryChargeObject)
         }
-        if (this.couponResponseObject != undefined && this.couponResponseObject != null) {
+        if (this.couponResponseObject != null) {
           this.order.push(this.couponResponseObject)
         }
-        if (this.loyaltyPointsObject != undefined && this.loyaltyPointsObject != null) {
+        if (this.loyaltyPointsObject != null) {
           this.order.push(this.loyaltyPointsObject)
         }
-        if (this.vatObject != undefined && this.vatObject != null) {
+        if (this.vatObject != null) {
           this.order.push(this.vatObject)
         }
         if (this.loginType === "EMPLOYEE" && this.isappliedEmployeeDiscount) {
@@ -646,25 +646,25 @@ export class CartComponent {
         let totalQuantity = 0;
         let maxCartonDiscountPerDayValue = 0;
         this.viewData.data.forEach((element: any) => {
-          if (element.cartonActive == 1) {
+          if (element.cartonActive === 1) {
             cartoonCount++;
             totalQuantity += element.quantity;
           }
         });
         if (this.loginType === "EMPLOYEE") {
-          if (this.viewData.maxCartonDiscountPerDay == 0) {
-            if (this.dir == 'ltr') {
+          if (this.viewData.maxCartonDiscountPerDay === 0) {
+            if (this.dir === 'ltr') {
               const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDay} cartons remaining for today`
               this.toastr.error(msg);
-            } else if (this.dir == 'rtl') {
+            } else if (this.dir === 'rtl') {
               const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDay} كرتون متبقية لهذا اليوم."`
               this.toastr.error(msg);
             }
           } else if (this.viewData.maxCartonDiscountPerDay < totalQuantity) {
-            if (this.dir == 'ltr') {
+            if (this.dir === 'ltr') {
               const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDay} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
               this.toastr.error(msg);
-            } else if (this.dir == 'rtl') {
+            } else if (this.dir === 'rtl') {
               const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون والحد المتاح لديك من ${this.viewData.defaultMaxCartonDiscountPerDayEmployee} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
               this.toastr.error(msg);
             }
@@ -700,31 +700,31 @@ export class CartComponent {
             }
             // console.log("empCartoon", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
-              if (res.success == true) {
+              if (res.success === true) {
                 this.toastr.success('Order confirmed!', res.massage);
                 this.router.navigate(['/booking-complete'], {
                   state: { message: res.massage }
                 });
                 this.ngOnInit();
-              } else if (res.error == true) {
+              } else if (res.error === true) {
                 this.toastr.error('Order not confirmed', res.massage);
               }
             })
           }
         } else if (this.loginType === "USER") {
-          if (this.viewData.maxCartonDiscountPerDayUser == 0) {
-            if (this.dir == 'ltr') {
+          if (this.viewData.maxCartonDiscountPerDayUser === 0) {
+            if (this.dir === 'ltr') {
               const msg = `Your daily carton purchase limit has been exceeded. You are allowed a maximum of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons per day, and you currently have ${this.viewData.maxCartonDiscountPerDayUser} cartons remaining for today`
               this.toastr.error(msg);
-            } else if (this.dir == 'rtl') {
+            } else if (this.dir === 'rtl') {
               const msg = `لقد تم تجاوز حد شراء الكرتون اليومي. يسمح لك بحد أقصى ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون في اليوم ، ولديك حاليا ${this.viewData.maxCartonDiscountPerDayUser} كرتون متبقية لهذا اليوم."`
               this.toastr.error(msg);
             }
           } else if (this.viewData.maxCartonDiscountPerDayUser < totalQuantity) {
-            if (this.dir == 'ltr') {
+            if (this.dir === 'ltr') {
               const msg = `Your cart count of ${totalQuantity} cartons exceeds both your daily limit of ${this.viewData.defaultMaxCartonDiscountPerDayUser} cartons and your available limit of ${this.viewData.maxCartonDiscountPerDayUser} cartons. Please reduce your cart to meet these limits before proceeding with your order.`
               this.toastr.error(msg);
-            } else if (this.dir == 'rtl') {
+            } else if (this.dir === 'rtl') {
               const msg = `عدد سلة التسوق الخاصة بك من ${totalQuantity} كرتون يتجاوز كل من الحد اليومي الخاص بك من ${this.viewData.defaultMaxCartonDiscountPerDayUser} كرتون والحد المتاح لديك من ${this.viewData.maxCartonDiscountPerDayUser} كرتون. يرجى تقليل سلة التسوق الخاصة بك لتلبية هذه الحدود قبل متابعة طلبك.`
               this.toastr.error(msg);
             }
@@ -760,13 +760,13 @@ export class CartComponent {
             }
             // console.log("UserCartoon", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
-              if (res.success == true) {
+              if (res.success === true) {
                 this.toastr.success('Order confirmed! ', res.massage);
                 this.router.navigate(['/booking-complete'], {
                   state: { message: res.massage }
                 });
                 this.ngOnInit();
-              } else if (res.error == true) {
+              } else if (res.error === true) {
                 this.toastr.error('Order not confirmed ', res.massage);
               }
             })
@@ -800,13 +800,13 @@ export class CartComponent {
           }
           // console.log("piece", data);
           this.auth.bookOrder(data).subscribe((res: any) => {
-            if (res.success == true) {
+            if (res.success === true) {
               this.toastr.success('Order confirmed! ', res.massage);
               this.router.navigate(['/booking-complete'], {
                 state: { message: res.massage }
               });
               this.ngOnInit();
-            } else if (res.error == true) {
+            } else if (res.error === true) {
               this.toastr.error('Order not confirmed ', res.massage);
             }
           })
@@ -833,13 +833,13 @@ export class CartComponent {
     this.addressForm.value.latitude = (this.selectedLat).toFixed(4);
     this.addressForm.value.longitude = (this.selectedLng).toFixed(4);
     this.addressForm.value.zoneId = Number(this.addressForm.value.zoneId);
-    if (this.dir == 'ltr') {
+    if (this.dir === 'ltr') {
       this.addressForm.value.zoneName = zoneNameArray[0]?.name;
-    } else if (this.dir == 'rtl') {
+    } else if (this.dir === 'rtl') {
       this.addressForm.value.zoneName = zoneNameArray[0]?.arName;
     } this.auth.add_Address(this.addressForm.value)
       .subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.dialog.closeAll();
@@ -855,15 +855,15 @@ export class CartComponent {
       return element.id === Number(data.zoneId);
     })
     // console.log("name", zoneNameArray)
-    if (this.dir == 'ltr') {
+    if (this.dir === 'ltr') {
       data['zoneName'] = zoneNameArray[0]?.name;
-    } else if (this.dir == 'rtl') {
+    } else if (this.dir === 'rtl') {
       data['zoneName'] = zoneNameArray[0]?.arName;
     } data['zoneId'] = Number(data.zoneId);
 
     this.auth.updateAddress(data, this.addressId)
       .subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.submitted = false;
@@ -931,7 +931,7 @@ export class CartComponent {
 
   checkEnableDisableOrderButton() {
     if (this.deliveryType != "PICKUP") {
-      if (this.getAddress?.length > 0 && this.paymentType != null && this.paymentType != undefined) {
+      if (this.getAddress?.length > 0 && this.paymentType != null) {
         this.IsSubmitButtonEnable = false;
       }
       else {
@@ -954,7 +954,7 @@ export class CartComponent {
 
   applyEmployeeDiscountFromHTML(event: any) {
     this.isappliedEmployeeDiscount = event.currentTarget.checked;
-    if (this.isappliedEmployeeDiscount == true) {
+    if (this.isappliedEmployeeDiscount === true) {
       this.applyEmployeeDiscount();
     } else {
       this.currentCartonDiscountEmployee = this.viewData?.cartonDiscount;
@@ -967,10 +967,10 @@ export class CartComponent {
     let IsActiveAcrton = false;
     let cartoonProduct: any;
     let maxIteration: any;
-    if (this.isappliedEmployeeDiscount == true && this.loginType === "EMPLOYEE") {
+    if (this.isappliedEmployeeDiscount === true && this.loginType === "EMPLOYEE") {
       if (this.viewData?.cartonDiscount > 0) {
         this.viewData.data.forEach((element: any) => {
-          if (element.cartonActive == 1) {
+          if (element.cartonActive === 1) {
             IsActiveAcrton = true;
           }
         });
@@ -1017,7 +1017,7 @@ export class CartComponent {
     let returnValue: any = [];
     let data: any = [];
     this.viewData.data.forEach((element: any) => {
-      if (element.cartonActive == 1) {
+      if (element.cartonActive === 1) {
         data.push(element);
       }
     });

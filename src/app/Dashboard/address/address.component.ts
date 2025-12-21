@@ -160,15 +160,15 @@ export class AddressComponent {
     this.addressForm.value.latitude = (this.selectedLat).toFixed(4);
     this.addressForm.value.longitude = (this.selectedLng).toFixed(4);
     this.addressForm.value.zoneId = Number(this.addressForm.value.zoneId);
-    if (this.dir == 'ltr') {
+    if (this.dir === 'ltr') {
       this.addressForm.value.zoneName = zoneNameArray[0]?.name;
-    } else if (this.dir == 'rtl') {
+    } else if (this.dir === 'rtl') {
       this.addressForm.value.zoneName = zoneNameArray[0]?.arName;
     }
     // console.log("fef",this.addressForm.value)
     this.auth.add_Address(this.addressForm.value)
       .subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.dialog.closeAll();
@@ -205,15 +205,15 @@ export class AddressComponent {
     var zoneNameArray = this.zoneData.filter((element: any) => {
       return element.id === Number(data.zoneId);
     })
-    if (this.dir == 'ltr') {
+    if (this.dir === 'ltr') {
       data['zoneName'] = zoneNameArray[0]?.name;
-    } else if (this.dir == 'rtl') {
+    } else if (this.dir === 'rtl') {
       data['zoneName'] = zoneNameArray[0]?.arName;
     }
     data['zoneId'] = Number(data.zoneId);
     this.auth.updateAddress(data, this.addressId)
       .subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.submitted = false;
@@ -227,7 +227,7 @@ export class AddressComponent {
 
   removeAddress(id: any) {
     this.auth.removeAddress(id).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Success ', res.message);
         this.ngOnInit();
       } else {
@@ -267,7 +267,7 @@ export class AddressComponent {
         var latlng = new google.maps.LatLng(this.selectedLat, this.selectedLng);
 
         geocoder.geocode({ 'latLng': latlng }, (results: any, status: any) => {
-          if (status == google.maps.GeocoderStatus.OK) {
+          if (status === google.maps.GeocoderStatus.OK) {
             if (results[1]) {
               this.selectedArea = results[1].formatted_address;
               // console.log(results[1].formatted_address);

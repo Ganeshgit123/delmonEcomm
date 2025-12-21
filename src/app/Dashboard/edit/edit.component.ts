@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-edit',
-    templateUrl: './edit.component.html',
-    styleUrls: ['./edit.component.css'],
-    standalone: false
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.css'],
+  standalone: false
 })
 export class EditComponent {
   profileForm!: FormGroup;
@@ -50,7 +50,7 @@ export class EditComponent {
     }
     this.submitted = false;
     this.auth.profileUpdate(this.profileForm.value).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Success', res.message);
       } else {
         this.toastr.success('Error', res.message);

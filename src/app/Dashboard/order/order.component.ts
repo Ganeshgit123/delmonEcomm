@@ -101,7 +101,7 @@ export class OrderComponent {
   cancelOrder(id: any) {
     var object = { "orderStatus": "USERREJECTED" };
     this.auth.declineOrder(id, object).subscribe((res: any) => {
-      if (res.success == true) {
+      if (res.success === true) {
         this.toastr.success('Success ', res.massage);
         this.dialog.closeAll();
         this.ngOnInit();
@@ -113,7 +113,7 @@ export class OrderComponent {
 
   reOrder(id: any) {
     this.auth.reOrderFunc(id).subscribe((res: any) => {
-      if (res.success == true) {
+      if (res.success === true) {
         this.toastr.success('Success ', res.massage);
         this.dialog.closeAll();
         this.ngOnInit();

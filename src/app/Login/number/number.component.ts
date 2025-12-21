@@ -5,16 +5,16 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-number',
-    templateUrl: './number.component.html',
-    styleUrls: ['./number.component.css'],
-    standalone: false
+  selector: 'app-number',
+  templateUrl: './number.component.html',
+  styleUrls: ['./number.component.css'],
+  standalone: false
 })
 export class NumberComponent {
 
   sendCrvalue !: FormGroup;
   submitted = false;
-  websiteFlow:any;
+  websiteFlow: any;
 
   constructor(private auth: AuthService, private builder: FormBuilder, private router: Router,
     private toastr: ToastrService) { }
@@ -23,7 +23,7 @@ export class NumberComponent {
   ngOnInit(): void {
 
     this.websiteFlow = localStorage.getItem('flow');
-  //  console.log("sfe",this.websiteFlow);
+    //  console.log("sfe",this.websiteFlow);
 
     this.sendCrvalue = this.builder.group({
       userType: ["MERCHANT"],
@@ -45,9 +45,9 @@ export class NumberComponent {
     data['mobileNumber'] = Number(sessionStorage.getItem('mobileNumber'));
     data['countryCode'] = sessionStorage.getItem('countryCode');
     this.auth.verifyMerchant(data).subscribe((res: any) => {
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Success', res.message);
-        sessionStorage.setItem("userType",'MERCHANT');
+        sessionStorage.setItem("userType", 'MERCHANT');
         this.router.navigate(['/otp']);
       }
       else {

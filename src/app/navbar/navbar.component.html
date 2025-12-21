@@ -54,15 +54,15 @@
         <img src="assets/images/Icon-nav-info.svg" alt="">
         <a class="nav-link">Notifications</a>
       </li> -->
-      <li class="nav-item d-flex" *ngIf="loggedUser == 'true'">
+      <li class="nav-item d-flex" *ngIf="isLoggedIn">
         <img src="assets/images/basket.svg" alt="">
         <a class="nav-link" routerLink="/basket-list">{{"Basket" | translate}}</a>
       </li>
-      <li class="nav-item d-flex" *ngIf="loggedUser != 'true'">
+      <li class="nav-item d-flex" *ngIf="!isLoggedIn">
         <img src="assets/images/Icon-nav-user.svg" alt="">
         <a class="nav-link" routerLink="/phone">{{"Login" | translate}}</a>
       </li>
-      <li class="nav-item d-flex" *ngIf="loggedUser == 'true'">
+      <li class="nav-item d-flex" *ngIf="isLoggedIn">
         <img src="assets/images/Icon-nav-user.svg" alt="">
         <a class="nav-link" routerLink="/my_profile/edit">
           <span *ngIf="!(userList?.userName == null || userList?.userName == '')">{{userList?.userName}}</span>

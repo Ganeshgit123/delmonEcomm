@@ -3,10 +3,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-tab',
-    templateUrl: './tab.component.html',
-    styleUrls: ['./tab.component.css'],
-    standalone: false
+  selector: 'app-tab',
+  templateUrl: './tab.component.html',
+  styleUrls: ['./tab.component.css'],
+  standalone: false
 })
 export class TabComponent {
 
@@ -23,10 +23,10 @@ export class TabComponent {
   logOut() {
     this.toastr.success("Success", "Logout Successfully");
     sessionStorage.clear();
-    if (this.websiteFlow == 'POULTRY') {
+    if (this.websiteFlow === 'POULTRY') {
       this.router.navigate(['/home']);
     }
-    else if (this.websiteFlow == 'FEEDING') {
+    else if (this.websiteFlow === 'FEEDING') {
       this.router.navigate(['/feeding/feed-home']);
     }
   }

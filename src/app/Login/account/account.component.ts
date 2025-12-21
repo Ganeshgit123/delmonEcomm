@@ -4,10 +4,10 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-account',
-    templateUrl: './account.component.html',
-    styleUrls: ['./account.component.css'],
-    standalone: false
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css'],
+  standalone: false
 })
 export class AccountComponent {
 
@@ -21,8 +21,8 @@ export class AccountComponent {
       countryCode: sessionStorage.getItem('countryCode')
     }
     this.auth.verifyUser(data).subscribe((res: any) => {
-      if (res.error == false) {
-        sessionStorage.setItem("userType",'USER');
+      if (res.error === false) {
+        sessionStorage.setItem("userType", 'USER');
         this.router.navigate(['/otp']);
       }
     })

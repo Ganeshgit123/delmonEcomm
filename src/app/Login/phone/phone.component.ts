@@ -6,20 +6,20 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'app-phone',
-    templateUrl: './phone.component.html',
-    styleUrls: ['./phone.component.css'],
-    standalone: false
+  selector: 'app-phone',
+  templateUrl: './phone.component.html',
+  styleUrls: ['./phone.component.css'],
+  standalone: false
 })
 export class PhoneComponent implements OnInit {
-  websiteFlow:any;
+  websiteFlow: any;
   sendOtpvalue!: FormGroup;
   submitted = false;
   settings: any;
   params: any;
 
   constructor(public auth: AuthService, private builder: FormBuilder, private toastr: ToastrService, private router: Router,
-    private route: ActivatedRoute,) { 
+    private route: ActivatedRoute,) {
     this.sendOtpvalue = this.builder.group({
       countryCode: [''], mobileNumber: [''],
     });
@@ -27,7 +27,7 @@ export class PhoneComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.params = params['text']; 
+      this.params = params['text'];
     });
     this.websiteFlow = localStorage.getItem('flow');
 
@@ -49,10 +49,10 @@ export class PhoneComponent implements OnInit {
       return false;
     }
     this.submitted = false;
-    if(this.params == undefined){
+    if (this.params == null) {
       this.auth.sendOtpcheckUser(this.sendOtpvalue.value).subscribe((res: any) => {
-        if (res.error == false) {
-          if (res.data.isRegistered == true) {
+        if (res.error === false) {
+          if (res.data.isRegistered === true) {
             this.toastr.success('Success', res.message);
             // this.toastr.success('OTP', res.otp);
             this.router.navigate(['/otp']);
@@ -65,13 +65,13 @@ export class PhoneComponent implements OnInit {
           }
         }
       })
-    }else{
+    } else {
       const object = {
         mobileNumber: this.sendOtpvalue.value.mobileNumber
       }
       this.auth.adminLoginUser(object).subscribe((res: any) => {
-        if (res.error == false) {
-          if (res.data.isRegistered == true) {
+        if (res.error === false) {
+          if (res.data.isRegistered === true) {
             this.toastr.success('Success', res.message);
             this.router.navigate(['/categories']);
             sessionStorage.setItem("adminLogin", ('true'));

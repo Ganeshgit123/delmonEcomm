@@ -14,20 +14,20 @@
         </div>
 
         <div class="col-lg-6 col-md-6">
-            <div class="desc-head pt-5" *ngIf="isStock > 0">
+            <div class="desc-head pt-5" *ngIf="isStock > 0; else outOfStockF">
                 <p class="desc-text">
-                    <span *ngIf="dir == 'ltr'">{{productName}}</span>
-                    <span *ngIf="dir == 'rtl'">{{productNameAr}}</span>
+                    {{ dir === 'ltr' ? productName : productNameAr }}
                 </p>
                 <button class="badge badge-pill desc-btn">{{"InStock" | translate}}</button>
             </div>
-            <div class="desc-head pt-5" *ngIf="isStock <= 0">
-                <p class="desc-text">
-                    <span *ngIf="dir == 'ltr'">{{productName}}</span>
-                    <span *ngIf="dir == 'rtl'">{{productNameAr}}</span>
-                </p>
-                <button class="badge badge-pill desc-out-btn">{{"OutofStock" | translate}}</button>
-            </div>
+            <ng-template #outOfStockF>
+                <div class="desc-head pt-5">
+                    <p class="desc-text">
+                        {{ dir === 'ltr' ? productName : productNameAr }}
+                    </p>
+                    <button class="badge badge-pill desc-out-btn">{{"OutofStock" | translate}}</button>
+                </div>
+            </ng-template>
             <!-- 
             <div class="col desc-box mt-3">
                 <div class="desc-cont">
@@ -54,8 +54,7 @@
             <div class="mt-3">
                 <h5 class="desc-con">{{"Description" | translate}}</h5>
                 <p class="desc-cons pt-3">
-                    <span *ngIf="dir == 'ltr'">{{productdescription}}</span>
-                    <span *ngIf="dir == 'rtl'">{{productdescriptionAr}}</span>
+                    {{ dir === 'ltr' ? productdescription : productdescriptionAr }}
                 </p>
             </div>
 
@@ -72,8 +71,8 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 desc-btn-box mt-4">
                 <div class="text-center">
                     <p class="mt-2">
-                        <span class="offer_price">{{normalPrice}} BD</span>
-                        <span>{{productprice}} BD</span> <br> {{"TotalAmount" | translate}}
+                        <span class="offer_price" *ngIf="normalPrice">{{ normalPrice | number : '1.0-2' }} BD</span>
+                        <span>{{ productprice | number : '1.0-2' }} BD</span> <br> {{"TotalAmount" | translate}}
                     </p>
                 </div>
                 <div *ngIf="isStock > 0">

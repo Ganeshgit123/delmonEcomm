@@ -5,10 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-otp',
-    templateUrl: './otp.component.html',
-    styleUrls: ['./otp.component.css'],
-    standalone: false
+  selector: 'app-otp',
+  templateUrl: './otp.component.html',
+  styleUrls: ['./otp.component.css'],
+  standalone: false
 })
 export class OtpComponent {
   otp: any;
@@ -46,15 +46,15 @@ export class OtpComponent {
     }
     this.auth.verifyOtp(object).subscribe((res: any) => {
       sessionStorage.setItem("userId", res.data.id);
-      if (res.error == false) {
+      if (res.error === false) {
         this.toastr.success('Success', res.message);
-        if (this.websiteFlow == 'POULTRY') {
+        if (this.websiteFlow === 'POULTRY') {
           if (this.productId != 0) {
             this.router.navigate([`/description/${this.productId}`])
           }
           this.router.navigate(['/home']);
         }
-        else if (this.websiteFlow == 'FEEDING') {
+        else if (this.websiteFlow === 'FEEDING') {
           this.router.navigate(['/feeding/feed-home']);
         }
         sessionStorage.setItem("userType", res.data.userType);

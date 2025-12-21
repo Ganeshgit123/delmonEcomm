@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Router , ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
-    selector: 'app-navbar-f',
-    templateUrl: './navbar-f.component.html',
-    styleUrls: ['./navbar-f.component.css'],
-    standalone: false
+  selector: 'app-navbar-f',
+  templateUrl: './navbar-f.component.html',
+  styleUrls: ['./navbar-f.component.css'],
+  standalone: false
 })
 export class NavbarFComponent {
 
@@ -15,20 +15,20 @@ export class NavbarFComponent {
   dir: any;
 
   categoryList: any = [];
-  loggedUser:any;
+  isLoggedIn = false;
   userList: any;
 
-  constructor(public translate: TranslateService,private authService:AuthService, private route:ActivatedRoute, private router:Router) {}
+  constructor(public translate: TranslateService, private authService: AuthService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
 
-    this.loggedUser = sessionStorage.getItem('isLogged');
+    this.isLoggedIn = sessionStorage.getItem('isLogged') === 'true';
     this.lang = localStorage.getItem("lang") || "ar";
     this.translate.use(this.lang);
     this.dir = localStorage.getItem("dir") || "rtl"
 
     this.dir = localStorage.getItem("dir") || "rtl"
-    if(this.loggedUser){
+    if (this.isLoggedIn) {
       this.authService.getUser().subscribe(
         (res: any) => {
           this.userList = res.data;
@@ -42,17 +42,17 @@ export class NavbarFComponent {
     );
   }
 
-  getProduct(id:any){
+  getProduct(id: any) {
     this.router.navigate([`/categories/${id}`])
   }
 
-  feedSelect(){
+  feedSelect() {
     localStorage.setItem('flow', 'POULTRY');
     this.router.navigate(['/home']);
   }
 
-  cart(){
-    if (this.loggedUser == 'true') {
+  cart() {
+    if (this.isLoggedIn) {
       this.router.navigate([`/cart`])
     }
     else {
@@ -61,11 +61,7 @@ export class NavbarFComponent {
   }
 
   switchLang(lang: any) {
-    if (lang == "ar") {
-      var dir = "rtl";
-    } else {
-      var dir = "ltr";
-    }
+    const dir = lang === "ar" ? "rtl" : "ltr";
     localStorage.setItem("lang", lang);
     localStorage.setItem("dir", dir);
     // console.log("lang",localStorage)

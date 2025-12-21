@@ -5,13 +5,13 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
-    selector: 'app-description-f',
-    templateUrl: './description-f.component.html',
-    styleUrls: ['./description-f.component.css'],
-    standalone: false
+  selector: 'app-description-f',
+  templateUrl: './description-f.component.html',
+  styleUrls: ['./description-f.component.css'],
+  standalone: false
 })
 export class DescriptionFComponent {
-  loggedUser: any;
+  isLoggedIn = false;
   categoryId: any;
   productDetails: any;
   productImg: any;
@@ -55,7 +55,7 @@ export class DescriptionFComponent {
   ngOnInit(): void {
     this.dir = localStorage.getItem("dir") || "rtl";
     window.scroll(0, 0);
-    this.loggedUser = sessionStorage.getItem('isLogged');
+    this.isLoggedIn = sessionStorage.getItem('isLogged') === 'true';
     this.route.params.subscribe((params) => {
       this.categoryId = params['id'];
     });
@@ -77,40 +77,40 @@ export class DescriptionFComponent {
       this.piecesActive = res.data?.piecesActive;
       this.isFavorites = res.data?.isFavorites;
 
-      if ((res.data.cartonActive == 1 && res.data.piecesActive == 1) || res.data.piecesActive == 1 && res.data.cartonActive == 0) {
-        this.soldType = 1
-        this.updateSoldtype(1)
+      if (res.data?.piecesActive === 1) {
+        this.soldType = 1;
+        this.updateSoldtype(1);
         this.activePiece = true;
         this.activeCarton = false;
         this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
-          return element.soldType == this.soldType;
+          return element.soldType === this.soldType;
         })
-        if (this.relatedProductFilter) {
+        if (this.relatedProductFilter?.length) {
           const firstProduct = this.relatedProductFilter[0];
           this.setPrices(firstProduct);
-          this.selectedId = firstProduct.id
-          this.isStock = firstProduct.stock;
+          this.selectedId = firstProduct?.id;
+          this.isStock = firstProduct?.stock;
         }
-      } else if (res.data.piecesActive == 0 && res.data.cartonActive == 1) {
-        this.soldType = 2
-        this.updateSoldtype(2)
+      } else if (res.data?.cartonActive === 1) {
+        this.soldType = 2;
+        this.updateSoldtype(2);
         this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
-          return element.soldType == this.soldType;
+          return element.soldType === this.soldType;
         })
-        if (this.relatedProductFilter) {
+        if (this.relatedProductFilter?.length) {
           const firstProduct = this.relatedProductFilter[0];
           this.setPrices(firstProduct);
-          this.selectedId = firstProduct.id;
-          this.isStock = firstProduct.stock;
+          this.selectedId = firstProduct?.id;
+          this.isStock = firstProduct?.stock;
         }
       }
     })
 
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.authService.getFavorites().subscribe(
         (res: any) => {
           this.favoriteData = res.data.filter((element: any) => {
-            return element.id == this.categoryId;
+            return element.id === this.categoryId;
           })
           this.favLength = this.favoriteData.length;
         })
@@ -134,35 +134,35 @@ export class DescriptionFComponent {
   }
 
   updateSoldtype(type: any) {
-    if (type == 1) {
+    if (type === 1) {
       this.activePiece = true;
       this.activeCarton = false;
-    } else if (type == 2) {
+    } else if (type === 2) {
       this.activeCarton = true;
       this.activePiece = false;
     }
     this.soldType = type;
     // console.log("sold type id", this.soldType);
     this.relatedProductFilter = this.relatedProduct?.filter((element: any) => {
-      return element.soldType == this.soldType;
+      return element.soldType === this.soldType;
     })
-    if (this.relatedProductFilter) {
+    if (this.relatedProductFilter?.length) {
       const firstProduct = this.relatedProductFilter[0];
       this.setPrices(firstProduct);
-      this.selectedId = firstProduct.id;
-      this.activePack = firstProduct.id
-      this.isStock = firstProduct.stock;
+      this.selectedId = firstProduct?.id;
+      this.activePack = firstProduct?.id;
+      this.isStock = firstProduct?.stock;
     }
   }
 
 
   sendCartValue() {
 
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.sendCartData = { 'productId': this.selectedId, 'price': this.productprice };
       // console.log("add_To_cart", this.sendCartData);
       this.authService.addtoCart(this.sendCartData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success('Successfully', res.message);
         }
         else {
@@ -177,11 +177,11 @@ export class DescriptionFComponent {
   }
 
   addFav() {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.isFavorites = 1;
       this.sendFavData = { 'productId': this.categoryId, 'isFavorites': 1 };
       this.authService.setFavorites(this.sendFavData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success(res.message);
           this.ngOnInit();
         }
@@ -196,11 +196,11 @@ export class DescriptionFComponent {
   }
 
   removeFav() {
-    if (this.loggedUser == 'true') {
+    if (this.isLoggedIn) {
       this.isFavorites = 0;
       this.sendFavData = { 'productId': this.categoryId, 'isFavorites': 0 };
       this.authService.setFavorites(this.sendFavData).subscribe((res: any) => {
-        if (res.error == false) {
+        if (res.error === false) {
           this.toastr.success(res.message);
           this.ngOnInit();
         } else {
