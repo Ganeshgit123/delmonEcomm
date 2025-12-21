@@ -218,9 +218,9 @@
                                         </div>
                                     </div>
                                 </form>
-                                <p *ngIf="!(couponResponse == 'null' || couponResponse == null)" class="pt-2">
+                                <p *ngIf="couponResponse as cp" class="pt-2">
                                     {{"AppliedCoupon"
-                                    | translate}} : {{couponResponse?.couponCode}}
+                                    | translate}} : {{cp.couponCode}}
                                     <span class="rem_btn"><a (click)="removeCoupon()">{{"Remove"| translate}}</a></span>
                                 </p>
                             </div>
@@ -323,9 +323,8 @@
                             <span>{{prodTotal | number : '1.2-3'}} BD</span>
                         </div> -->
 
-                        <div class="d-flex justify-content-between"
-                            *ngIf="!(couponResponse == 'null' || couponResponse == null)">
-                            <p>{{"Coupon" | translate}} ({{couponResponse?.couponCode}})</p>
+                        <div class="d-flex justify-content-between" *ngIf="couponResponse as cp">
+                            <p>{{"Coupon" | translate}} ({{cp.couponCode}})</p>
                             <span> -{{couponAmount}} BD</span>
                         </div>
 
@@ -517,12 +516,12 @@
 <ng-template #outOfStock role="document" let-modal="close">
     <div class="modal-body">
         <div *ngFor="let product of productDetails">
-            <p><span *ngIf="(product.stock > 0) && (product.stock < product.quantity)">
+            <p><span *ngIf="((product.stock || 0) > 0) && ((product.stock || 0) < product.quantity)">
                     <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
                     <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
-                    {{"stock" | translate}} {{product.stock}} {{"remainingStockMsg" | translate}}</span>
+                    {{"stock" | translate}} {{product.stock || 0}} {{"remainingStockMsg" | translate}}</span>
             </p>
-            <p><span *ngIf="product.stock <= 0">
+            <p><span *ngIf="(product.stock || 0) <= 0">
                     <span *ngIf="dir == 'ltr'">{{product.enProductName}}</span>
                     <span *ngIf="dir == 'rtl'">{{product.arProductName}}</span>
                     {{"outOfStockMsg" | translate}}</span>

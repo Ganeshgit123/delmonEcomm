@@ -8,6 +8,9 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
+import { CartItem, Coupon, DeliveryType } from '../shared/models/cart.models';
+import { CartTotalsService } from '../shared/services/cart-totals.service';
+import { StorageService } from '../shared/services/storage.service';
 declare const google: any;
 
 export const MY_DATE_FORMATS = {
@@ -31,21 +34,21 @@ export const MY_DATE_FORMATS = {
   ]
 })
 export class CartComponent {
-  productDetails: any;
+  productDetails: CartItem[] = [];
   quantity: number = 1;
-  cartSubTotal: any = 0.0;
+  cartSubTotal: number = 0.0;
   activeButton: any;
   addressForm: any;
   submitted = false;
-  cartLength: any;
+  cartLength: number = 0;
   addData: any;
   addLength: any;
   saveButton: any;
   typeButton: any = 0;
   addSelected: any;
   pincodeData: any;
-  loyaltyPoint: any;
-  totalAmount: any = 0.0;
+  loyaltyPoint: number = 0;
+  totalAmount: number = 0.0;
   i = 1;
   pickupAddress: any;
   viewData: any;
@@ -62,29 +65,29 @@ export class CartComponent {
     path: 'assets/images/Animations/Chicken-Roll.json'
   };
   fistData: any;
-  VATSum: any;
-  couponResponse: any;
-  prodTotal: any;
+  VATSum: number = 0;
+  couponResponse: Coupon | null = null;
+  prodTotal: number = 0;
   couponVal: any;
   order: any = [];
   addressList: any = [];
   selectedPin: any;
-  deliveryCharge: any;
-  deliveryType: any;
+  deliveryCharge: number = 0;
+  deliveryType: DeliveryType | any;
   delivAddresChange: any;
   deliverAddressArray: any = [];
   isEdit = false;
   addressId: any;
   getAddress: any;
-  loyaltyPointDiscount: any;
+  loyaltyPointDiscount: number = 0;
   isAppliedLoyaltyPoint: boolean = false;
   IsSubmitButtonEnable: boolean = true;
-  couponAmount: any;
+  couponAmount: number = 0;
   websiteFlow: any;
   loginType: any;
   canCalendarShowForDelivery: string = "false";
   date: any;
-  totalEmployeeDiscount: any;
+  totalEmployeeDiscount: number = 0;
   isappliedEmployeeDiscount: boolean = false;
   isHoliday: boolean = false;
   isAppliedCoupon: boolean = false;
@@ -109,8 +112,16 @@ export class CartComponent {
   selectedLng: any;
   selectedArea: any;
 
-  constructor(private auth: AuthService, private builder: FormBuilder, private toastr: ToastrService,
-    private modalService: NgbModal, private router: Router, private ngZone: NgZone) { }
+  constructor(
+    private auth: AuthService,
+    private builder: FormBuilder,
+    private toastr: ToastrService,
+    private modalService: NgbModal,
+    private router: Router,
+    private ngZone: NgZone,
+    private totals: CartTotalsService,
+    private storage: StorageService
+  ) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem('dir') || 'ltr';
@@ -118,7 +129,8 @@ export class CartComponent {
     this.websiteFlow = localStorage.getItem('flow');
     this.loginType = sessionStorage.getItem('userType');
     this.deliveryType = sessionStorage.getItem('deliverrType');
-    this.deliveryCharge = sessionStorage.getItem('deliveryCharg');
+    const dc = sessionStorage.getItem('deliveryCharg');
+    this.deliveryCharge = dc ? Number(dc) : 0;
     this.delivAddresChange = sessionStorage.getItem('delivAddChange');
 
     this.auth.getZones().subscribe((res: any) => {
@@ -131,7 +143,7 @@ export class CartComponent {
     }
     this.auth.viewCart().subscribe((res: any) => {
       this.viewData = res;
-      this.productDetails = res.data;
+      this.productDetails = Array.isArray(res.data) ? res.data : [];
       // console.log("Fef", this.productDetails)
       this.userId = sessionStorage.getItem('userId');
       this.cartLength = this.productDetails.length;
@@ -167,20 +179,16 @@ export class CartComponent {
         this.productDetailsObject.push(item);
       });
 
-      if (!(this.deliveryCharge == '' || this.deliveryCharge == null)) {
+      if (Number(this.deliveryCharge) > 0) {
         this.deliveryChargeObject = {
           title: 'Delivery fee',
           price: this.deliveryCharge + " BD"
         }
       }
 
-      let totSum = 0;
-      this.productDetails.forEach((element: any) => {
-        const prodTot = element.quantity * element.price
-        this.prodTotal = totSum += prodTot;
-      })
+      this.prodTotal = this.totals.computeProductTotal(this.productDetails);
 
-      this.couponResponse = JSON.parse(sessionStorage.getItem('Coupon') || "null");
+      this.couponResponse = this.storage.getSessionJSON<Coupon>('Coupon');
       if (this.couponResponse != null || this.couponResponse != undefined) {
         this.isCouponApplied = true;
         this.isAppliedCoupon = true;
@@ -189,13 +197,7 @@ export class CartComponent {
         this.isCouponApplied = false;
         this.isAppliedCoupon = false;
       }
-      var couponDisc = this.prodTotal * (this.couponResponse?.discountPercentage / 100);
-
-      if (couponDisc < this.couponResponse?.maximumDiscount) {
-        this.couponAmount = parseFloat((couponDisc)?.toFixed(3))
-      } else {
-        this.couponAmount = parseFloat((this.couponResponse?.maximumDiscount)?.toFixed(3));
-      }
+      this.couponAmount = Number(this.totals.computeCouponAmount(this.prodTotal, this.couponResponse).toFixed(3));
 
       if (this.couponResponse) {
         this.couponResponseObject = {
@@ -211,18 +213,7 @@ export class CartComponent {
         }
       }
 
-      var vatIncludeAray = this.productDetails.filter((element: any) => {
-        return element.vat != 0;
-      });
-      if (vatIncludeAray.length != 0) {
-        let sum = 0;
-        vatIncludeAray.forEach((element: any) => {
-          var vatCalc = (element.quantity * element.price) * (element.vat / 100)
-          this.VATSum = sum += vatCalc;
-        });
-      } else {
-        this.VATSum = 0;
-      }
+      this.VATSum = this.totals.computeVAT(this.productDetails);
 
       this.vatObject = {
         title: 'VAT',
@@ -415,7 +406,8 @@ export class CartComponent {
       sessionStorage.setItem('deliveryFullAddress', this.pickupAddress)
       this.deliverAddressArray.push(this.pickupAddress)
       if (this.deliveryCharge > 0) {
-        this.totalAmount = (parseFloat(this.totalAmount) - parseFloat(this.deliveryCharge)).toFixed(3);
+        const newTotal = Number(this.totalAmount) - Number(this.deliveryCharge);
+        this.totalAmount = Number(newTotal.toFixed(3));
       }
       this.deliveryCharge = 0;
       this.calculateTotal();
@@ -427,7 +419,7 @@ export class CartComponent {
         this.addData = res.data;
         this.deliverAddressArray.push(this.fistData)
         this.deliveryCharge = parseFloat(this.fistData?.deliveryCharge.toFixed(3));
-        sessionStorage.setItem('deliveryCharg', this.deliveryCharge);
+        sessionStorage.setItem('deliveryCharg', String(this.deliveryCharge));
         this.addLength = this.addData.length;
         this.checkEnableDisableOrderButton();
         this.calculateTotal();
@@ -473,36 +465,19 @@ export class CartComponent {
   reloadCart() {
     this.auth.viewCart().subscribe((res: any) => {
       this.viewData = res;
-      this.productDetails = res.data;
-      let totSum = 0;
-      this.productDetails.forEach((element: any) => {
-        const prodTot = element.quantity * element.price
-        this.prodTotal = totSum += prodTot;
-      })
-      // Recalculate VAT based on current cart
-      const vatIncludeAray = this.productDetails.filter((element: any) => element.vat != 0);
-      if (vatIncludeAray.length !== 0) {
-        let sum = 0;
-        vatIncludeAray.forEach((element: any) => {
-          const vatCalc = (element.quantity * element.price) * (element.vat / 100);
-          this.VATSum = sum += vatCalc;
-        });
-      } else {
-        this.VATSum = 0;
-      }
+      this.productDetails = Array.isArray(res.data) ? res.data : [];
+      this.cartLength = this.productDetails.length;
+      this.prodTotal = this.totals.computeProductTotal(this.productDetails);
+      // VAT
+      this.VATSum = this.totals.computeVAT(this.productDetails);
 
       // Refresh coupon state and amount against updated product total
-      this.couponResponse = JSON.parse(sessionStorage.getItem('Coupon') || "null");
+      this.couponResponse = this.storage.getSessionJSON<Coupon>('Coupon');
       if (this.couponResponse != null && this.couponResponse != undefined) {
         this.isCouponApplied = true;
         this.isAppliedCoupon = true;
         // Recompute coupon amount with latest prodTotal
-        const percentAmount = this.prodTotal * (this.couponResponse.discountPercentage / 100);
-        if (percentAmount > this.couponResponse.maximumDiscount) {
-          this.couponAmount = parseFloat((this.couponResponse.maximumDiscount)?.toFixed(3));
-        } else {
-          this.couponAmount = parseFloat((percentAmount)?.toFixed(3));
-        }
+        this.couponAmount = Number(this.totals.computeCouponAmount(this.prodTotal, this.couponResponse).toFixed(3));
         this.couponResponseObject = {
           title: this.couponResponse?.couponCode,
           price: "-" + this.couponAmount + " BD"
@@ -533,10 +508,10 @@ export class CartComponent {
         if (res.success == true) {
           this.isCouponApplied = true;
           this.isAppliedCoupon = true;
-          sessionStorage.setItem("Coupon", JSON.stringify(res.data[0]));
+          this.storage.setSessionJSON('Coupon', res.data[0]);
           this.couponResponse = res.data[0];
           this.toastr.success('Success ', res.massage);
-          this.couponAmount = this.calculateCouponAmount();
+          this.couponAmount = this.totals.computeCouponAmount(this.prodTotal, this.couponResponse);
           this.couponForm.reset();
           this.ngOnInit();
           this.order = [];
@@ -547,7 +522,7 @@ export class CartComponent {
   }
 
   removeCoupon() {
-    sessionStorage.removeItem("Coupon");
+    this.storage.removeSession('Coupon');
     this.isCouponApplied = false;
     this.isAppliedCoupon = false;
     this.couponResponseObject = null;
@@ -556,15 +531,8 @@ export class CartComponent {
     this.order = [];
   }
 
-  calculateCouponAmount() {
-    let percentAmount = this.prodTotal * (this.couponResponse.discountPercentage / 100);
-    if (percentAmount > this.couponResponse.maximumDiscount) {
-      return this.couponResponse.maximumDiscount;
-    }
-    else {
-      return percentAmount;
-    }
-  }
+  // Deprecated: use CartTotalsService.computeCouponAmount()
+  // calculateCouponAmount() { return this.totals.computeCouponAmount(this.prodTotal, this.couponResponse); }
 
   applyLoyaltyPoint(values: any): void {
     this.isAppliedLoyaltyPoint = values.currentTarget.checked;
@@ -587,7 +555,7 @@ export class CartComponent {
     else {
       this.isLoyaltyApplied = false;
       if (this.loyaltyPointDiscount > 0) {
-        this.totalAmount = parseFloat(this.totalAmount) + parseFloat(this.loyaltyPointDiscount);
+        this.totalAmount = Number((Number(this.totalAmount) + Number(this.loyaltyPointDiscount)).toFixed(3));
         this.loyaltyPointDiscount = 0;
         if (this.order.findIndex((x: any) => x.title == 'Loyalty amount') != -1) {
           this.order.splice(this.order.findIndex((x: any) => x.title == 'Loyalty amount'), 1)
@@ -620,7 +588,7 @@ export class CartComponent {
     sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.fistData))
     this.deliverAddressArray.push(this.fistData)
     this.deliveryCharge = parseFloat(value.deliveryCharge.toFixed(3));
-    sessionStorage.setItem('deliveryCharg', this.deliveryCharge);
+    sessionStorage.setItem('deliveryCharg', String(this.deliveryCharge));
     this.modalService.dismissAll();
     this.ngOnInit();
     this.order = [];
