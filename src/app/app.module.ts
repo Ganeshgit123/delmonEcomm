@@ -57,11 +57,7 @@ import { MatRadioModule } from '@angular/material/radio';
 
 // import { AuthInterceptor } from "./shared/auth.interceptor";
 
-import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS,
-} from "@angular/common/http";
+import { HttpClient, HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { BasketListComponent } from './basket-list/basket-list.component';
 import { FeedingModule } from './feeding/feeding.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -79,87 +75,81 @@ export function playerFactory() {
   return player;
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-    AccountComponent,
-    PhoneComponent,
-    EmployeeComponent,
-    NumberComponent,
-    OtpComponent,
-    FreshComponent,
-    BasketComponent,
-    DescriptionComponent,
-    LookingComponent,
-    ReceipiesComponent,
-    EditComponent,
-    OrderComponent,
-    CartComponent,
-    FooterComponent,
-    SearchComponent,
-    PaymentComponent,
-    LoginBarComponent,
-    WalletComponent,
-    AddressComponent,
-    FavouriteComponent,
-    HelpComponent,
-    PointsComponent,
-    SettingsComponent,
-    FeedbackComponent,
-    TabComponent,
-    IngredientsComponent,
-    BookingCompleteComponent,
-    BasketListComponent,
-    AdminBasketComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    FeedingModule,
-    BrowserAnimationsModule,
-    MatExpansionModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatNativeDateModule,
-    MatDatepickerModule,
-    MomentDateModule,
-    MatTabsModule,
-    MatButtonToggleModule,
-    CarouselModule,
-    FormsModule,
-    NgbModule,
-    NgOtpInputModule,
-    MatRadioModule,
-    LottieModule.forRoot({ player: playerFactory }),
-    ReactiveFormsModule,
-    ToastrModule.forRoot(),
-    HttpClientModule,
-    TranslateModule.forRoot({
-      defaultLanguage: 'ar',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient]
-      }
-    }),
-  ],
-  providers: [
-    DatePipe,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: LOCALE_ID,
-      useValue: 'ar-BH'
-    }
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomeComponent,
+        AccountComponent,
+        PhoneComponent,
+        EmployeeComponent,
+        NumberComponent,
+        OtpComponent,
+        FreshComponent,
+        BasketComponent,
+        DescriptionComponent,
+        LookingComponent,
+        ReceipiesComponent,
+        EditComponent,
+        OrderComponent,
+        CartComponent,
+        FooterComponent,
+        SearchComponent,
+        PaymentComponent,
+        LoginBarComponent,
+        WalletComponent,
+        AddressComponent,
+        FavouriteComponent,
+        HelpComponent,
+        PointsComponent,
+        SettingsComponent,
+        FeedbackComponent,
+        TabComponent,
+        IngredientsComponent,
+        BookingCompleteComponent,
+        BasketListComponent,
+        AdminBasketComponent,
+    ],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
+        BrowserModule,
+        FeedingModule,
+        BrowserAnimationsModule,
+        MatExpansionModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
+        MomentDateModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        CarouselModule,
+        FormsModule,
+        NgbModule,
+        NgOtpInputModule,
+        MatRadioModule,
+        LottieModule.forRoot({ player: playerFactory }),
+        ReactiveFormsModule,
+        ToastrModule.forRoot(),
+        TranslateModule.forRoot({
+            defaultLanguage: 'ar',
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient]
+            }
+        })], providers: [
+        DatePipe,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+        {
+            provide: LOCALE_ID,
+            useValue: 'ar-BH'
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
 
 export function HttpLoaderFactory(http: HttpClient) {
