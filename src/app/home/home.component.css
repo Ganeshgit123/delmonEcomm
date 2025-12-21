@@ -213,10 +213,9 @@
 }
 
 .product .card img {
-    width: 150px;
+    /* width: 150px; */
     height: 150px;
-    padding-top: 30px;
-    padding-bottom: 20px;
+    padding: 30px 20px 20px 20px;
 }
 
 .product .card {
@@ -339,6 +338,11 @@ select {
     right: 0;
     display: flex;
     gap: 8px;
+}
+
+.product-carousel .owl-nav:lang(ar) {
+    left: 0;
+    right: auto;
 }
 
 .product-carousel .owl-nav button {
