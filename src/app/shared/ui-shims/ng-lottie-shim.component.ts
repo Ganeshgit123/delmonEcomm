@@ -3,7 +3,8 @@ import lottie, { AnimationItem } from 'lottie-web';
 
 @Component({
     selector: 'ng-lottie',
-    template: '<div #container style="width:100%;height:100%;display:block"></div>'
+    template: '<div #container style="width:100%;height:100%;display:block"></div>',
+    standalone: true
 })
 export class NgLottieShimComponent implements OnInit, OnDestroy {
     @Input() options: { path?: string; animationData?: any; loop?: boolean; autoplay?: boolean } = {};

@@ -571,7 +571,7 @@ export class CartComponent {
     var firtArr: any = [];
     firtArr.push(this.fistData);
 
-    this.modalService.open(deleiveryAddModal, { centered: true, size: 'md' });
+    this.dialog.open(deleiveryAddModal, { panelClass: 'md-dialog' });
 
     this.auth.getAddress().subscribe((res: any) => {
       this.addressList = res.data.filter(function (cv: any) {
@@ -590,7 +590,7 @@ export class CartComponent {
     this.deliverAddressArray.push(this.fistData)
     this.deliveryCharge = parseFloat(value.deliveryCharge.toFixed(3));
     sessionStorage.setItem('deliveryCharg', String(this.deliveryCharge));
-    this.modalService.dismissAll();
+    this.dialog.closeAll();
     this.ngOnInit();
     this.order = [];
   }
@@ -598,7 +598,7 @@ export class CartComponent {
   onSubmitBook(outOfStock: any) {
     const isAnyOutOfStock = this.viewData.data.some((item: any) => item.stock < item.quantity);
     if (isAnyOutOfStock) {
-      this.modalService.open(outOfStock, { centered: true });
+      this.dialog.open(outOfStock, {});
     } else {
       if (this.isHoliday) {
         this.toastr.error("Selected delivery date is Holiday. Please choose another date.");
@@ -842,7 +842,7 @@ export class CartComponent {
         if (res.error == false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
-          this.modalService.dismissAll();
+          this.dialog.closeAll();
           this.ngOnInit();
         } else {
           this.toastr.error('Enter valid ', res.message);
@@ -867,7 +867,7 @@ export class CartComponent {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.submitted = false;
-          this.modalService.dismissAll();
+          this.dialog.closeAll();
           this.ngOnInit();
         } else {
           this.toastr.error('Enter valid ', res.message);
@@ -876,7 +876,7 @@ export class CartComponent {
   }
 
   editAddress(data: any, content: any) {
-    this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
     this.isEdit = true;
     this.addressId = data['id'];
     this.auth.getArea(data['zoneId']).subscribe(

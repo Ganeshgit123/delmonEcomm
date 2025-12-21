@@ -4,8 +4,8 @@ import { OwlCarouselOShimComponent } from './owl-carousel-o-shim.component';
 import { NgLottieShimComponent } from './ng-lottie-shim.component';
 
 @NgModule({
-    declarations: [OwlCarouselOShimComponent, NgLottieShimComponent],
-    imports: [CommonModule],
+    declarations: [],
+    imports: [CommonModule, OwlCarouselOShimComponent, NgLottieShimComponent],
     exports: [OwlCarouselOShimComponent, NgLottieShimComponent]
 })
 export class SharedUiShimsModule { }

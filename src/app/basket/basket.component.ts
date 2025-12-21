@@ -6,10 +6,10 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
-    selector: 'app-basket',
-    templateUrl: './basket.component.html',
-    styleUrls: ['./basket.component.css'],
-    standalone: false
+  selector: 'app-basket',
+  templateUrl: './basket.component.html',
+  styleUrls: ['./basket.component.css'],
+  standalone: false
 })
 export class BasketComponent {
 
@@ -17,14 +17,14 @@ export class BasketComponent {
   basketData: any;
   getBasketName: any;
   cartData: any;
-  basketDataLength:any;
+  basketDataLength: any;
 
-  options: AnimationOptions = {    
-    path: 'assets/images/Animations/Chicken-Roll.json'  
-  };  
+  options: AnimationOptions = {
+    path: 'assets/images/Animations/Chicken-Roll.json'
+  };
 
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router,private modalService: NgbModal) {
+  constructor(private authService: AuthService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router, private dialog: MatDialog) {
     if (this.router.getCurrentNavigation()?.extras.state) {
       this.getBasketName = this.router.getCurrentNavigation()?.extras.state;
       // console.log('ssss',this.recipiesDetails);
@@ -33,8 +33,8 @@ export class BasketComponent {
 
   openVerticallyCentered(content: any) {
 
-    this.modalService.open(content, { centered: true });
-}
+    this.dialog.open(content, {});
+  }
 
   ngOnInit(): void {
 
@@ -46,7 +46,7 @@ export class BasketComponent {
       // console.log("SUBASk", res.data);
       this.basketData = res.data;
       this.basketDataLength = this.basketData.length;
-      
+
     })
 
   }
@@ -65,61 +65,61 @@ export class BasketComponent {
       }
     })
   }
-    
+
   //   for (let basket of this.basketData) {
   //     let i = basket.productId;
   //     console.log(i);
-     
+
   //   }
-    
+
   // }
 
-  
-//   sendBasketValue() {
 
-//     console.log(this.basketData);
+  //   sendBasketValue() {
 
-//     for (let basket of this.basketData) {
-//       let i = basket.productId;
-//       this.cartData = { 'productId': basket.productId, 'price': basket.price };
-//       console.log("add_To_cart", this.cartData);
-//       this.authService.addtoCart(this.cartData).subscribe((res: any) => {
-//         if (res.error == false) {
-//           this.toastr.success('Successfully', res.message);
-//         }
-//         else {
-//           this.toastr.error('Kindly Login to Your Account')
-//         }
-//       })
-//     }
-//  }
+  //     console.log(this.basketData);
+
+  //     for (let basket of this.basketData) {
+  //       let i = basket.productId;
+  //       this.cartData = { 'productId': basket.productId, 'price': basket.price };
+  //       console.log("add_To_cart", this.cartData);
+  //       this.authService.addtoCart(this.cartData).subscribe((res: any) => {
+  //         if (res.error == false) {
+  //           this.toastr.success('Successfully', res.message);
+  //         }
+  //         else {
+  //           this.toastr.error('Kindly Login to Your Account')
+  //         }
+  //       })
+  //     }
+  //  }
 
 
-  removeItem(id:any){
-    
+  removeItem(id: any) {
+
     this.authService.removeProductBasket(id).subscribe(
-      (res:any) => {
-        if(res.error == false){
+      (res: any) => {
+        if (res.error == false) {
           this.toastr.success(res.message);
           this.ngOnInit();
-         }
-         else {
+        }
+        else {
           this.toastr.error(res.message);
-         }
+        }
       }
     )
   }
 
-  removeBasket(){
+  removeBasket() {
     console.log(this.basketId);
     this.authService.removeBasket(this.basketId).subscribe(
-      (res:any) =>{
-       if(res.error == false){
-        this.toastr.success('Successfully', res.message);
-        this.router.navigate([`/basket-list`]);
-        this.modalService.dismissAll();
-       }
-        
+      (res: any) => {
+        if (res.error == false) {
+          this.toastr.success('Successfully', res.message);
+          this.router.navigate([`/basket-list`]);
+          this.dialog.closeAll();
+        }
+
       }
     )
   }

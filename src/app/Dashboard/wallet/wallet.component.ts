@@ -5,10 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-    selector: 'app-wallet',
-    templateUrl: './wallet.component.html',
-    styleUrls: ['./wallet.component.css'],
-    standalone: false
+  selector: 'app-wallet',
+  templateUrl: './wallet.component.html',
+  styleUrls: ['./wallet.component.css'],
+  standalone: false
 })
 export class WalletComponent {
 
@@ -24,7 +24,7 @@ export class WalletComponent {
   adminLogin: any;
   dir: any;
 
-  constructor(private auth: AuthService, private toastr: ToastrService, private modalService: NgbModal) { }
+  constructor(private auth: AuthService, private toastr: ToastrService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem('dir') || 'ltr';
@@ -50,13 +50,13 @@ export class WalletComponent {
     this.auth.add_Wallet(this.walletData, this.userId).subscribe((res: any) => {
       this.toastr.success(res.message);
       this.ngOnInit();
-      this.modalService.dismissAll();
+      this.dialog.closeAll();
     })
 
   }
 
   openVerticallyCentered(content: any) {
-    this.modalService.open(content, { centered: true });
+    this.dialog.open(content, {});
   }
 
 

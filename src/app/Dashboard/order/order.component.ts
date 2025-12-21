@@ -7,10 +7,10 @@ import { environment } from 'src/environments/environment.prod';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
-    selector: 'app-order',
-    templateUrl: './order.component.html',
-    styleUrls: ['./order.component.css'],
-    standalone: false
+  selector: 'app-order',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.css'],
+  standalone: false
 })
 export class OrderComponent {
   endpoint = environment.baseUrl;
@@ -30,7 +30,7 @@ export class OrderComponent {
   dir: any;
   loadedTabs: { [key: string]: boolean } = {};
 
-  constructor(private auth: AuthService, private modalService: NgbModal,
+  constructor(private auth: AuthService, private dialog: MatDialog,
     private toastr: ToastrService,) { }
 
   ngOnInit(): void {
@@ -103,7 +103,7 @@ export class OrderComponent {
     this.auth.declineOrder(id, object).subscribe((res: any) => {
       if (res.success == true) {
         this.toastr.success('Success ', res.massage);
-        this.modalService.dismissAll();
+        this.dialog.closeAll();
         this.ngOnInit();
       } else {
         this.toastr.error('Enter valid ', res.massage);
@@ -115,7 +115,7 @@ export class OrderComponent {
     this.auth.reOrderFunc(id).subscribe((res: any) => {
       if (res.success == true) {
         this.toastr.success('Success ', res.massage);
-        this.modalService.dismissAll();
+        this.dialog.closeAll();
         this.ngOnInit();
       } else {
         this.toastr.error('Enter valid ', res.massage);
@@ -124,7 +124,7 @@ export class OrderComponent {
   }
 
   orderDetail(content: any, id: any) {
-    this.modalService.open(content, { size: 'lg' });
+    this.dialog.open(content, { width: '900px' });
     this.orderId = id;
     this.auth.getOrderDetails(this.orderId).subscribe((res: any) => {
       this.orderBillDetails = res.data[0].order;
