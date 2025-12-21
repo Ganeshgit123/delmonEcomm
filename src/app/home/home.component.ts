@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+// OwlOptions shim type is unused after replacing with Swiper
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { AuthService } from 'src/app/shared/auth.service';
@@ -12,7 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
   standalone: false
 })
 export class HomeComponent implements OnInit {
-  homeOptions: OwlOptions = {
+  @ViewChildren('prodScroller') prodScrollers!: QueryList<ElementRef<HTMLElement>>;
+  homeOptions: any = {
     loop: true,
     mouseDrag: true,
     touchDrag: true,
@@ -43,7 +44,7 @@ export class HomeComponent implements OnInit {
     },
     nav: true
   }
-  productOptions: OwlOptions = {
+  productOptions: any = {
     loop: true,
     mouseDrag: true,
     touchDrag: true,
@@ -110,5 +111,15 @@ export class HomeComponent implements OnInit {
   }
   openModal(adSection: any) {
     this.dialog.open(adSection, { panelClass: 'mat-dialog-no-padding' });
+  }
+
+  scrollProducts(sectionIndex: number, direction: number): void {
+    const scroller = this.prodScrollers?.toArray?.()[sectionIndex];
+    if (!scroller) return;
+    const el = scroller.nativeElement;
+    const isRtl = getComputedStyle(el).direction === 'rtl';
+    const effectiveDir = isRtl ? -direction : direction;
+    const delta = Math.round(el.clientWidth * 0.9) * effectiveDir;
+    el.scrollBy({ left: delta, behavior: 'smooth' });
   }
 }

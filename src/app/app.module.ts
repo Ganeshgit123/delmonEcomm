@@ -33,6 +33,7 @@ import { TabComponent } from './tab/tab.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -52,6 +53,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
 import { SharedUiShimsModule } from './shared/ui-shims/shared-ui-shims.module';
+// import { SwiperModule } from 'swiper/angular';
 
 // import { AuthInterceptor } from "./shared/auth.interceptor";
 
@@ -108,8 +110,10 @@ export function createTranslateLoader(http: HttpClient): any {
   ],
   bootstrap: [AppComponent], imports: [AppRoutingModule,
     BrowserModule,
+    RouterModule,
     MatDialogModule,
     SharedUiShimsModule,
+    // SwiperModule,
     FeedingModule,
     BrowserAnimationsModule,
     MatExpansionModule,

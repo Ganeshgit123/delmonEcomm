@@ -328,6 +328,41 @@ select {
     align-items: center;
 }
 
+/* Horizontal scroller fallback for product carousel */
+.product-carousel {
+    position: relative;
+}
+
+.product-carousel .owl-nav {
+    position: absolute;
+    top: -48px;
+    right: 0;
+    display: flex;
+    gap: 8px;
+}
+
+.product-carousel .owl-nav button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.product-carousel .scroller {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 1fr);
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.product-carousel .slide {
+    scroll-snap-align: start;
+}
+
 .categories-content-c {
     background: #F1F1F1;
     display: flex;
