@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartItem, Coupon, DeliveryType } from '../shared/models/cart.models';
@@ -26,13 +26,13 @@ export const MY_DATE_FORMATS = {
 };
 
 @Component({
-    selector: 'app-cart',
-    templateUrl: './cart.component.html',
-    styleUrls: ['./cart.component.css'],
-    providers: [
-        { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
-    ],
-    standalone: false
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ],
+  standalone: false
 })
 export class CartComponent {
   productDetails: CartItem[] = [];
@@ -117,7 +117,7 @@ export class CartComponent {
     private auth: AuthService,
     private builder: FormBuilder,
     private toastr: ToastrService,
-    private modalService: NgbModal,
+    private dialog: MatDialog,
     private router: Router,
     private ngZone: NgZone,
     private totals: CartTotalsService,
@@ -277,7 +277,7 @@ export class CartComponent {
 
   openMap(mapModel: any) {
     this.isMapSaveButtonEnabled = true;
-    this.modalService.open(mapModel, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+    this.dialog.open(mapModel, { disableClose: true, panelClass: 'custom-class' });
 
     this.loadGoogleMaps().then(() => {
       setTimeout(() => {
@@ -365,15 +365,15 @@ export class CartComponent {
   }
 
   closeMap() {
-    this.modalService.dismissAll();
+    this.dialog.closeAll();
   }
 
   openModal(content: any) {
-    this.modalService.dismissAll();
+    this.dialog.closeAll();
     this.addressForm.reset();
     this.isEdit = false;
     this.submitted = false;
-    this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
   }
 
   checkHolidayaListForDelivery() {

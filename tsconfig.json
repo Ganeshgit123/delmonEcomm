@@ -18,6 +18,14 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
+    "paths": {
+      "ngx-owl-carousel-o": [
+        "src/app/shared/ui-shims/ngx-owl-carousel-o.d.ts"
+      ],
+      "ngx-lottie": [
+        "src/app/shared/ui-shims/ngx-lottie.d.ts"
+      ]
+    },
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",

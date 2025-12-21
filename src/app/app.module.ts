@@ -34,26 +34,24 @@ import { IngredientsComponent } from './ingredients/ingredients.component';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from "@angular/forms";
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BookingCompleteComponent } from './booking-complete/booking-complete.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
+import { SharedUiShimsModule } from './shared/ui-shims/shared-ui-shims.module';
 
 // import { AuthInterceptor } from "./shared/auth.interceptor";
 
@@ -71,85 +69,84 @@ export function createTranslateLoader(http: HttpClient): any {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
-export function playerFactory() {
-  return player;
-}
+// Removed LottieModule usage; using local shim instead
 
-@NgModule({ declarations: [
-        AppComponent,
-        NavbarComponent,
-        HomeComponent,
-        AccountComponent,
-        PhoneComponent,
-        EmployeeComponent,
-        NumberComponent,
-        OtpComponent,
-        FreshComponent,
-        BasketComponent,
-        DescriptionComponent,
-        LookingComponent,
-        ReceipiesComponent,
-        EditComponent,
-        OrderComponent,
-        CartComponent,
-        FooterComponent,
-        SearchComponent,
-        PaymentComponent,
-        LoginBarComponent,
-        WalletComponent,
-        AddressComponent,
-        FavouriteComponent,
-        HelpComponent,
-        PointsComponent,
-        SettingsComponent,
-        FeedbackComponent,
-        TabComponent,
-        IngredientsComponent,
-        BookingCompleteComponent,
-        BasketListComponent,
-        AdminBasketComponent,
-    ],
-    bootstrap: [AppComponent], imports: [AppRoutingModule,
-        BrowserModule,
-        FeedingModule,
-        BrowserAnimationsModule,
-        MatExpansionModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatNativeDateModule,
-        MatDatepickerModule,
-        MomentDateModule,
-        MatTabsModule,
-        MatButtonToggleModule,
-        CarouselModule,
-        FormsModule,
-        NgbModule,
-        NgOtpInputModule,
-        MatRadioModule,
-        LottieModule.forRoot({ player: playerFactory }),
-        ReactiveFormsModule,
-        ToastrModule.forRoot(),
-        TranslateModule.forRoot({
-            defaultLanguage: 'ar',
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient]
-            }
-        })], providers: [
-        DatePipe,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true,
-        },
-        {
-            provide: LOCALE_ID,
-            useValue: 'ar-BH'
-        },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    HomeComponent,
+    AccountComponent,
+    PhoneComponent,
+    EmployeeComponent,
+    NumberComponent,
+    OtpComponent,
+    FreshComponent,
+    BasketComponent,
+    DescriptionComponent,
+    LookingComponent,
+    ReceipiesComponent,
+    EditComponent,
+    OrderComponent,
+    CartComponent,
+    FooterComponent,
+    SearchComponent,
+    PaymentComponent,
+    LoginBarComponent,
+    WalletComponent,
+    AddressComponent,
+    FavouriteComponent,
+    HelpComponent,
+    PointsComponent,
+    SettingsComponent,
+    FeedbackComponent,
+    TabComponent,
+    IngredientsComponent,
+    BookingCompleteComponent,
+    BasketListComponent,
+    AdminBasketComponent,
+  ],
+  bootstrap: [AppComponent], imports: [AppRoutingModule,
+    BrowserModule,
+    MatDialogModule,
+    SharedUiShimsModule,
+    FeedingModule,
+    BrowserAnimationsModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MomentDateModule,
+    MatTabsModule,
+    MatButtonToggleModule,
+    FormsModule,
+    NgOtpInputModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    TranslateModule.forRoot({
+      defaultLanguage: 'ar',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    })], providers: [
+      DatePipe,
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true,
+      },
+      {
+        provide: LOCALE_ID,
+        useValue: 'ar-BH'
+      },
+      provideHttpClient(withInterceptorsFromDi())
+    ]
+})
 export class AppModule { }
 
 export function HttpLoaderFactory(http: HttpClient) {

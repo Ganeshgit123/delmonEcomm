@@ -6,13 +6,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-description',
-    templateUrl: './description.component.html',
-    styleUrls: ['./description.component.css'],
-    standalone: false
+  selector: 'app-description',
+  templateUrl: './description.component.html',
+  styleUrls: ['./description.component.css'],
+  standalone: false
 })
 export class DescriptionComponent {
   customOptions: OwlOptions = {
@@ -84,7 +84,7 @@ export class DescriptionComponent {
     path: '../../../assets/images/Animations/67978-green-tick.json'
   };
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private modalService: NgbModal, private builder: FormBuilder) { }
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private dialog: MatDialog, private builder: FormBuilder) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem("dir") || "rtl";
@@ -227,7 +227,7 @@ export class DescriptionComponent {
 
   openVerticallyCentered(content: any) {
     if (this.loggedUser == 'true') {
-      this.modalService.open(content, { centered: true });
+      this.dialog.open(content, {});
       this.authService.viewBasket().subscribe((res: any) => {
         this.getBasket = res.data;
       })
@@ -238,7 +238,7 @@ export class DescriptionComponent {
   }
 
   openNewBasket(content1: any) {
-    this.modalService.open(content1, { centered: true });
+    this.dialog.open(content1, {});
   }
 
   sendBasketValue = new FormGroup({

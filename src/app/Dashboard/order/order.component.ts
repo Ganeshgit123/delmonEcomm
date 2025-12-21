@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common'
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.prod';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
 

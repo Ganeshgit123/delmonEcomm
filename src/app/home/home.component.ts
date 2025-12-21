@@ -3,13 +3,13 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { AuthService } from 'src/app/shared/auth.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
+  standalone: false
 })
 export class HomeComponent implements OnInit {
   homeOptions: OwlOptions = {
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
   popupAd: any;
   adSection: any;
 
-  constructor(public authService: AuthService, private modalService: NgbModal,) { }
+  constructor(public authService: AuthService, private dialog: MatDialog,) { }
 
   onAnimate(animationItem: AnimationItem): void {
     // console.log(animationItem);  
@@ -109,6 +109,6 @@ export class HomeComponent implements OnInit {
     );
   }
   openModal(adSection: any) {
-    this.modalService.open(adSection, { centered: true });
+    this.dialog.open(adSection, { panelClass: 'mat-dialog-no-padding' });
   }
 }

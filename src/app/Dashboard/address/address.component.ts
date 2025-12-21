@@ -3,14 +3,14 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 declare const google: any;
 
 @Component({
-    selector: 'app-address',
-    templateUrl: './address.component.html',
-    styleUrls: ['./address.component.css'],
-    standalone: false
+  selector: 'app-address',
+  templateUrl: './address.component.html',
+  styleUrls: ['./address.component.css'],
+  standalone: false
 })
 
 export class AddressComponent {
@@ -40,7 +40,7 @@ export class AddressComponent {
   };
 
   constructor(private auth: AuthService, private builder: FormBuilder, private toastr: ToastrService,
-    private modalService: NgbModal, private ngZone: NgZone) { }
+    private dialog: MatDialog, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem('dir') || 'ltr';
@@ -117,7 +117,7 @@ export class AddressComponent {
     this.submitted = false;
     // this.addressForm.controls["area"].value = this.selectedArea;
     this.fetchZonesAndPincodes();
-    this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
   }
   openMap() {
     this.canOpenMap = false;
@@ -171,7 +171,7 @@ export class AddressComponent {
         if (res.error == false) {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
-          this.modalService.dismissAll();
+          this.dialog.closeAll();
           this.ngOnInit();
         } else {
           this.toastr.error('Enter valid ', res.message);
@@ -181,7 +181,7 @@ export class AddressComponent {
 
   editAddress(data: any, content: any) {
     this.fetchZonesAndPincodes();
-    this.modalService.open(content, { centered: false, backdrop: 'static', keyboard: false, windowClass: 'custom-class' });
+    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
     this.isEdit = true;
     this.addressId = data['id'];
     this.auth.getArea(data['zoneId']).subscribe(
@@ -217,7 +217,7 @@ export class AddressComponent {
           this.toastr.success('Success ', res.message);
           this.addressForm.reset();
           this.submitted = false;
-          this.modalService.dismissAll();
+          this.dialog.closeAll();
           this.ngOnInit();
         } else {
           this.toastr.error('Enter valid ', res.message);
