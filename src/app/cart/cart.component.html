@@ -176,11 +176,10 @@
                                     [className]="websiteFlow === 'FEEDING' ? 'change_btn_f' : 'change_btn'"
                                     (click)="changeDelivery(deleiveryAddModal)">{{"Change" |
                                     translate}}</button>
-                                <ng-template #deleiveryAddModal role="document" let-modal="close">
+                                <ng-template #deleiveryAddModal>
                                     <div class="modal-header">
                                         <h5 class="modal-title">{{"SavedAddress" | translate}}</h5>
-                                        <button type="button" class="close" aria-label="Close"
-                                            (click)="modal('Cross click')">
+                                        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -374,11 +373,11 @@
 
 
 <!-- Modal -->
-<ng-template #content role="document" let-modal="close" class="address">
+<ng-template #content class="address">
     <div class="modal-header">
         <h5 class="modal-title" *ngIf="!isEdit">{{"addAddress" | translate}}</h5>
         <h5 class="modal-title" *ngIf="isEdit">{{"editAddress" | translate}}</h5>
-        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -513,7 +512,7 @@
     </div>
 </ng-template>
 
-<ng-template #outOfStock role="document" let-modal="close">
+<ng-template #outOfStock>
     <div class="modal-body">
         <div *ngFor="let product of productDetails">
             <p><span *ngIf="((product.stock || 0) > 0) && ((product.stock || 0) < product.quantity)">
@@ -527,17 +526,16 @@
                     {{"outOfStockMsg" | translate}}</span>
             </p>
         </div>
-        <p class="text-center mb-0"><button type="button" class="ok_btn" aria-label="Close"
-                (click)="modal('Cross click')">
+        <p class="text-center mb-0"><button type="button" class="ok_btn" aria-label="Close" (click)="closeDialog()">
                 {{"Ok" | translate}}
             </button></p>
     </div>
 </ng-template>
 
-<ng-template #mapModel role="document" let-modal="close" class="address">
+<ng-template #mapModel class="address">
     <div class="modal-header">
         <h5 class="modal-title">{{"addAddress" | translate}}</h5>
-        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

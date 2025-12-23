@@ -106,10 +106,10 @@
    </div>
 </section>
 
-<ng-template #adSection role="document" let-modal="close">
+<ng-template #adSection>
    <div class="modal-header">
       <h5 class="modal-title">{{"Edit Model" | translate}}</h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
          <span aria-hidden="true">&times;</span>
       </button>
    </div>

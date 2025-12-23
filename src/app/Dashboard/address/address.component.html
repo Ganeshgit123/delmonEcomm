@@ -55,11 +55,11 @@
     </div>
 </div>
 
-<ng-template #content role="document" let-modal="close" class="address">
+<ng-template #content class="address">
     <div class="modal-header">
         <h5 class="modal-title" *ngIf="!isEdit">{{"addAddress" | translate}}</h5>
         <h5 class="modal-title" *ngIf="isEdit">{{"editAddress" | translate}}</h5>
-        <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>

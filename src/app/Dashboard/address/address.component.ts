@@ -3,7 +3,7 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 declare const google: any;
 
 @Component({
@@ -34,6 +34,7 @@ export class AddressComponent {
   zoneData: any;
   areaList: any;
   dir: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   options: AnimationOptions = {
     path: '../../../assets/images/Animations/84767-no-access-to-location.json'
@@ -117,7 +118,15 @@ export class AddressComponent {
     this.submitted = false;
     // this.addressForm.controls["area"].value = this.selectedArea;
     this.fetchZonesAndPincodes();
-    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+    this.dialogRef = this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+  }
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
   openMap() {
     this.canOpenMap = false;
@@ -181,7 +190,7 @@ export class AddressComponent {
 
   editAddress(data: any, content: any) {
     this.fetchZonesAndPincodes();
-    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+    this.dialogRef = this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
     this.isEdit = true;
     this.addressId = data['id'];
     this.auth.getArea(data['zoneId']).subscribe(

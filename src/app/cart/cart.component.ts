@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartItem, Coupon, DeliveryType } from '../shared/models/cart.models';
@@ -112,6 +112,7 @@ export class CartComponent {
   selectedLat: any;
   selectedLng: any;
   selectedArea: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
     private auth: AuthService,
@@ -277,7 +278,7 @@ export class CartComponent {
 
   openMap(mapModel: any) {
     this.isMapSaveButtonEnabled = true;
-    this.dialog.open(mapModel, { disableClose: true, panelClass: 'custom-class' });
+    this.dialogRef = this.dialog.open(mapModel, { disableClose: true, panelClass: 'custom-class' });
 
     this.loadGoogleMaps().then(() => {
       setTimeout(() => {
@@ -373,7 +374,15 @@ export class CartComponent {
     this.addressForm.reset();
     this.isEdit = false;
     this.submitted = false;
-    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+    this.dialogRef = this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+  }
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
   checkHolidayaListForDelivery() {
@@ -571,7 +580,7 @@ export class CartComponent {
     var firtArr: any = [];
     firtArr.push(this.fistData);
 
-    this.dialog.open(deleiveryAddModal, { panelClass: 'md-dialog' });
+    this.dialogRef = this.dialog.open(deleiveryAddModal, { panelClass: 'md-dialog' });
 
     this.auth.getAddress().subscribe((res: any) => {
       this.addressList = res.data.filter(function (cv: any) {
@@ -598,7 +607,7 @@ export class CartComponent {
   onSubmitBook(outOfStock: any) {
     const isAnyOutOfStock = this.viewData.data.some((item: any) => item.stock < item.quantity);
     if (isAnyOutOfStock) {
-      this.dialog.open(outOfStock, {});
+      this.dialogRef = this.dialog.open(outOfStock, {});
     } else {
       if (this.isHoliday) {
         this.toastr.error("Selected delivery date is Holiday. Please choose another date.");
@@ -876,7 +885,7 @@ export class CartComponent {
   }
 
   editAddress(data: any, content: any) {
-    this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
+    this.dialogRef = this.dialog.open(content, { disableClose: true, panelClass: 'custom-class' });
     this.isEdit = true;
     this.addressId = data['id'];
     this.auth.getArea(data['zoneId']).subscribe(

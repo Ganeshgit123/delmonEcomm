@@ -125,26 +125,24 @@
 <!------------------------------------------------------------------>
 
 
-<ng-template #content let-modal>
+<ng-template #content>
 
     <div class="modal-body">
         <div class="px-3 py-2">
             <div class="mod-head ">
                 <h4>{{"Basket" | translate}}</h4>
-                <img src="../../assets/images/Icon-ionic-ios-close.svg" (click)="modal.dismiss('Cross click')" alt="">
+                <img src="../../assets/images/Icon-ionic-ios-close.svg" (click)="closeDialog()" alt="">
             </div>
             <div>
                 <div class="modal-data pt-3 pb-2 px-4 mt-3" *ngFor="let bask of getBasket">
                     <h5>{{bask.name}} {{"Basket" | translate}}</h5>
                     <img src="../../assets/images/Icon awesome-check-circle.svg" alt=""
-                        (click)="sendBasketdata(bask.id)" (click)="modal.close('Save click')"
-                        (click)="openNewBasket(content2)">
+                        (click)="sendBasketdata(bask.id); closeDialog(); openNewBasket(content2)">
                 </div>
             </div>
 
             <div class="text-center">
-                <button class="btn btn-bas-create text-center mt-3" (click)="openNewBasket(content1)"
-                    (click)="modal.dismiss('Cross click')">{{"ADDNEWBASKET" | translate}}</button>
+                <button class="btn btn-bas-create text-center mt-3" (click)="closeDialog(); openNewBasket(content1)">{{"ADDNEWBASKET" | translate}}</button>
             </div>
 
         </div>
@@ -153,25 +151,24 @@
 </ng-template>
 
 
-<ng-template #content1 let-modal>
+<ng-template #content1>
 
     <div class="modal-body modal-create my-3">
         <div class="d-flex justify-content-between px-4">
             <h4>{{"EnterBasketName" | translate}}</h4>
-            <img src="../../assets/images/Icon-ionic-ios-close.svg" (click)="modal.dismiss('Cross click')" alt="">
+            <img src="../../assets/images/Icon-ionic-ios-close.svg" (click)="closeDialog()" alt="">
         </div>
         <form class="px-4" [formGroup]="sendBasketValue" (ngSubmit)="sendBasketName()">
             <div class="form-group">
                 <input type="text" class="form-control" formControlName="name">
             </div>
-            <button type="submit" class="btn btn-danger btn-block" (click)="modal.dismiss('Cross click')"
-                (click)="openVerticallyCentered(content)">{{"Save" | translate}}</button>
+            <button type="submit" class="btn btn-danger btn-block" (click)="closeDialog(); openVerticallyCentered(content)">{{"Save" | translate}}</button>
         </form>
     </div>
 
 </ng-template>
 
-<ng-template #content2 let-modal>
+<ng-template #content2>
 
     <div class="modal-body ">
         <div class="text-center px-4">
@@ -180,7 +177,7 @@
                 </ng-lottie>
             </div>
             <h4 class="img-view-head mt-2">{{"AddedtoBasket" | translate}}</h4>
-            <button class="btn-view px-5 py-2" (click)="modal.dismiss('Cross click')" routerLink="/basket-list">{{"View"
+            <button class="btn-view px-5 py-2" (click)="closeDialog()" routerLink="/basket-list">{{"View"
                 | translate}}</button>
         </div>
 

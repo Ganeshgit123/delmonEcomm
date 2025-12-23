@@ -194,11 +194,11 @@
 </div>
 
 
-<ng-template #content let-modal="close">
+<ng-template #content>
   <div class="edit">
     <div class="modal-header">
       <h5 class="modal-title">{{"MyOrder" | translate}}</h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

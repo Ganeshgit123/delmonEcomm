@@ -101,3 +101,28 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* Ensure Angular Material dialogs scroll when content exceeds viewport */
+.cdk-overlay-pane .mat-dialog-container,
+.cdk-overlay-pane .mat-mdc-dialog-container,
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    max-height: 90vh;
+    overflow: auto;
+}
+
+/* Force overlay wrapper to center dialogs for LTR and RTL */
+.cdk-global-overlay-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Do not offset dialogs with margins; keep centered */
+.custom-class .mat-dialog-container,
+.custom-class .mat-mdc-dialog-container {
+    margin: 0 !important;
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+    font-family: var(--font-family) !important;
+}

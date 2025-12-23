@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-description',
@@ -79,6 +79,7 @@ export class DescriptionComponent {
   dir: any;
   productNameAr: any;
   productdescriptionAr: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   options: AnimationOptions = {
     path: '../../../assets/images/Animations/67978-green-tick.json'
@@ -228,7 +229,7 @@ export class DescriptionComponent {
 
   openVerticallyCentered(content: any) {
     if (this.isLoggedIn) {
-      this.dialog.open(content, {});
+      this.dialogRef = this.dialog.open(content, {});
       this.authService.viewBasket().subscribe((res: any) => {
         this.getBasket = res.data;
       })
@@ -239,7 +240,15 @@ export class DescriptionComponent {
   }
 
   openNewBasket(content1: any) {
-    this.dialog.open(content1, {});
+    this.dialogRef = this.dialog.open(content1, {});
+  }
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
   sendBasketValue = new FormGroup({

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
 
@@ -22,6 +22,7 @@ export class BasketComponent {
   options: AnimationOptions = {
     path: 'assets/images/Animations/Chicken-Roll.json'
   };
+  dialogRef: MatDialogRef<any> | null = null;
 
 
   constructor(private authService: AuthService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router, private dialog: MatDialog) {
@@ -32,8 +33,7 @@ export class BasketComponent {
   }
 
   openVerticallyCentered(content: any) {
-
-    this.dialog.open(content, {});
+    this.dialogRef = this.dialog.open(content, {});
   }
 
   ngOnInit(): void {
@@ -117,11 +117,20 @@ export class BasketComponent {
         if (res.error === false) {
           this.toastr.success('Successfully', res.message);
           this.router.navigate([`/basket-list`]);
-          this.dialog.closeAll();
+          this.closeDialog();
         }
 
       }
     )
+  }
+
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
 

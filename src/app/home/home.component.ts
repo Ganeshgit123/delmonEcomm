@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { AuthService } from 'src/app/shared/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -90,6 +90,7 @@ export class HomeComponent implements OnInit {
   productData: any = [];
   popupAd: any;
   adSection: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   constructor(public authService: AuthService, private dialog: MatDialog,) { }
 
@@ -110,7 +111,15 @@ export class HomeComponent implements OnInit {
     );
   }
   openModal(adSection: any) {
-    this.dialog.open(adSection, { panelClass: 'mat-dialog-no-padding' });
+    this.dialogRef = this.dialog.open(adSection, { panelClass: 'mat-dialog-no-padding' });
+  }
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
   scrollProducts(sectionIndex: number, direction: number): void {

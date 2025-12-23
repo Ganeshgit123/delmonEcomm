@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -23,6 +23,7 @@ export class WalletComponent {
   websiteFlow: any;
   adminLogin: any;
   dir: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   constructor(private auth: AuthService, private toastr: ToastrService, private dialog: MatDialog) { }
 
@@ -50,13 +51,22 @@ export class WalletComponent {
     this.auth.add_Wallet(this.walletData, this.userId).subscribe((res: any) => {
       this.toastr.success(res.message);
       this.ngOnInit();
-      this.dialog.closeAll();
+      this.closeDialog();
     })
 
   }
 
   openVerticallyCentered(content: any) {
-    this.dialog.open(content, {});
+    this.dialogRef = this.dialog.open(content, {});
+  }
+
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
 

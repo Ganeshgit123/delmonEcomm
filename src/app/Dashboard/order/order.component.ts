@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common'
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment.prod';
@@ -29,6 +29,7 @@ export class OrderComponent {
   adminLogin: any;
   dir: any;
   loadedTabs: { [key: string]: boolean } = {};
+  dialogRef: MatDialogRef<any> | null = null;
 
   constructor(private auth: AuthService, private dialog: MatDialog,
     private toastr: ToastrService,) { }
@@ -90,12 +91,48 @@ export class OrderComponent {
     }
   }
 
-  date(value: any) {
-    let date_string = value;
-    let parts_of_date: any = date_string.split("/");
+  date(value: any): string | null {
+    if (value === null || value === undefined) {
+      return null;
+    }
 
-    let output = new Date(+parts_of_date[2], parts_of_date[1] - 1, +parts_of_date[0]);
-    return this.pipe.transform(output, 'EEEE, MMM d, y');
+    let parsedDate: Date | null = null;
+
+    if (value instanceof Date) {
+      parsedDate = value;
+    } else if (typeof value === 'number') {
+      parsedDate = new Date(value);
+    } else if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return null;
+      }
+      const ddmmyyyy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/; // 31/12/2025
+      const yyyymmdd = /^(\d{4})-(\d{1,2})-(\d{1,2})$/; // 2025-12-31
+      let m: RegExpMatchArray | null;
+      if ((m = trimmed.match(ddmmyyyy))) {
+        const dd = Number(m[1]);
+        const mm = Number(m[2]);
+        const yyyy = Number(m[3]);
+        parsedDate = new Date(yyyy, mm - 1, dd);
+      } else if ((m = trimmed.match(yyyymmdd))) {
+        const yyyy = Number(m[1]);
+        const mm = Number(m[2]);
+        const dd = Number(m[3]);
+        parsedDate = new Date(yyyy, mm - 1, dd);
+      } else {
+        const tryNative = new Date(trimmed);
+        if (!isNaN(tryNative.getTime())) {
+          parsedDate = tryNative;
+        }
+      }
+    }
+
+    if (!parsedDate || isNaN(parsedDate.getTime())) {
+      return null;
+    }
+
+    return this.pipe.transform(parsedDate, 'EEEE, MMM d, y');
   }
 
   cancelOrder(id: any) {
@@ -124,13 +161,22 @@ export class OrderComponent {
   }
 
   orderDetail(content: any, id: any) {
-    this.dialog.open(content, { width: '900px' });
+    this.dialogRef = this.dialog.open(content, { width: '900px' });
     this.orderId = id;
     this.auth.getOrderDetails(this.orderId).subscribe((res: any) => {
       this.orderBillDetails = res.data[0].order;
       this.orderDetailsData = res.data;
       this.orderCartData = res.productDetails;
     })
+  }
+
+  closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
 }
