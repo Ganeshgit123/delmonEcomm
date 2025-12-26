@@ -129,8 +129,8 @@ export class CartComponent {
     this.websiteFlow = localStorage.getItem('flow');
     this.loginType = sessionStorage.getItem('userType');
     this.deliveryType = sessionStorage.getItem('deliverrType');
-    const dc = sessionStorage.getItem('deliveryCharg');
-    this.deliveryCharge = dc ? Number(dc) : 0;
+    const dcStr = sessionStorage.getItem('deliveryCharg');
+    this.deliveryCharge = this.asNumberOrZero(dcStr);
     this.delivAddresChange = sessionStorage.getItem('delivAddChange');
 
     this.auth.getZones().subscribe((res: any) => {
@@ -179,11 +179,13 @@ export class CartComponent {
         this.productDetailsObject.push(item);
       });
 
-      if (Number(this.deliveryCharge) > 0) {
+      if (this.shouldShowDeliveryCharge()) {
         this.deliveryChargeObject = {
           title: 'Delivery fee',
-          price: this.deliveryCharge + " BD"
+          price: this.fmtBD(this.deliveryCharge)
         }
+      } else {
+        this.deliveryChargeObject = null;
       }
 
       this.prodTotal = this.totals.computeProductTotal(this.productDetails);
@@ -241,6 +243,15 @@ export class CartComponent {
         this.deliverAddressArray = this.fistData;
       }
       this.checkEnableDisableOrderButton();
+      // Refresh delivery charge visibility after address load
+      if (this.shouldShowDeliveryCharge()) {
+        this.deliveryChargeObject = {
+          title: 'Delivery fee',
+          price: this.fmtBD(this.deliveryCharge)
+        };
+      } else {
+        this.deliveryChargeObject = null;
+      }
     });
 
     this.addressForm = this.builder.group({
@@ -410,6 +421,7 @@ export class CartComponent {
         this.totalAmount = Number(newTotal.toFixed(3));
       }
       this.deliveryCharge = 0;
+      this.deliveryChargeObject = null;
       this.calculateTotal();
     } else {
       sessionStorage.setItem('deliverrType', 'DELIVERY');
@@ -418,10 +430,19 @@ export class CartComponent {
         this.deliverAddressArray = [];
         this.addData = res.data;
         this.deliverAddressArray.push(this.fistData)
-        this.deliveryCharge = parseFloat(this.fistData?.deliveryCharge.toFixed(3));
+        this.deliveryCharge = Number(Number(this.fistData?.deliveryCharge || 0).toFixed(3));
         sessionStorage.setItem('deliveryCharg', String(this.deliveryCharge));
         this.addLength = this.addData.length;
         this.checkEnableDisableOrderButton();
+        // Set delivery charge object only when a delivery address exists
+        if (this.shouldShowDeliveryCharge()) {
+          this.deliveryChargeObject = {
+            title: 'Delivery fee',
+            price: this.fmtBD(this.deliveryCharge)
+          };
+        } else {
+          this.deliveryChargeObject = null;
+        }
         this.calculateTotal();
       })
     }
@@ -587,7 +608,7 @@ export class CartComponent {
     sessionStorage.setItem('delivAddChange', 'true')
     sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.fistData))
     this.deliverAddressArray.push(this.fistData)
-    this.deliveryCharge = parseFloat(value.deliveryCharge.toFixed(3));
+    this.deliveryCharge = Number(Number(value?.deliveryCharge || 0).toFixed(3));
     sessionStorage.setItem('deliveryCharg', String(this.deliveryCharge));
     this.modalService.dismissAll();
     this.ngOnInit();
@@ -611,10 +632,10 @@ export class CartComponent {
           this.order.push(element);
         })
 
-        if (this.deliveryCharge > 0) {
+        if (this.shouldShowDeliveryCharge()) {
           this.deliveryChargeObject = {
             title: 'Delivery fee',
-            price: this.deliveryCharge + " BD"
+            price: this.fmtBD(this.deliveryCharge)
           }
           this.order.push(this.deliveryChargeObject)
         }
@@ -909,7 +930,7 @@ export class CartComponent {
     }
 
     // Delivery charge
-    if (this.deliveryType === "DELIVERY") {
+    if (this.shouldShowDeliveryCharge()) {
       total += Number(this.deliveryCharge) || 0;
     }
 
@@ -926,6 +947,30 @@ export class CartComponent {
     // Final rounding to 3 decimals
     this.totalAmount = parseFloat(total.toFixed(3));
     this.checkEnableDisableOrderButton();
+  }
+
+  private hasSelectedDeliveryAddress(): boolean {
+    if (this.deliveryType !== 'DELIVERY') return false;
+    const addr: any = this.deliverAddressArray;
+    if (Array.isArray(addr)) {
+      return addr.length > 0 && !!addr[0]?.id;
+    }
+    return !!addr && !!addr.id;
+  }
+
+  private shouldShowDeliveryCharge(): boolean {
+    const charge = Number(this.deliveryCharge);
+    return this.deliveryType === 'DELIVERY' && this.hasSelectedDeliveryAddress() && Number.isFinite(charge) && charge > 0;
+  }
+
+  private asNumberOrZero(v: any): number {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  private fmtBD(v: any): string {
+    const n = this.asNumberOrZero(v);
+    return parseFloat(n.toFixed(3)) + " BD";
   }
 
   checkEnableDisableOrderButton() {
