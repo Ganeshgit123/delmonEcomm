@@ -39,7 +39,7 @@
 }
 
 
-.navbar{
+.navbar {
   margin-bottom: 0;
   padding: 10px 0px;
   background: var(--main-color);
@@ -50,6 +50,9 @@
   padding: 0px 10px;
 }
 
+.navbar-nav>li img {
+  width: 18px;
+}
 
 .navbar-nav>li.active a {
   color: var(--text-dark-color);
@@ -67,7 +70,7 @@
   letter-spacing: .5px;
 }
 
-.navbar-nav .btn-nav{
+.navbar-nav .btn-nav {
   color: var(--text-color);
   font-family: var(--font-family);
   font-size: var(--para-size);
@@ -76,16 +79,20 @@
   border-radius: 0 !important;
   margin-top: 10px;
 }
-.navbar-nav .btn-nav a{
+
+.navbar-nav .btn-nav a {
   color: var(--text-color);
 }
-.navbar-nav .btn-nav:hover{
+
+.navbar-nav .btn-nav:hover {
   background: var(--text-color);
   color: var(--main-color);
 }
-.navbar-nav .btn-nav:hover a{
+
+.navbar-nav .btn-nav:hover a {
   color: var(--main-color);
 }
+
 .navbar .dropdown-slide {
   -webkit-transition: all .35s ease;
   transition: all .35s ease;
@@ -113,7 +120,7 @@
   color: var(--text-dark-color);
   border: 1px solid transparent;
   display: block;
-  padding: 8px 16px;  
+  padding: 8px 16px;
   letter-spacing: 0.5px;
   text-transform: capitalize;
   -webkit-transition: .3s all;
@@ -166,83 +173,81 @@
 
 
 @media only screen and (max-width:1280px) {
-  .navbar-nav>li{
+  .navbar-nav>li {
     padding: 0 5px !important;
   }
 }
 
 
-@media only screen and (max-width:1210px){
-    
-  .navbar-nav>li{
-    padding: 0 4px!important;
+@media only screen and (max-width:1210px) {
+
+  .navbar-nav>li {
+    padding: 0 4px !important;
   }
 
-  
-
-.navbar-brand img {
-  width: 120px;
-  margin-right: 5px;
-  margin-left: 5px;
-}
-
- 
-.navbar-nav>li>a {
-  color: var(--text-color);
-  font-family: var(--font-family);
-  font-size: var(--small-size);
-  font-weight: var(--font-weight-small);
-  padding: 20px 5px;
-  text-transform: capitalize;
-  -webkit-transition: .2s ease-in-out 0s;
-  transition: .2s ease-in-out 0s;
-  letter-spacing: .5px;
-}
-
-.navbar-nav .btn-nav{
-  color: var(--text-color);
-  font-family: var(--font-family);
-  font-size: var(--small-size);
-  font-weight: var(--font-weight-small);
-  border: 1px solid var(--text-color);
-  border-radius: 0 !important;
-  margin-top: 10px;
-}
 
 
-.logo h5 {
-  color: var(--text-color);
-  font-family: var(--font-family);
-  font-size: var(--very-small-size);
-  font-weight: var(--font-weight-medium);
-  margin-top: 10px;
-}
+  .navbar-brand img {
+    width: 120px;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 
 
-.sub-logo p {
-  color: var(--text-color);
-  font-family: var(--font-family);
-  font-size: var(--very-small-size);
-  font-weight: var(--font-weight-small);
-  margin-top: -10px;
-}
+  .navbar-nav>li>a {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-small);
+    padding: 20px 5px;
+    text-transform: capitalize;
+    -webkit-transition: .2s ease-in-out 0s;
+    transition: .2s ease-in-out 0s;
+    letter-spacing: .5px;
+  }
 
-.sub-logo i {
-  font-size: 16px;
-  color: var(--text-color);
-  margin-top: -9px;
-}
+  .navbar-nav .btn-nav {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--small-size);
+    font-weight: var(--font-weight-small);
+    border: 1px solid var(--text-color);
+    border-radius: 0 !important;
+    margin-top: 10px;
+  }
 
-}
+
+  .logo h5 {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--very-small-size);
+    font-weight: var(--font-weight-medium);
+    margin-top: 10px;
+  }
 
 
-@media only screen and (max-width:1020px){
-  .navbar-nav>li{
-    padding: 0px 2px!important;
+  .sub-logo p {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--very-small-size);
+    font-weight: var(--font-weight-small);
+    margin-top: -10px;
+  }
+
+  .sub-logo i {
+    font-size: 16px;
+    color: var(--text-color);
+    margin-top: -9px;
   }
 
 }
 
-@media only screen and (max-width:991px){
+
+@media only screen and (max-width:1020px) {
+  .navbar-nav>li {
+    padding: 0px 2px !important;
+  }
 
 }
+
+@media only screen and (max-width:991px) {}
