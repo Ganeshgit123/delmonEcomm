@@ -54,6 +54,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MatRadioModule } from '@angular/material/radio';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter } from '@angular/material/core';
 
 // import { AuthInterceptor } from "./shared/auth.interceptor";
 
@@ -156,6 +159,19 @@ export function playerFactory() {
     {
       provide: LOCALE_ID,
       useValue: 'ar-BH'
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'en-US'
+    },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {
+      provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+      useValue: { useUtc: false }
     }
   ],
   bootstrap: [AppComponent]

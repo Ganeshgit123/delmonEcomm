@@ -4,7 +4,7 @@ import { AnimationOptions } from 'ngx-lottie';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
@@ -111,6 +111,10 @@ export class CartComponent {
   selectedLat: any;
   selectedLng: any;
   selectedArea: any;
+  selectedDaySlots: any[] | undefined = undefined;
+  selectedSlot: any = null;
+  selectedSlotDate: string = '';
+  showSlotError: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -120,11 +124,17 @@ export class CartComponent {
     private router: Router,
     private ngZone: NgZone,
     private totals: CartTotalsService,
-    private storage: StorageService
+    private storage: StorageService,
+    private dateAdapter: DateAdapter<any>
   ) { }
 
   ngOnInit(): void {
     this.dir = localStorage.getItem('dir') || 'ltr';
+    if (this.dir === 'rtl') {
+      this.dateAdapter.setLocale('ar-BH');
+    } else {
+      this.dateAdapter.setLocale('en-US');
+    }
     this.adminLogin = sessionStorage.getItem('adminLogin');
     this.websiteFlow = localStorage.getItem('flow');
     this.loginType = sessionStorage.getItem('userType');
@@ -399,6 +409,11 @@ export class CartComponent {
         this.isHoliday = true;
       }
     });
+
+    // ✅ Auto-load slots based on adminDate
+    this.selectedSlot = null;
+    this.selectedSlotDate = formatDate(new Date(this.viewData.adminDate), 'yyyy-MM-dd', 'en-US');
+    this.selectedDaySlots = this.getSlotsForDate(new Date(this.viewData.adminDate));
   }
 
   sendSaveAs(data: any) {
@@ -423,6 +438,10 @@ export class CartComponent {
       this.deliveryCharge = 0;
       this.deliveryChargeObject = null;
       this.calculateTotal();
+      this.selectedDaySlots = [];
+      this.selectedSlot = null;
+      this.selectedSlotDate = ''; // ✅ add this
+      this.showSlotError = false;
     } else {
       sessionStorage.setItem('deliverrType', 'DELIVERY');
       this.deliveryType = "DELIVERY";
@@ -444,6 +463,11 @@ export class CartComponent {
           this.deliveryChargeObject = null;
         }
         this.calculateTotal();
+        if (this.viewData?.adminDate) {
+          this.selectedSlot = null;
+          this.selectedSlotDate = formatDate(new Date(this.viewData.adminDate), 'yyyy-MM-dd', 'en-US');
+          this.selectedDaySlots = this.getSlotsForDate(new Date(this.viewData.adminDate));
+        }
       })
     }
   }
@@ -615,6 +639,20 @@ export class CartComponent {
     this.order = [];
   }
 
+  getSlotsForDate(date: Date): any[] {
+    if (!this.viewData?.deliverySlots?.length) return [];
+
+    const formatted = formatDate(date, 'yyyy-MM-dd', 'en-US');
+    const match = this.viewData.deliverySlots.find((s: any) => s.date === formatted);
+    return match ? match.slots : [];
+  }
+
+  selectTimeSlot(time: any) {
+    this.selectedSlot = time;
+    this.showSlotError = false;
+    this.checkEnableDisableOrderButton();
+  }
+
   onSubmitBook(outOfStock: any) {
     const isAnyOutOfStock = this.viewData.data.some((item: any) => item.stock < item.quantity);
     if (isAnyOutOfStock) {
@@ -716,7 +754,13 @@ export class CartComponent {
               "cartonDiscount": this.currentCartonDiscountEmployee,
               "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
               "maxCartonDiscountPerDay": maxCartonDiscountPerDayValue,
-              "employeeCartonDiscount": totalQuantity
+              "employeeCartonDiscount": totalQuantity,
+              "deliverySlot": this.deliveryType === 'DELIVERY' && this.selectedSlot ? {
+                date: this.selectedSlotDate,      // ✅ was missing in EMPLOYEE block
+                slotType: this.selectedSlot.type,
+                start: this.selectedSlot.start,
+                end: this.selectedSlot.end
+              } : null,
             }
             // console.log("empCartoon", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
@@ -776,7 +820,13 @@ export class CartComponent {
               "cartonDiscount": this.viewData?.cartonDiscount,
               "maxCartonDiscountPerDayUser": maxCartonDiscountPerDayValue,
               "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay,
-              "userCartonDiscount": totalQuantity
+              "userCartonDiscount": totalQuantity,
+              "deliverySlot": this.deliveryType === 'DELIVERY' && this.selectedSlot ? {
+                date: this.selectedSlotDate,          // "2026-05-03"
+                slotType: this.selectedSlot.type,     // "morning" or "evening"
+                start: this.selectedSlot.start,       // "10:00:00"
+                end: this.selectedSlot.end            // "12:00:00"
+              } : null,
             }
             // console.log("UserCartoon", data);
             this.auth.bookOrder(data).subscribe((res: any) => {
@@ -816,7 +866,13 @@ export class CartComponent {
             "couponAmount": this.couponVal,
             "cartonDiscount": this.viewData?.cartonDiscount,
             "maxCartonDiscountPerDayUser": this.viewData?.maxCartonDiscountPerDayUser,
-            "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay
+            "maxCartonDiscountPerDay": this.viewData?.maxCartonDiscountPerDay,
+            "deliverySlot": this.deliveryType === 'DELIVERY' && this.selectedSlot ? {
+              date: this.selectedSlotDate,          // "2026-05-03"
+              slotType: this.selectedSlot.type,     // "morning" or "evening"
+              start: this.selectedSlot.start,       // "10:00:00"
+              end: this.selectedSlot.end            // "12:00:00"
+            } : null,
           }
           // console.log("piece", data);
           this.auth.bookOrder(data).subscribe((res: any) => {
@@ -974,22 +1030,24 @@ export class CartComponent {
   }
 
   checkEnableDisableOrderButton() {
+    // ✅ Slot required only for DELIVERY
+    const slotValid = this.deliveryType === 'DELIVERY'
+      ? (!!this.selectedSlotDate && !!this.selectedSlot)
+      : true;
+
     if (this.deliveryType != "PICKUP") {
-      if (this.getAddress?.length > 0 && this.paymentType != null && this.paymentType != undefined) {
+      if (this.getAddress?.length > 0 && this.paymentType != null && this.paymentType != undefined && slotValid) {
         this.IsSubmitButtonEnable = false;
-      }
-      else {
+      } else {
         this.IsSubmitButtonEnable = true;
       }
     } else {
       if (this.paymentType != null && this.paymentType != undefined) {
         this.IsSubmitButtonEnable = false;
-      }
-      else {
+      } else {
         this.IsSubmitButtonEnable = true;
       }
     }
-
 
     if (this.totalAmount >= this.viewData?.walletBalance && this.paymentType === "WALLET") {
       this.IsSubmitButtonEnable = true;
@@ -1083,6 +1141,12 @@ export class CartComponent {
       this.deliveryDAte = event.value._d;
     }
     this.deliveryDAte = event.value._d; // Need to remove
+
+    // ✅ Reload slots for selected calendar date
+    this.selectedSlot = null;
+    this.selectedSlotDate = formatDate(new Date(this.deliveryDAte), 'yyyy-MM-dd', 'en-US');
+    this.selectedDaySlots = this.getSlotsForDate(new Date(this.deliveryDAte));
+    this.checkEnableDisableOrderButton();
   }
 
 }
