@@ -132,4 +132,17 @@ export class OrderComponent {
     })
   }
 
+  parsePickup(input: any): any {
+    if (!input) return null;
+    if (typeof input === 'object') return input;
+    if (typeof input === 'string') {
+      try {
+        return JSON.parse(input);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
 }

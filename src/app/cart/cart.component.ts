@@ -51,6 +51,8 @@ export class CartComponent {
   totalAmount: number = 0.0;
   i = 1;
   pickupAddress: any;
+  pickupLocations: any[] = [];
+  selectedPickup: any = null;
   viewData: any;
   address: any;
   paymentType: any;
@@ -148,7 +150,13 @@ export class CartComponent {
     });
 
     if (this.delivAddresChange == 'true') {
-      this.fistData = JSON.parse(sessionStorage.getItem('deliveryFullAddress') || "null");
+      const raw = sessionStorage.getItem('deliveryFullAddress') || null;
+      try {
+        this.fistData = raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        // stored value might be a plain string (old behavior) - keep as-is
+        this.fistData = raw;
+      }
       this.deliverAddressArray = this.fistData;
     }
     this.auth.viewCart().subscribe((res: any) => {
@@ -157,22 +165,41 @@ export class CartComponent {
       // console.log("Fef", this.productDetails)
       this.userId = sessionStorage.getItem('userId');
       this.cartLength = this.productDetails.length;
+      // Support API pickup locations: array of { pickupAddress, pickupTime }
       this.pickupAddress = res.address?.address;
+      if (res.pickupLocation && Array.isArray(res.pickupLocation) && res.pickupLocation.length) {
+        this.pickupLocations = res.pickupLocation;
+        // default to first pickup location unless there's a stored selection
+        const stored = sessionStorage.getItem('selectedPickup');
+        if (stored) {
+          try { this.selectedPickup = JSON.parse(stored); } catch (e) { this.selectedPickup = this.pickupLocations[0]; }
+        } else {
+          this.selectedPickup = this.pickupLocations[0];
+        }
+        // keep a human-readable pickupAddress for backward compatibility in template
+        this.pickupAddress = this.selectedPickup?.pickupAddress || this.pickupAddress;
+        // ensure session storage reflects the selected pickup object
+        sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        this.deliverAddressArray = [this.selectedPickup];
+      }
       if (res.isSelfPickup == 1) {
         this.sendDeliveryType('PICKUP');
         sessionStorage.setItem('deliverrType', 'PICKUP');
-        sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
+        if (this.selectedPickup) sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        else sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
       } else if (res.isDelivery == 1) {
         this.sendDeliveryType('DELIVERY');
         sessionStorage.setItem('deliverrType', 'DELIVERY');
       } else if (res.isDelivery == 1 && res.isSelfPickup == 1) {
         this.sendDeliveryType('PICKUP');
         sessionStorage.setItem('deliverrType', 'PICKUP');
-        sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
+        if (this.selectedPickup) sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        else sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
       } else {
         this.sendDeliveryType(this.deliveryType);
         sessionStorage.setItem('deliverrType', 'PICKUP');
-        sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
+        if (this.selectedPickup) sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        else sessionStorage.setItem('deliveryFullAddress', this.pickupAddress);
       }
       this.loyaltyPoint = res.loyaltyPoint;
       //this.loyaltyPointDiscount = res.loyaltyPointDiscount;
@@ -244,13 +271,24 @@ export class CartComponent {
       this.getAddress = res.data;
       this.addLength = this.getAddress.length;
       if (this.delivAddresChange == 'true') {
-        this.fistData = JSON.parse(sessionStorage.getItem('deliveryFullAddress') || "null");
+        const raw = sessionStorage.getItem('deliveryFullAddress') || null;
+        try {
+          this.fistData = raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          this.fistData = raw;
+        }
         this.deliverAddressArray = this.fistData;
       }
       else {
         this.fistData = res.data[0];
-        sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.fistData));
-        this.deliverAddressArray = this.fistData;
+        // If user currently has PICKUP selected and we have a selectedPickup, keep it
+        if (this.deliveryType === 'PICKUP' && this.selectedPickup) {
+          this.deliverAddressArray = [this.selectedPickup];
+          sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        } else {
+          sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.fistData));
+          this.deliverAddressArray = this.fistData;
+        }
       }
       this.checkEnableDisableOrderButton();
       // Refresh delivery charge visibility after address load
@@ -429,8 +467,15 @@ export class CartComponent {
       this.deliveryType = "PICKUP";
       sessionStorage.setItem('deliveryCharg', '');
       sessionStorage.setItem('delivAddChange', 'false')
-      sessionStorage.setItem('deliveryFullAddress', this.pickupAddress)
-      this.deliverAddressArray.push(this.pickupAddress)
+      // when pickup, use selectedPickup object if available
+      if (this.selectedPickup) {
+        sessionStorage.setItem('deliveryFullAddress', JSON.stringify(this.selectedPickup));
+        this.deliverAddressArray.push(this.selectedPickup);
+        this.pickupAddress = this.selectedPickup.pickupAddress || this.pickupAddress;
+      } else {
+        sessionStorage.setItem('deliveryFullAddress', this.pickupAddress)
+        this.deliverAddressArray.push(this.pickupAddress)
+      }
       if (this.deliveryCharge > 0) {
         const newTotal = Number(this.totalAmount) - Number(this.deliveryCharge);
         this.totalAmount = Number(newTotal.toFixed(3));
@@ -470,6 +515,14 @@ export class CartComponent {
         }
       })
     }
+  }
+
+  selectPickup(value: any) {
+    this.selectedPickup = value;
+    this.pickupAddress = value?.pickupAddress || this.pickupAddress;
+    this.deliverAddressArray = [value];
+    sessionStorage.setItem('selectedPickup', JSON.stringify(value));
+    sessionStorage.setItem('deliveryFullAddress', JSON.stringify(value));
   }
 
   sendPaymentType(data: any) {
@@ -735,16 +788,17 @@ export class CartComponent {
               "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
               "orderReferenceId": "",
               "deliveryType": this.deliveryType,
-              "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
+              "deliveryAddressId": this.deliveryAddressId(),
+
               "vat": this.VATSum,
-              "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
-              "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
+              "pickupAddress": this.pickupPayload(),
+              "deliveryAddress": this.deliveryPayload(),
               "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
               "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
               "paymentTypeId": this.paymentType,
               "couponId": this.couponResponse?.id,
               "order": JSON.stringify(this.order),
-              "deliveryAddressType": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].saveAs,
+              "deliveryAddressType": this.deliveryAddressType(),
               "deliveryNotes": this.notesForm.controls['notesText'].value,
               "deliveryOrderDate": formatDate(new Date(), 'shortDate', 'en-US'),
               "cartId": JSON.stringify(cardIds),
@@ -801,10 +855,10 @@ export class CartComponent {
               "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
               "orderReferenceId": "",
               "deliveryType": this.deliveryType,
-              "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
+              "deliveryAddressId": this.deliveryAddressId(),
               "vat": this.VATSum,
-              "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
-              "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
+              "pickupAddress": this.pickupPayload(),
+              "deliveryAddress": this.deliveryPayload(),
               "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
               "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
               "paymentTypeId": this.paymentType,
@@ -828,7 +882,7 @@ export class CartComponent {
                 end: this.selectedSlot.end            // "12:00:00"
               } : null,
             }
-            // console.log("UserCartoon", data);
+            // console.log('Order payload (USER):', data);s
             this.auth.bookOrder(data).subscribe((res: any) => {
               if (res.success == true) {
                 this.toastr.success('Order confirmed! ', res.massage);
@@ -848,10 +902,10 @@ export class CartComponent {
             "deliveryDate": formatDate(this.deliveryDAte, 'EEEE, MMM d, y', 'en-US'),
             "orderReferenceId": "",
             "deliveryType": this.deliveryType,
-            "deliveryAddressId": this.deliveryType === 'PICKUP' ? null : this.deliverAddressArray[0].id,
+            "deliveryAddressId": this.deliveryAddressId(),
             "vat": this.VATSum,
-            "pickupAddress": this.deliveryType === 'PICKUP' ? JSON.stringify(this.deliverAddressArray[0]) : null,
-            "deliveryAddress": this.deliveryType === 'PICKUP' ? null : JSON.stringify(this.deliverAddressArray[0]),
+            "pickupAddress": this.pickupPayload(),
+            "deliveryAddress": this.deliveryPayload(),
             "isLoyaltyPointApply": this.isAppliedLoyaltyPoint ? 1 : 0,
             "LoyaltyAmount": this.isAppliedLoyaltyPoint ? this.loyaltyPointDiscount : "0.00",
             "paymentTypeId": this.paymentType,
@@ -874,7 +928,7 @@ export class CartComponent {
               end: this.selectedSlot.end            // "12:00:00"
             } : null,
           }
-          // console.log("piece", data);
+          // console.log('Order payload (OTHER):', data);
           this.auth.bookOrder(data).subscribe((res: any) => {
             if (res.success == true) {
               this.toastr.success('Order confirmed! ', res.massage);
@@ -1147,6 +1201,34 @@ export class CartComponent {
     this.selectedSlotDate = formatDate(new Date(this.deliveryDAte), 'yyyy-MM-dd', 'en-US');
     this.selectedDaySlots = this.getSlotsForDate(new Date(this.deliveryDAte));
     this.checkEnableDisableOrderButton();
+  }
+
+  private pickupPayload(): string | null {
+    if (this.deliveryType !== 'PICKUP') return null;
+    const candidate = Array.isArray(this.deliverAddressArray) ? this.deliverAddressArray[0] : this.deliverAddressArray;
+    if (!candidate) return null;
+    try { return JSON.stringify(candidate); } catch (e) { return String(candidate); }
+  }
+
+  private deliveryPayload(): string | null {
+    if (this.deliveryType === 'PICKUP') return null;
+    const candidate = Array.isArray(this.deliverAddressArray) ? this.deliverAddressArray[0] : this.deliverAddressArray;
+    if (!candidate) return null;
+    try { return JSON.stringify(candidate); } catch (e) { return String(candidate); }
+  }
+
+  private deliveryAddressId(): any {
+    if (this.deliveryType === 'PICKUP') return null;
+    const candidate = Array.isArray(this.deliverAddressArray) ? this.deliverAddressArray[0] : this.deliverAddressArray;
+    if (!candidate) return null;
+    return candidate.id ?? null;
+  }
+
+  private deliveryAddressType(): any {
+    if (this.deliveryType === 'PICKUP') return null;
+    const candidate = Array.isArray(this.deliverAddressArray) ? this.deliverAddressArray[0] : this.deliverAddressArray;
+    if (!candidate) return null;
+    return candidate.saveAs ?? null;
   }
 
 }

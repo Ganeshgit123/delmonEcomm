@@ -1045,6 +1045,7 @@ button.btn.px-5.py-2.disable-submit {
   text-align: center;
   min-width: 140px;
   transition: all 0.2s;
+  background: #fff;
 }
 
 .slot-time-box.active {

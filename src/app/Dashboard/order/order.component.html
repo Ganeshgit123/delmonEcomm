@@ -241,7 +241,14 @@
           <h5 *ngIf="orderedData.deliveryType == 'PICKUP'">{{"Pickup" | translate}}</h5>
           <div class="order-muted" *ngIf="orderedData.deliveryType == 'PICKUP'">
             <p class="order-mute">
-              <span>{{orderedData.pickupAddress}}</span>
+              <ng-container *ngIf="parsePickup(orderedData.pickupAddress) as p; else rawPickup">
+                <span>{{ p.pickupAddress || p.pickup_location || orderedData.pickupAddress }}</span>
+                <div *ngIf="p.pickupTime">
+                  <small>{{ p.pickupTime.from }} - {{ p.pickupTime.to }}</small>
+                </div>
+              </ng-container>
+              <ng-template #rawPickup>{{ orderedData.pickupAddress }}</ng-template>
+            </p>
           </div>
           <div class="order-muted" *ngIf="orderedData.deliveryType == 'DELIVERY'">
             <p class="order-mute"> {{orderedData?.deliveryAddress?.area}}, {{orderedData?.deliveryAddress?.roadNo}}
