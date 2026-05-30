@@ -11,14 +11,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./phone.component.css']
 })
 export class PhoneComponent implements OnInit {
-  websiteFlow:any;
+  websiteFlow: any;
   sendOtpvalue!: FormGroup;
   submitted = false;
   settings: any;
   params: any;
 
   constructor(public auth: AuthService, private builder: FormBuilder, private toastr: ToastrService, private router: Router,
-    private route: ActivatedRoute,) { 
+    private route: ActivatedRoute,) {
     this.sendOtpvalue = this.builder.group({
       countryCode: [''], mobileNumber: [''],
     });
@@ -26,9 +26,17 @@ export class PhoneComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.params = params['text']; 
+      this.params = params['text'];
     });
-    this.websiteFlow = localStorage.getItem('flow');
+
+    if (this.params == 'admin') {
+      localStorage.setItem('flow', 'POULTRY');
+      localStorage.setItem('dir', 'rtl');
+      localStorage.setItem('lang', 'ar');
+      this.websiteFlow = 'POULTRY';
+    } else {
+      this.websiteFlow = localStorage.getItem('flow');
+    }
 
     this.auth.settingsUrl().subscribe(
       (res: any) => {
@@ -48,12 +56,11 @@ export class PhoneComponent implements OnInit {
       return false;
     }
     this.submitted = false;
-    if(this.params == undefined){
+    if (this.params == undefined) {
       this.auth.sendOtpcheckUser(this.sendOtpvalue.value).subscribe((res: any) => {
         if (res.error == false) {
           if (res.data.isRegistered == true) {
             this.toastr.success('Success', res.message);
-            // this.toastr.success('OTP', res.otp);
             this.router.navigate(['/otp']);
             sessionStorage.setItem("mobileNumber", this.sendOtpvalue.value.mobileNumber!!);
             sessionStorage.setItem("countryCode", this.sendOtpvalue.value.countryCode!!);
@@ -64,7 +71,7 @@ export class PhoneComponent implements OnInit {
           }
         }
       })
-    }else{
+    } else {
       const object = {
         mobileNumber: this.sendOtpvalue.value.mobileNumber
       }
