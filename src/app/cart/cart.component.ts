@@ -1158,8 +1158,8 @@ export class CartComponent {
             // Total eligible weight in KG
             const eligibleWeightKg = eligibleCartons * weightPerCartonKg;
 
-            // Discount = 1 BD per KG
-            const discountBD = eligibleWeightKg * 1.0;
+            // Discount = 0.100 BHD per 1000g (0.1 BHD per KG)
+            const discountBD = eligibleWeightKg * 0.1;
 
             this.totalEmployeeDiscount += discountBD;
           }
